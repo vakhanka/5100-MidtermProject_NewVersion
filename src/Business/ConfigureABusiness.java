@@ -133,6 +133,8 @@ class ConfigureABusiness {
         UserAccount student10Account = uadirectory.newUserAccount(student10, "student10", "password");
 
         return business;
+        
+        //
     }
 }
 
