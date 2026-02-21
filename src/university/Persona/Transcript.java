@@ -19,7 +19,6 @@ public class Transcript {
 
     StudentProfile student;
     HashMap<String, CourseLoad> courseloadlist;
-
     CourseLoad currentcourseload;
 
     public Transcript(StudentProfile sp) {
@@ -28,12 +27,13 @@ public class Transcript {
 
     }
 
+    /*HL: Commenting out for now as method is below, may need to revist if we need to rank by satisfaction
     public int getStudentSatisfactionIndex() {
         //for each courseload 
         //get seatassigmnets; 
         //for each seatassignment add 1 if like =true;
         return 0;
-    }
+    }*/
 
     public CourseLoad newCourseLoad(String sem) {
 
@@ -74,10 +74,40 @@ public class Transcript {
         return sum; 
     }
     
+    //HL: method to get GPA for a semester, used by TranscriptJPanel 
+    public double getSemesterGPA(String semester){
+        CourseLoad cl = courseloadlist.get(semester);
+        if (cl == null) return 0.0;
+        return cl.getSemesterGPA(); 
+    }
     
+    //HL: method to calculate toatl GPA from all semesters, used by TranscriptJPanel 
+    public double getOverallGPA(){
+        double totalQualityPoints = 0;
+        int totalCredits = 0;
+        for (CourseLoad cl : courseloadlist.values()){
+            totalQualityPoints += cl.getSemesterScore();
+            totalCredits += cl.getTotalCredits();
+        }
+        if (totalCredits == 0) return 0.0;
+        return totalQualityPoints / totalCredits; 
+    }
+    
+    //HL: method to determine a student's Academic Standing for a semester
+    //HL: RULE 1: Overall GPA less than 3.0 = Academic Probation 
+    //HL: RULE 2: Term GPA less than 3.0 = Academic Warning (even if overall GPA is greater than or equal to 3.0) 
+    //HL: RULE 3: Both Overall & Term GPA are greater than or equal to 3.0 = Student is in Good Standing 
+    public String getAcademicStanding(String semester){
+        double overallGPA = getOverallGPA();
+        double termGPA = getSemesterGPA(semester);
+        
+        if (overallGPA < 3.0) return "Academic Probation";
+        if (termGPA < 3.0) return "Academic Warning";
+        return "Good Standing"; 
+    }
     
     //sat index means student rated their courses with likes;
-    public int getStudentSatifactionIndex() {
+    public int getStudentSatifactionIndex() { //HL: note, "Satifaction" is a typo but method is still working so not changing 
         ArrayList<SeatAssignment> courseregistrations = getCourseList();
         int sum = 0;
         for (SeatAssignment sa : courseregistrations) {
@@ -102,6 +132,11 @@ public class Transcript {
 
         return temp2;
 
+    }
+    
+    //HL: ArrayList to return semesters by name (ex. "Spring 2026"), used by TranscriptJPanel 
+    public ArrayList<String> getSemesters(){
+        return new ArrayList<>(courseloadlist.keySet()); 
     }
 
 }
