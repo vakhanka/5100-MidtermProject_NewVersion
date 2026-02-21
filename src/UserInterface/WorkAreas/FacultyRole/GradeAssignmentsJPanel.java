@@ -15,6 +15,51 @@ public class GradeAssignmentsJPanel extends javax.swing.JPanel {
      */
     public GradeAssignmentsJPanel() {
         initComponents();
+        populateCourseDropdown();
+        populateGradeDropdown();
+    }
+    
+    private void populateCourseDropdown() {
+        cmbSelectStudents.removeAllItems();
+        cmbSelectStudents.addItem("INFO 5100 - Application Engineering");
+        cmbSelectStudents.addItem("INFO 6150 - Web Design");
+        
+        cmbSelectStudents.addActionListener(e -> loadStudents());
+        loadStudents();
+    }
+    
+    private void populateGradeDropdown() {
+        cmbAssignGrade.removeAllItems();
+        cmbAssignGrade.addItem("A");
+        cmbAssignGrade.addItem("A-");
+        cmbAssignGrade.addItem("B+");
+        cmbAssignGrade.addItem("B");
+        cmbAssignGrade.addItem("B-");
+        cmbAssignGrade.addItem("C+");
+        cmbAssignGrade.addItem("C");
+        cmbAssignGrade.addItem("C-");
+        cmbAssignGrade.addItem("F");
+    }
+    
+    private void loadStudents() {
+        String[][] mockStudents = {
+            {"S001", "Alex Thompson", "A"},
+            {"S002", "Emma Williams", "B+"},
+            {"S003", "Noah Lee", "A-"},
+            {"S004", "Olivia Harris", "B"},
+            {"S005", "Liam Clark", "Not Graded"}
+        };
+        
+        String[] columnNames = {"Student ID", "Name", "Current Grade"};
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(mockStudents, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tblStudentsGrade.setModel(model);
     }
 
     /**
@@ -62,12 +107,22 @@ public class GradeAssignmentsJPanel extends javax.swing.JPanel {
         lblSelectCourse.setText("Select Course:");
 
         cmbSelectStudents.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSelectStudents.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSelectStudentsActionPerformed(evt);
+            }
+        });
 
         lblAssignGrade.setText("Assign Grade:");
 
         cmbAssignGrade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnAssignToSelected.setText("Assign to Selected");
+        btnAssignToSelected.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAssignToSelectedActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -114,6 +169,42 @@ public class GradeAssignmentsJPanel extends javax.swing.JPanel {
                 .addContainerGap(58, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAssignToSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignToSelectedActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblStudentsGrade.getSelectedRow();
+        
+        if (selectedRow == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Please select a student from the table",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        String selectedGrade = (String) cmbAssignGrade.getSelectedItem();
+        if (selectedGrade == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Please select a grade",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        String studentName = (String) tblStudentsGrade.getValueAt(selectedRow, 1);
+        tblStudentsGrade.setValueAt(selectedGrade, selectedRow, 2);
+        
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Grade " + selectedGrade + " assigned to " + studentName,
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnAssignToSelectedActionPerformed
+
+    private void cmbSelectStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSelectStudentsActionPerformed
+        // TODO add your handling code here:
+        loadStudents();
+
+    }//GEN-LAST:event_cmbSelectStudentsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

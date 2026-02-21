@@ -15,6 +15,69 @@ public class StudentTranscriptViewJPanel extends javax.swing.JPanel {
      */
     public StudentTranscriptViewJPanel() {
         initComponents();
+        populateStudentDropdown();
+    }
+    
+    private void populateStudentDropdown() {
+        cmbSelectStudents.removeAllItems();
+        cmbSelectStudents.addItem("Alex Thompson (S001)");
+        cmbSelectStudents.addItem("Emma Williams (S002)");
+        cmbSelectStudents.addItem("Noah Lee (S003)");
+        
+        cmbSelectStudents.addActionListener(e -> loadTranscript());
+        loadTranscript();
+    }
+    
+    private void loadTranscript() {
+        String selected = (String) cmbSelectStudents.getSelectedItem();
+        
+        if (selected == null) return;
+        
+        String[][] transcriptData;
+        String gpa;
+        
+        if (selected.contains("Alex")) {
+            lblStudentsValue.setText("Alex Thompson (S001)");
+            gpa = "3.85";
+            transcriptData = new String[][] {
+                {"Fall 2023", "INFO 5001", "Data Structures", "A", "4"},
+                {"Fall 2023", "INFO 6205", "Program Structure", "A-", "4"},
+                {"Spring 2024", "INFO 6150", "Web Design", "A", "4"},
+                {"Spring 2024", "INFO 6250", "Web Development", "B+", "4"},
+                {"Fall 2024", "INFO 5100", "Application Engineering", "A", "4"}
+            };
+        } else if (selected.contains("Emma")) {
+            lblStudentsValue.setText("Emma Williams (S002)");
+            gpa = "3.45";
+            transcriptData = new String[][] {
+                {"Fall 2023", "INFO 5001", "Data Structures", "B+", "4"},
+                {"Fall 2023", "INFO 6205", "Program Structure", "B", "4"},
+                {"Spring 2024", "INFO 6150", "Web Design", "A-", "4"},
+                {"Fall 2024", "INFO 5100", "Application Engineering", "B+", "4"}
+            };
+        } else {
+            lblStudentsValue.setText("Noah Lee (S003)");
+            gpa = "3.67";
+            transcriptData = new String[][] {
+                {"Fall 2023", "INFO 5001", "Data Structures", "A", "4"},
+                {"Spring 2024", "INFO 6205", "Program Structure", "A-", "4"},
+                {"Spring 2024", "INFO 6250", "Web Development", "B+", "4"},
+                {"Fall 2024", "INFO 5100", "Application Engineering", "A-", "4"}
+            };
+        }
+        
+        lblGPAValue.setText("GPA: " + gpa);
+        
+        String[] columnNames = {"Term", "Course ID", "Course Name", "Grade", "Credits"};
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(transcriptData, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tblTranscript.setModel(model);
     }
 
     /**
@@ -43,6 +106,11 @@ public class StudentTranscriptViewJPanel extends javax.swing.JPanel {
         lblStudents.setText("Students:");
 
         cmbSelectStudents.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSelectStudents.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSelectStudentsActionPerformed(evt);
+            }
+        });
 
         lblStudentsValue.setText("jLabel4");
 
@@ -116,6 +184,11 @@ public class StudentTranscriptViewJPanel extends javax.swing.JPanel {
                 .addGap(15, 15, 15))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbSelectStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSelectStudentsActionPerformed
+        // TODO add your handling code here:
+        loadTranscript();
+    }//GEN-LAST:event_cmbSelectStudentsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

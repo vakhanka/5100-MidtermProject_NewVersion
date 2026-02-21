@@ -15,6 +15,57 @@ public class TuitionInsightJPanel extends javax.swing.JPanel {
      */
     public TuitionInsightJPanel() {
         initComponents();
+        populateCourseDropdown();
+    }
+    
+     private void populateCourseDropdown() {
+        cmbSelectCourse.removeAllItems();
+        cmbSelectCourse.addItem("INFO 5100 - Application Engineering");
+        cmbSelectCourse.addItem("INFO 6150 - Web Design");
+        
+        cmbSelectCourse.addActionListener(e -> loadTuitionData());
+        loadTuitionData();
+    }
+    
+    private void loadTuitionData() {
+        String selected = (String) cmbSelectCourse.getSelectedItem();
+        
+        int enrolledCount;
+        String[][] tuitionData;
+        
+        if (selected != null && selected.contains("5100")) {
+            enrolledCount = 18;
+            tuitionData = new String[][] {
+                {"Alex Thompson", "4", "$6,000", "Paid"},
+                {"Emma Williams", "4", "$6,000", "Paid"},
+                {"Noah Lee", "4", "$6,000", "Paid"},
+                {"Olivia Harris", "4", "$6,000", "Pending"},
+                {"Liam Clark", "4", "$6,000", "Paid"}
+            };
+        } else {
+            enrolledCount = 15;
+            tuitionData = new String[][] {
+                {"Sophia Lewis", "4", "$6,000", "Paid"},
+                {"Mason Walker", "4", "$6,000", "Paid"},
+                {"Ava Hall", "4", "$6,000", "Pending"}
+            };
+        }
+        
+        lblTuitionPerStudentValue.setText("$6,000");
+        lblEnrollmentValue.setText(String.valueOf(enrolledCount));
+        int totalRevenue = enrolledCount * 6000;
+        lblTotalRevenueValue.setText("$" + String.format("%,d", totalRevenue));
+        
+        String[] columnNames = {"Student Name", "Credits", "Tuition", "Status"};
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(tuitionData, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tblTuitionBreakdown.setModel(model);
     }
 
     /**
@@ -75,6 +126,11 @@ public class TuitionInsightJPanel extends javax.swing.JPanel {
         lblTotalRevenue.setText("Total Revenue");
 
         cmbSelectCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSelectCourse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSelectCourseActionPerformed(evt);
+            }
+        });
 
         lblTuitionPerStudentValue.setText("jLabel6");
 
@@ -95,23 +151,24 @@ public class TuitionInsightJPanel extends javax.swing.JPanel {
                         .addComponent(lblEnrollmentValue)))
                 .addContainerGap(430, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(203, 203, 203)
-                    .addComponent(lblTitle)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(82, 82, 82)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(tuitionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(lblTuitionPerStudent)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(lblTuitionPerStudentValue))
+                            .addGap(203, 203, 203)
+                            .addComponent(lblTitle))
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(lblSelectCourse)
-                            .addGap(18, 18, 18)
-                            .addComponent(cmbSelectCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap(82, Short.MAX_VALUE)))
+                            .addGap(82, 82, 82)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(tuitionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(lblTuitionPerStudent)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(lblTuitionPerStudentValue))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(lblSelectCourse)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cmbSelectCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,6 +199,11 @@ public class TuitionInsightJPanel extends javax.swing.JPanel {
                     .addContainerGap(53, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbSelectCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSelectCourseActionPerformed
+        // TODO add your handling code here:
+                loadTuitionData();     
+    }//GEN-LAST:event_cmbSelectCourseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
