@@ -10,6 +10,7 @@ import Business.Person.Person;
 import Business.Person.PersonDirectory;
 import Business.Profiles.EmployeeDirectory;
 import Business.Profiles.EmployeeProfile;
+import Business.Profiles.RegistrarProfile;
 import Business.Profiles.StudentDirectory;
 import Business.Profiles.StudentProfile;
 
@@ -97,7 +98,9 @@ class ConfigureABusiness {
 
         // ===== CREATE ADMIN & REGISTRAR =====
         EmployeeProfile admin = employeedirectory.newEmployeeProfile(person021);
-        EmployeeProfile registrar = employeedirectory.newEmployeeProfile(person022);
+        
+        // Registrar is an administrative employee role; modeled as Profile subtype for role-based UI routing.
+        RegistrarProfile registrar = new RegistrarProfile(person022);
 
         // ===== CREATE USER ACCOUNTS =====
         UserAccountDirectory uadirectory = business.getUserAccountDirectory();
@@ -106,6 +109,7 @@ class ConfigureABusiness {
         UserAccount adminAccount = uadirectory.newUserAccount(admin, "admin", "admin123");
         
         // Registrar account
+        // Registrar login uses RegistrarProfile so the system loads RegistrarWorkAreaJPanel after authentication.
         UserAccount registrarAccount = uadirectory.newUserAccount(registrar, "registrar", "registrar123");
         
         // Faculty accounts
