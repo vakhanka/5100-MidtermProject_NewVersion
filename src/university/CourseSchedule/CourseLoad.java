@@ -35,13 +35,23 @@ public class CourseLoad {
         seatassignments.add(sa);
     }
     
+    /* HL: commenting out because we are changing from float to string 
     public float getSemesterScore(){ //total score for a full semeter
         float sum = 0;
         for (SeatAssignment sa: seatassignments){
             sum = sum + sa.GetCourseStudentScore();
         }
         return sum;
+    }*/
+    
+    public double getSemesterScore(){ //HL: total points for full semsester 
+        double sum = 0;
+        for (SeatAssignment sa : seatassignments){
+            sum = sum + sa.getCourseStudentScore(); 
+        }
+        return sum; 
     }
+    
         public ArrayList<SeatAssignment> getSeatAssignments(){
             return seatassignments;
         }

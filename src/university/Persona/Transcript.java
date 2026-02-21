@@ -54,6 +54,7 @@ public class Transcript {
 
     }
 
+    /* HL: commenting out because changing grade from float to string 
     public float getStudentTotalScore() {
 
         float sum = 0;
@@ -63,7 +64,18 @@ public class Transcript {
 
         }
         return sum;
+    }*/ 
+    
+    public double getStudentTotalScore(){ //HL: total points for full semsester 
+        double sum = 0; 
+        for (CourseLoad cl : courseloadlist.values()){
+            sum = sum + cl.getSemesterScore();
+        }
+        return sum; 
     }
+    
+    
+    
     //sat index means student rated their courses with likes;
     public int getStudentSatifactionIndex() {
         ArrayList<SeatAssignment> courseregistrations = getCourseList();
