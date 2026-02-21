@@ -6,6 +6,7 @@
 package Business.UserAccounts;
 
 import Business.Profiles.Profile;
+import java.time.LocalDateTime;
 
 
 
@@ -18,12 +19,37 @@ public class UserAccount {
     Profile profile;
     String username;
     String password;
+    private LocalDateTime lastlogintimestamp; //add a variable for tracking lastlogin
+    private LocalDateTime lastupdatetimestamp; //add a variable for tracking last user account edits
     
     public UserAccount (Profile profile, String un, String pw){
         username = un;
-         password = pw;
-         this.profile = profile;
+        password = pw;
+        this.profile = profile;
+        this.lastupdatetimestamp = LocalDateTime.now();
+        this.lastlogintimestamp = null;
 
+    }
+    //Update login and update timestamps
+    
+    public void updatelastlogin(){
+        this.lastlogintimestamp = LocalDateTime.now();
+    }
+
+    public LocalDateTime getLastlogintimestamp() {
+        return lastlogintimestamp;
+    }
+    
+    public void updatelastupdate(){
+        this.lastupdatetimestamp = LocalDateTime.now();
+    }
+
+    public LocalDateTime getLastupdatetimestamp() {
+        return lastupdatetimestamp;
+    }
+
+    public void setLastupdatetimestamp(LocalDateTime lastupdatetimestamp) {
+        this.lastupdatetimestamp = lastupdatetimestamp;
     }
 
     public String getPersonId(){
