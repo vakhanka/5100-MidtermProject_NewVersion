@@ -8,6 +8,7 @@ package Business;
 import Business.Business;
 import Business.Profiles.EmployeeProfile;
 import Business.Profiles.Profile;
+import Business.Profiles.RegistrarProfile;
 import Business.Profiles.StudentProfile;
 
 import Business.UserAccounts.UserAccount;
@@ -15,6 +16,7 @@ import Business.UserAccounts.UserAccountDirectory;
 
 import UserInterface.WorkAreas.AdminRole.AdminRoleWorkAreaJPanel;
 import UserInterface.WorkAreas.FacultyRole.FacultyWorkAreaJPanel;
+import UserInterface.WorkAreas.RegistrarRole.RegistrarWorkAreaJPanel;
 import UserInterface.WorkAreas.StudentRole.StudentWorkAreaJPanel;
 import javax.swing.JPanel;
 
@@ -144,6 +146,7 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         StudentWorkAreaJPanel studentworkareajpanel;
         FacultyWorkAreaJPanel facultyworkarea;
         AdminRoleWorkAreaJPanel adminworkarea;
+        RegistrarWorkAreaJPanel registrarworkarea;
         String r = useraccount.getRole();
         Profile profile = useraccount.getAssociatedPersonProfile();
 
@@ -175,6 +178,18 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 
         }
 */
+ 
+        // Registrar role routing: load Registrar dashboard when user logs in as RegistrarProfile.
+        
+        if (profile instanceof RegistrarProfile) {
+
+            RegistrarProfile rpp = (RegistrarProfile) profile;
+            registrarworkarea = new RegistrarWorkAreaJPanel(business, rpp, CardSequencePanel);
+            CardSequencePanel.removeAll();
+            CardSequencePanel.add("registrar", registrarworkarea);
+            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+
+        }
 
     }//GEN-LAST:event_LoginButtonActionPerformed
 
