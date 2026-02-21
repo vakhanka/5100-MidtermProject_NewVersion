@@ -15,6 +15,48 @@ public class ViewEnrolledStudentJPanel extends javax.swing.JPanel {
      */
     public ViewEnrolledStudentJPanel() {
         initComponents();
+        populateCourseDropdown();
+    }
+    
+     private void populateCourseDropdown() {
+        cmbSelectCourse.removeAllItems();
+        cmbSelectCourse.addItem("INFO 5100 - Application Engineering");
+        cmbSelectCourse.addItem("INFO 6150 - Web Design");
+        
+        cmbSelectCourse.addActionListener(e -> loadEnrolledStudents());
+        loadEnrolledStudents();
+    }
+    
+    private void loadEnrolledStudents() {
+        String selected = (String) cmbSelectCourse.getSelectedItem();
+        
+        String[][] mockStudents;
+        if (selected != null && selected.contains("5100")) {
+            mockStudents = new String[][] {
+                {"S001", "Alex Thompson", "alex.thompson@northeastern.edu", "A"},
+                {"S002", "Emma Williams", "emma.williams@northeastern.edu", "B+"},
+                {"S003", "Noah Lee", "noah.lee@northeastern.edu", "A-"},
+                {"S004", "Olivia Harris", "olivia.harris@northeastern.edu", "B"},
+                {"S005", "Liam Clark", "liam.clark@northeastern.edu", "A"}
+            };
+        } else {
+            mockStudents = new String[][] {
+                {"S006", "Sophia Lewis", "sophia.lewis@northeastern.edu", "A"},
+                {"S007", "Mason Walker", "mason.walker@northeastern.edu", "B+"},
+                {"S008", "Ava Hall", "ava.hall@northeastern.edu", "B"}
+            };
+        }
+        
+        String[] columnNames = {"Student ID", "Name", "Email", "Grade"};
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(mockStudents, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tblEnrolledStudents.setModel(model);
     }
 
     /**
@@ -62,6 +104,11 @@ public class ViewEnrolledStudentJPanel extends javax.swing.JPanel {
         studentsScrollPane.setViewportView(tblEnrolledStudents);
 
         btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -102,6 +149,11 @@ public class ViewEnrolledStudentJPanel extends javax.swing.JPanel {
                 .addContainerGap(93, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+        loadEnrolledStudents();
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
