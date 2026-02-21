@@ -99,6 +99,11 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
         });
 
         cmbSelectCourses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSelectCourses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSelectCoursesActionPerformed(evt);
+            }
+        });
 
         fieldCapacity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,6 +191,12 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
         loadCourseDetails(); // Reset fields
 
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void cmbSelectCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSelectCoursesActionPerformed
+        // TODO add your handling code here:
+        loadCourseDetails();
+
+    }//GEN-LAST:event_cmbSelectCoursesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

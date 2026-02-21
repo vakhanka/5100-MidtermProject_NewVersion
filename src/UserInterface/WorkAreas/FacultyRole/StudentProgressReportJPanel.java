@@ -15,7 +15,58 @@ public class StudentProgressReportJPanel extends javax.swing.JPanel {
      */
     public StudentProgressReportJPanel() {
         initComponents();
+        populateStudentDropdown();
     }
+    
+    
+    private void populateStudentDropdown() {
+    cmbSelectStudents.removeAllItems();
+    cmbSelectStudents.addItem("Alex Thompson (S001)");
+    cmbSelectStudents.addItem("Emma Williams (S002)");
+    cmbSelectStudents.addItem("Noah Lee (S003)");
+    cmbSelectStudents.addItem("Olivia Harris (S004)");
+    
+}
+
+private void loadStudentProgress() {
+    String selected = (String) cmbSelectStudents.getSelectedItem();
+    
+    if (selected == null) return;
+    
+    if (selected.contains("Alex Thompson")) {
+        lblNameValue.setText("Alex Thompson");
+        lblStudentIDValue.setText("S001");
+        lblEmailValue.setText("alex.thompson@northeastern.edu");
+        lblCourseValue.setText("INFO 5100 - Application Engineering");
+        lblCurrentGradeValue.setText("A (95.5%)");
+        lblAssignmentsValue.setText("9/10 completed");
+        lblAttendanceValue.setText("100%");
+    } else if (selected.contains("Emma Williams")) {
+        lblNameValue.setText("Emma Williams");
+        lblStudentIDValue.setText("S002");
+        lblEmailValue.setText("emma.williams@northeastern.edu");
+        lblCourseValue.setText("INFO 5100 - Application Engineering");
+        lblCurrentGradeValue.setText("B+ (89.2%)");
+        lblAssignmentsValue.setText("8/10 completed");
+        lblAttendanceValue.setText("95%");
+    } else if (selected.contains("Noah Lee")) {
+        lblNameValue.setText("Noah Lee");
+        lblStudentIDValue.setText("S003");
+        lblEmailValue.setText("noah.lee@northeastern.edu");
+        lblCourseValue.setText("INFO 5100 - Application Engineering");
+        lblCurrentGradeValue.setText("A- (91.8%)");
+        lblAssignmentsValue.setText("10/10 completed");
+        lblAttendanceValue.setText("98%");
+    } else {
+        lblNameValue.setText("Olivia Harris");
+        lblStudentIDValue.setText("S004");
+        lblEmailValue.setText("olivia.harris@northeastern.edu");
+        lblCourseValue.setText("INFO 5100 - Application Engineering");
+        lblCurrentGradeValue.setText("B (85.3%)");
+        lblAssignmentsValue.setText("7/10 completed");
+        lblAttendanceValue.setText("92%");
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,7 +79,7 @@ public class StudentProgressReportJPanel extends javax.swing.JPanel {
 
         lblTitle = new javax.swing.JLabel();
         lblSelectStudents = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbSelectStudents = new javax.swing.JComboBox<>();
         lblNameLabel = new javax.swing.JLabel();
         lblStudentIDLabel = new javax.swing.JLabel();
         lblEmailLabel = new javax.swing.JLabel();
@@ -49,7 +100,12 @@ public class StudentProgressReportJPanel extends javax.swing.JPanel {
 
         lblSelectStudents.setText("Select Students");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSelectStudents.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSelectStudents.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSelectStudentsActionPerformed(evt);
+            }
+        });
 
         lblNameLabel.setText("Name:");
 
@@ -88,7 +144,7 @@ public class StudentProgressReportJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cmbSelectStudents, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(136, 136, 136)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -111,7 +167,7 @@ public class StudentProgressReportJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblSelectStudents)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbSelectStudents, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(43, 43, 43)
                         .addComponent(lblNameLabel)
                         .addGap(18, 18, 18)
@@ -144,9 +200,16 @@ public class StudentProgressReportJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cmbSelectStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSelectStudentsActionPerformed
+        // TODO add your handling code here:
+        loadStudentProgress();
+        
+        
+    }//GEN-LAST:event_cmbSelectStudentsActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cmbSelectStudents;
     private javax.swing.JLabel lblAssignmentsLabel;
     private javax.swing.JLabel lblAssignmentsValue;
     private javax.swing.JLabel lblAttendanceLabel;
