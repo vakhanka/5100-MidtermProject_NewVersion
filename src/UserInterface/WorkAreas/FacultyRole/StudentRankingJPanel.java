@@ -13,8 +13,41 @@ public class StudentRankingJPanel extends javax.swing.JPanel {
     /**
      * Creates new form StudentRankingJPanel
      */
-    public StudentRankingJPanel() {
+      public StudentRankingJPanel() {
         initComponents();
+        populateCourseDropdown();
+    }
+      
+      private void populateCourseDropdown() {
+        cmbSelectStudents.removeAllItems();
+        cmbSelectStudents.addItem("INFO 5100 - Application Engineering");
+        cmbSelectStudents.addItem("INFO 6150 - Web Design");
+        
+        cmbSelectStudents.addActionListener(e -> loadRankings());
+        loadRankings();
+    }
+    
+    private void loadRankings() {
+        String[][] mockRankings = {
+            {"1", "Alex Thompson", "95.5%", "A"},
+            {"2", "Noah Lee", "91.8%", "A-"},
+            {"3", "Emma Williams", "89.2%", "B+"},
+            {"4", "Olivia Harris", "85.3%", "B"},
+            {"5", "Liam Clark", "82.0%", "B"}
+        };
+        
+        String[] columnNames = {"Rank", "Student Name", "Grade %", "Letter Grade"};
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(mockRankings, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tblStudentsRanking.setModel(model);
+        
+        lblClassGPAValue.setText("3.45 (B+)");
     }
 
     /**
@@ -123,6 +156,7 @@ public class StudentRankingJPanel extends javax.swing.JPanel {
 
     private void cmbSelectStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSelectStudentsActionPerformed
         // TODO add your handling code here:
+        loadRankings();
     }//GEN-LAST:event_cmbSelectStudentsActionPerformed
 
 

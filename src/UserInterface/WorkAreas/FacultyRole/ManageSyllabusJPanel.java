@@ -15,7 +15,17 @@ public class ManageSyllabusJPanel extends javax.swing.JPanel {
      */
     public ManageSyllabusJPanel() {
         initComponents();
+        populateCourseDropdown();
     }
+    
+     private void populateCourseDropdown() {
+        cmbSelectCourses.removeAllItems();
+        cmbSelectCourses.addItem("INFO 5100 - Application Engineering");
+        cmbSelectCourses.addItem("INFO 6150 - Web Design");
+        
+        lblCurrentSyllabusStatus.setText("No syllabus uploaded");
+    }
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,8 +46,18 @@ public class ManageSyllabusJPanel extends javax.swing.JPanel {
         lblCurrentSyllabusStatus = new javax.swing.JLabel();
 
         btnUploadSyllabus.setText("Upload Syllabus");
+        btnUploadSyllabus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUploadSyllabusActionPerformed(evt);
+            }
+        });
 
         cmbSelectCourses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSelectCourses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSelectCoursesActionPerformed(evt);
+            }
+        });
 
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         lblTitle.setText("Manage Course Syllabus");
@@ -98,6 +118,32 @@ public class ManageSyllabusJPanel extends javax.swing.JPanel {
                 .addContainerGap(160, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnUploadSyllabusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadSyllabusActionPerformed
+        // TODO add your handling code here:
+        String url = fieldSyllabusURL.getText();
+        
+        if (url == null || url.trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Please enter a syllabus URL",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        lblCurrentSyllabusStatus.setText("Syllabus: " + url);
+        
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Syllabus uploaded successfully!",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        
+        fieldSyllabusURL.setText("");
+    }//GEN-LAST:event_btnUploadSyllabusActionPerformed
+
+    private void cmbSelectCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSelectCoursesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbSelectCoursesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

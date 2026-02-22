@@ -13,9 +13,40 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
     /**
      * Creates new form UpdateCourseDetailsJPanel
      */
-    public UpdateCourseDetailsJPanel() {
+     public UpdateCourseDetailsJPanel() {
         initComponents();
+        populateCourseDropdown();
     }
+     private void populateCourseDropdown() {
+        cmbSelectCourses.removeAllItems();
+        cmbSelectCourses.addItem("INFO 5100 - Application Engineering");
+        cmbSelectCourses.addItem("INFO 6150 - Web Design");
+        
+        cmbSelectCourses.addActionListener(e -> loadCourseDetails());
+        
+        if (cmbSelectCourses.getItemCount() > 0) {
+            loadCourseDetails();
+        }
+    }
+    
+    private void loadCourseDetails() {
+        String selected = (String) cmbSelectCourses.getSelectedItem();
+        if (selected != null && selected.contains("5100")) {
+            fieldCourseTitle.setText("Application Engineering and Development");
+            fieldDescription.setText("Advanced software development using Java");
+            fieldSchedule.setText("Mon/Wed 6:00-9:15 PM");
+            fieldCapacity.setText("25");
+        } else if (selected != null && selected.contains("6150")) {
+            fieldCourseTitle.setText("Web Design and User Experience");
+            fieldDescription.setText("User-centered design principles");
+            fieldSchedule.setText("Tue/Thu 6:00-9:15 PM");
+            fieldCapacity.setText("25");
+        }
+    }
+    
+   
+   
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,10 +85,25 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
         lblCapacity.setText("Capacity");
 
         btnSaveChanges.setText("Save Changes");
+        btnSaveChanges.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveChangesActionPerformed(evt);
+            }
+        });
 
         btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         cmbSelectCourses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSelectCourses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSelectCoursesActionPerformed(evt);
+            }
+        });
 
         fieldCapacity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,6 +177,26 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
     private void fieldCapacityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldCapacityActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldCapacityActionPerformed
+
+    private void btnSaveChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangesActionPerformed
+        // TODO add your handling code here:
+      javax.swing.JOptionPane.showMessageDialog(this, 
+                "Course details updated successfully!", 
+                "Success", 
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnSaveChangesActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        loadCourseDetails(); // Reset fields
+
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void cmbSelectCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSelectCoursesActionPerformed
+        // TODO add your handling code here:
+        loadCourseDetails();
+
+    }//GEN-LAST:event_cmbSelectCoursesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

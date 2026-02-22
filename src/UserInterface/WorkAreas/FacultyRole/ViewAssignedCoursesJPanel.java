@@ -22,7 +22,27 @@ public class ViewAssignedCoursesJPanel extends javax.swing.JPanel {
      */
     public ViewAssignedCoursesJPanel() {
         initComponents();
+        loadMockCourses();
     }
+    
+    private void loadMockCourses() {
+        String[][] mockData = {
+            {"INFO 5100", "Application Engineering and Development", "Fall 2024", "25", "18"},
+            {"INFO 6150", "Web Design and User Experience", "Fall 2024", "25", "15"}
+        };
+        
+        String[] columnNames = {"Course ID", "Course Name", "Semester", "Capacity", "Enrolled"};
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(mockData, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tblViewAssignedCourses.setModel(model);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.

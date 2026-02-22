@@ -13,9 +13,20 @@ public class ViewEditProfileJPanel extends javax.swing.JPanel {
     /**
      * Creates new form ViewEditProfileJPanel
      */
-    public ViewEditProfileJPanel() {
+     public ViewEditProfileJPanel() {
         initComponents();
+        loadProfileData();
     }
+     
+      private void loadProfileData() {
+        fieldName.setText("John Smith");
+        fieldEmail.setText("john.smith@northeastern.edu");
+        fieldDepartment.setText("Information Systems");
+        fieldPhone.setText("617-555-1234");
+        fieldOfficeHours.setText("Monday/Wednesday 2:00-4:00 PM");
+    }
+     
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,8 +71,18 @@ public class ViewEditProfileJPanel extends javax.swing.JPanel {
         });
 
         btnSaveChanges.setText("Save Changes");
+        btnSaveChanges.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveChangesActionPerformed(evt);
+            }
+        });
 
         btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -139,6 +160,29 @@ public class ViewEditProfileJPanel extends javax.swing.JPanel {
     private void fieldOfficeHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldOfficeHoursActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldOfficeHoursActionPerformed
+
+    private void btnSaveChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangesActionPerformed
+        // TODO add your handling code here:
+        if (fieldName.getText().trim().isEmpty() || 
+            fieldEmail.getText().trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Name and Email are required fields",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Profile updated successfully!",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnSaveChangesActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        loadProfileData(); // Reset to original values
+    
+    }//GEN-LAST:event_btnCancelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
