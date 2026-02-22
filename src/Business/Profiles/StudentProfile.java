@@ -16,6 +16,9 @@ public class StudentProfile extends Profile {
     Person person;
 //    Transcript transcript;
     //   EmploymentHistroy employmenthistory;
+    
+    //bridge to Person in University Package
+    private university.Persona.StudentProfile universityProfile;
 
     public StudentProfile(Person p) {
         super(p);
@@ -32,5 +35,16 @@ public class StudentProfile extends Profile {
     public boolean isMatch(String id) {
         return person.getPersonId().equals(id);
     }
+    
+    //methods to link Business package profile and University package Profile
+    public void linkUniversityProfile(
+            university.Persona.StudentProfile up){
+        this.universityProfile = up;
+    }
+    
+    public university.Persona.StudentProfile getUniversityProfile(){
+        return universityProfile;
+    }
+    
 
 }

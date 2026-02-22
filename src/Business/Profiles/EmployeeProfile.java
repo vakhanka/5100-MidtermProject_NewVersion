@@ -12,6 +12,9 @@ import Business.Person.Person;
  * @author kal bugrara
  */
 public class EmployeeProfile extends Profile {
+    
+    //bridge to Persona Profile
+    private university.Persona.Faculty.FacultyProfile universityProfile;
 
 
 
@@ -23,6 +26,16 @@ public class EmployeeProfile extends Profile {
     @Override
     public String getRole(){
         return  "Admin";
+    }
+    
+    // methods to link to the university package personas
+    public void linkUniversityProfile(
+            university.Persona.Faculty.FacultyProfile up){
+        this.universityProfile = up;
+    }
+    
+    public university.Persona.Faculty.FacultyProfile getUniversityProfile(){
+        return universityProfile;
     }
 
 }

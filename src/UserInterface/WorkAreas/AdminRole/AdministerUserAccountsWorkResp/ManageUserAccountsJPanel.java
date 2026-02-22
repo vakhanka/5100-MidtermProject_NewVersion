@@ -8,6 +8,7 @@ package UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp;
 import Business.Business;
 import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
+import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.AdministerPersonJPanel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
@@ -158,9 +159,22 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-        if(selecteduseraccount==null) return;
+        /*if(selecteduseraccount==null) return;
         AdminUserAccount mppd = new AdminUserAccount(selecteduseraccount, CardSequencePanel);
         CardSequencePanel.add(mppd);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);*/
+                int selectedRow = UserAccountTable.getSelectedRow();
+        
+        if(selectedRow >=0){
+            UserAccount selecteduseraccount = (UserAccount) UserAccountTable.getValueAt(selectedRow, 0);
+        }
+        
+        
+        
+        if(selecteduseraccount==null) return;
+        //AdminUserAccount mppd = new AdminUserAccount(selecteduseraccount, CardSequencePanel);
+        AdministerPersonJPanel mpjp = new AdministerPersonJPanel (selecteduseraccount,business, CardSequencePanel);
+        CardSequencePanel.add(mpjp);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
     }//GEN-LAST:event_btnNextActionPerformed
