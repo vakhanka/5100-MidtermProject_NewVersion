@@ -48,6 +48,13 @@ public class CourseOffer {
 
     }
 
+    public void addSeats(int additionalSeats) {
+        int currentSize = seatlist.size();
+        for (int i = 0; i < additionalSeats; i++) {
+            seatlist.add(new Seat(this, currentSize + i));
+        }
+    }
+    
     public Seat getEmptySeat() {
 
         for (Seat s : seatlist) {

@@ -30,6 +30,9 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         
         this.business = business;
         this.registrar = registrar;
+        
+        // Configure spinner for realistic class sizes
+        spnCapacity.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
         populateDepartments();
         
 
@@ -121,6 +124,11 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         lblCapacity.setText("Set Capacity :");
 
         btnSetCapacity.setText("Set Capacity");
+        btnSetCapacity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSetCapacityActionPerformed(evt);
+            }
+        });
 
         lblSelectedOffering.setText("Selected Offering");
 
@@ -201,11 +209,13 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
     private void tblCourseOfferingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseOfferingsMouseClicked
         // TODO add your handling code here:
-        int selectedRow = tblCourseOfferings.getSelectedRow();
-
-        if (selectedRow >= 0) {
+        int row = tblCourseOfferings.getSelectedRow();
+        if (row >= 0) {
             spnCapacity.setEnabled(true);
             btnSetCapacity.setEnabled(true);
+
+            int currentCapacity = Integer.parseInt(tblCourseOfferings.getValueAt(row, 4).toString());
+            spnCapacity.setValue(currentCapacity);
         }
     }//GEN-LAST:event_tblCourseOfferingsMouseClicked
 
@@ -316,6 +326,79 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         populateOfferingsTable(cs);
         
     }//GEN-LAST:event_btnCreateOfferingActionPerformed
+
+    private void btnSetCapacityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetCapacityActionPerformed
+        // TODO add your handling code here:
+        // Ensure a table row is selected
+        int selectedRow = tblCourseOfferings.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select an offering first.");
+            return;
+        }
+
+        // Read capacity value from spinner
+        int newCapacity = (Integer) spnCapacity.getValue();
+        if (newCapacity <= 0) {
+            JOptionPane.showMessageDialog(this, "Capacity must be greater than 0.");
+            return;
+        }
+
+        // Retrieve current semester and department context
+        String semester = txtSemester.getText().trim();
+        String deptName = (String) cmbDepartment.getSelectedItem();
+
+        if (deptName == null || semester.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please load a department and semester first.");
+            return;
+        }
+
+        // Locate the selected Department object from Business
+        Department selectedDept = null;
+        for (Department d : business.getDepartments()) {
+            if (d.toString().equals(deptName)) {
+                selectedDept = d;
+                break;
+            }
+        }
+
+        if (selectedDept == null) {
+            JOptionPane.showMessageDialog(this, "Department not found.");
+            return;
+        }
+
+        // Retrieve the CourseSchedule for the semester
+        CourseSchedule cs = selectedDept.getCourseSchedule(semester);
+        if (cs == null) {
+            JOptionPane.showMessageDialog(this, "Schedule not found. Click Load first.");
+            return;
+        }
+
+        // Identify the selected CourseOffer using the course number from the table
+        String courseNumber = tblCourseOfferings.getValueAt(selectedRow, 0).toString();
+        CourseOffer co = cs.getCourseOfferByNumber(courseNumber);
+
+        if (co == null) {
+            JOptionPane.showMessageDialog(this, "Course offering not found.");
+            return;
+        }
+
+        // Retrieve existing capacity from model
+        int currentCapacity = co.getCapacity();
+
+        // Prevent reducing capacity below current size (data integrity rule)
+        if (newCapacity < currentCapacity) {
+            JOptionPane.showMessageDialog(this, "Cannot reduce capacity below current size.");
+            return;
+        }
+
+        // Add only the additional seats required (increase-only policy)
+        if (newCapacity > currentCapacity) {
+            co.addSeats(newCapacity - currentCapacity);
+        }
+
+        // Refresh table to reflect updated capacity
+        populateOfferingsTable(cs);
+    }//GEN-LAST:event_btnSetCapacityActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
