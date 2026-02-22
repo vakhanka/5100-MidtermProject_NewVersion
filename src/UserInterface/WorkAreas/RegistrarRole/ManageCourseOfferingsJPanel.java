@@ -4,18 +4,30 @@
  */
 package UserInterface.WorkAreas.RegistrarRole;
 
+import Business.Business;
+import Business.Profiles.RegistrarProfile;
+import university.Department.Department;
+
 /**
  *
  * @author Lanre
  */
+
 public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
+    Business business;
+    RegistrarProfile registrar;
     /**
      * Creates new form ManageCourseOfferingsJPanel
      */
-    public ManageCourseOfferingsJPanel() {
+    public ManageCourseOfferingsJPanel(Business business, RegistrarProfile registrar) {
         initComponents();
         
+        this.business = business;
+        this.registrar = registrar;
+        populateDepartments();
+        
+
         // Capacity controls disabled until a row is selected
         spnCapacity.setEnabled(false);
         btnSetCapacity.setEnabled(false);
@@ -47,6 +59,11 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         lblDepartment.setText("Department");
 
         cmbDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbDepartment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbDepartmentActionPerformed(evt);
+            }
+        });
 
         lblSemester.setText("Semester");
 
@@ -57,6 +74,11 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         });
 
         btnLoad.setText("Load");
+        btnLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadActionPerformed(evt);
+            }
+        });
 
         tblCourseOfferings.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -169,6 +191,15 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tblCourseOfferingsMouseClicked
 
+    private void cmbDepartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDepartmentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbDepartmentActionPerformed
+
+    private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnLoadActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -185,4 +216,12 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
     private javax.swing.JTable tblCourseOfferings;
     private javax.swing.JTextField txtSemester;
     // End of variables declaration//GEN-END:variables
+
+    private void populateDepartments() {
+        // Populate department dropdown from Business
+        cmbDepartment.removeAllItems();
+        for (Department d : business.getDepartments()) {
+            cmbDepartment.addItem(d.toString());
+        }
+    }
 }

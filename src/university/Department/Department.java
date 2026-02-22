@@ -108,4 +108,9 @@ public void addElectiveCourse(Course c){
         co.assignEmptySeat(cl);
 
     }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 }
