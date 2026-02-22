@@ -6,6 +6,11 @@ package UserInterface.WorkAreas.RegistrarRole;
 
 import Business.Business;
 import Business.Profiles.RegistrarProfile;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import university.CourseCatalog.Course;
+import university.CourseSchedule.CourseOffer;
+import university.CourseSchedule.CourseSchedule;
 import university.Department.Department;
 
 /**
@@ -55,6 +60,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         spnCapacity = new javax.swing.JSpinner();
         btnSetCapacity = new javax.swing.JButton();
         lblSelectedOffering = new javax.swing.JLabel();
+        cmbCourse = new javax.swing.JComboBox<>();
 
         lblDepartment.setText("Department");
 
@@ -106,12 +112,19 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         btnBack.setText("<<< Back");
 
         btnCreateOffering.setText("Create Offering");
+        btnCreateOffering.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateOfferingActionPerformed(evt);
+            }
+        });
 
         lblCapacity.setText("Set Capacity :");
 
         btnSetCapacity.setText("Set Capacity");
 
         lblSelectedOffering.setText("Selected Offering");
+
+        cmbCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -135,8 +148,10 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnBack)
-                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbCourse, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(8, 8, 8)
                         .addComponent(btnCreateOffering)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,13 +178,16 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(btnLoad)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addComponent(lblSelectedOffering)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSelectedOffering, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cmbCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCreateOffering)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBack)
-                    .addComponent(btnCreateOffering)
                     .addComponent(lblCapacity)
                     .addComponent(spnCapacity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSetCapacity))
@@ -197,8 +215,107 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
     private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
         // TODO add your handling code here:
+        String deptName = (String) cmbDepartment.getSelectedItem();
+        String semester = txtSemester.getText().trim();
+
+        // Basic validation
+        if (deptName == null || deptName.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Please select a Department.");
+            return;
+        }
+        if (semester.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a Semester (e.g., Fall 2026).");
+            return;
+        }
+
+        // Find Department object by name (combo stores Strings)
+        Department selectedDept = null;
+        for (Department d : business.getDepartments()) {
+            if (d.toString().equals(deptName)) {
+                selectedDept = d;
+                break;
+            }
+        }
+        if (selectedDept == null) {
+            JOptionPane.showMessageDialog(this, "Selected department not found.");
+            return;
+        }
+
+        // Get or create the semester schedule
+        CourseSchedule cs = selectedDept.getCourseSchedule(semester);
+        if (cs == null) {
+            cs = selectedDept.newCourseSchedule(semester);
+        }
+        
+        // Populate course dropdown from department catalog
+        cmbCourse.removeAllItems();
+
+        for (Course c : selectedDept.getCourseCatalog().getCourseList()) {
+            cmbCourse.addItem(c.getCOurseNumber());  // simple version
+        }
+
+        // Populate table
+        populateOfferingsTable(cs);
+
+        // Reset selection-dependent controls
+        spnCapacity.setEnabled(false);
+        btnSetCapacity.setEnabled(false);
         
     }//GEN-LAST:event_btnLoadActionPerformed
+
+    private void btnCreateOfferingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateOfferingActionPerformed
+        // TODO add your handling code here:
+        // Read selected course from dropdown
+        String courseNumber = (String) cmbCourse.getSelectedItem();
+        if (courseNumber == null) {
+            JOptionPane.showMessageDialog(this, "Please select a course.");
+            return;
+        }
+
+        // Read semester input
+        String semester = txtSemester.getText().trim();
+        if (semester.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a Semester (e.g., Winter 2026).");
+            return;
+        }
+
+        // Read selected department name from dropdown
+        String deptName = (String) cmbDepartment.getSelectedItem();
+        if (deptName == null || deptName.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Please select a Department.");
+            return;
+        }
+
+        // Find the actual Department object (combo stores Strings)
+        Department selectedDept = null;
+        for (Department d : business.getDepartments()) {
+            if (d.toString().equals(deptName)) {
+                selectedDept = d;
+                break;
+            }
+        }
+        if (selectedDept == null) {
+            JOptionPane.showMessageDialog(this, "Selected department not found.");
+            return;
+        }
+
+        // Get or create the course schedule for the semester
+        CourseSchedule cs = selectedDept.getCourseSchedule(semester);
+        if (cs == null) {
+            cs = selectedDept.newCourseSchedule(semester);
+        }
+
+        // Prevent duplicate offerings
+        if (cs.getCourseOfferByNumber(courseNumber) != null) {
+            JOptionPane.showMessageDialog(this, "This course is already offered for " + semester + ".");
+            return;
+        }
+
+        // Create offering and refresh table
+        cs.newCourseOffer(courseNumber);
+        populateOfferingsTable(cs);
+        
+    }//GEN-LAST:event_btnCreateOfferingActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -206,6 +323,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnCreateOffering;
     private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnSetCapacity;
+    private javax.swing.JComboBox<String> cmbCourse;
     private javax.swing.JComboBox<String> cmbDepartment;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCapacity;
@@ -222,6 +340,22 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         cmbDepartment.removeAllItems();
         for (Department d : business.getDepartments()) {
             cmbDepartment.addItem(d.toString());
+        }
+    }
+    
+    private void populateOfferingsTable(CourseSchedule cs) {
+        DefaultTableModel dtm = (DefaultTableModel) tblCourseOfferings.getModel();
+        dtm.setRowCount(0); // clear existing rows
+
+        for (CourseOffer co : cs.getSchedule()) {
+            Object[] row = new Object[6];
+            row[0] = co.getCourseNumber();
+            row[1] = co.getSubjectCourse().getName();
+            row[2] = co.getCreditHours();
+            row[3] = co.getCapacity();
+            row[4] = co.getEnrolledCount();
+            row[5] = co.getTotalCourseRevenues();
+            dtm.addRow(row);
         }
     }
 }

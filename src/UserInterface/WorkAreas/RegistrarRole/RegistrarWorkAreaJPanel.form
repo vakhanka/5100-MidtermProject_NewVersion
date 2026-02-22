@@ -205,7 +205,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegCourseOfferingMgmtIdentifyResourceAssetsActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegCourseOfferingMgmtActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

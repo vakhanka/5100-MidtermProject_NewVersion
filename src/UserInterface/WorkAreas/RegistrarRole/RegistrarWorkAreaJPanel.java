@@ -129,7 +129,7 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
         btnRegCourseOfferingMgmt.setPreferredSize(new java.awt.Dimension(240, 30));
         btnRegCourseOfferingMgmt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegCourseOfferingMgmtIdentifyResourceAssetsActionPerformed(evt);
+                btnRegCourseOfferingMgmtActionPerformed(evt);
             }
         });
 
@@ -190,9 +190,12 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegManageProfileActionPerformed
 
-    private void btnRegCourseOfferingMgmtIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegCourseOfferingMgmtIdentifyResourceAssetsActionPerformed
-
-    }//GEN-LAST:event_btnRegCourseOfferingMgmtIdentifyResourceAssetsActionPerformed
+    private void btnRegCourseOfferingMgmtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegCourseOfferingMgmtActionPerformed
+        ManageCourseOfferingsJPanel panel = new ManageCourseOfferingsJPanel(business, registrar);
+        CardSequencePanel.removeAll();
+        CardSequencePanel.add("ManageCourseOfferings", panel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_btnRegCourseOfferingMgmtActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
