@@ -59,7 +59,27 @@ public class CourseOffer {
         return null;
     }
 
+    /**
+     * Returns total seat capacity for this course offering. Capacity equals
+     * number of generated Seat objects.
+     */
 
+    public int getCapacity() {
+        return seatlist.size();
+    }
+
+    //Returns number of occupied seats (enrolled students).
+    
+    public int getEnrolledCount() {
+        int count = 0;
+        for (Seat s : seatlist) {
+            if (s.isOccupied()) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
     public SeatAssignment assignEmptySeat(CourseLoad cl) {
 
         Seat seat = getEmptySeat();

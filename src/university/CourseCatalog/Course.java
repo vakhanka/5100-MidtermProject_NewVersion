@@ -27,6 +27,10 @@ public class Course {
         return number;
     }
 
+    // Returns the course title. Used for display in Registrar Course Offerings table
+    public String getName() {
+        return name;
+    }
     public int getCoursePrice() {
         return price * credits;
 
