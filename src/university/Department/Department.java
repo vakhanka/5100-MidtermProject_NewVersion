@@ -32,6 +32,7 @@ public class Department {
     FacultyDirectory facultydirectory;
     EmployerDirectory employerdirectory;
     Degree degree;
+   
 
     HashMap<String, CourseSchedule> mastercoursecatalog;
 
@@ -41,7 +42,8 @@ public class Department {
         coursecatalog = new CourseCatalog(this);
         studentdirectory = new StudentDirectory(this); //pass the department object so it stays linked to it
         persondirectory = new PersonDirectory();
-        degree = new Degree("MSIS");
+        degree = new Degree("MSIS"); 
+        facultydirectory = new FacultyDirectory(this);
         
     }
     public void addCoreCourse(Course c){
@@ -60,6 +62,10 @@ public void addElectiveCourse(Course c){
 
     public StudentDirectory getStudentDirectory() {
     return studentdirectory;
+    }
+    
+    public FacultyDirectory getFacultyDirectory(){
+        return facultydirectory;
     }
 
     public CourseSchedule newCourseSchedule(String semester) {
