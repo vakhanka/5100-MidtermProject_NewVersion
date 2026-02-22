@@ -10,6 +10,7 @@ import Business.Person.Person;
 import Business.Profiles.EmployeeProfile;
 import Business.Profiles.Profile;
 import Business.Profiles.StudentProfile;
+//import Business.Profiles.FacultyProfile;
 import Business.UserAccounts.UserAccount;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 import javax.swing.JPanel;
+import university.Persona.Faculty.FacultyProfile;
 
 /**
  *
@@ -278,7 +280,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             //ep.setTitle(txtHelper1.getText());
            // ep.setDepartment(txtHelper2.getText());
         }
-        /*else if (profile instanceof FacultyProfile) {
+ /*       else if (profile instanceof FacultyProfile) {
             FacultyProfile fp = (FacultyProfile) profile;
             fp.setRank(txtHelper1.getText());
             fp.setAcademicDepartment(txtHelper2.getText());
