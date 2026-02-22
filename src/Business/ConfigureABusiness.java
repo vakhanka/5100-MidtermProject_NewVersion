@@ -16,6 +16,7 @@ import Business.Profiles.StudentProfile;
 
 import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
+import university.Department.Department;
 
 
 /**
@@ -26,6 +27,17 @@ class ConfigureABusiness {
 
     static Business initialize() {
         Business business = new Business("Northeastern University");
+        
+        Department isDept = business.newDepartment("Information Systems");
+        Department csDept = business.newDepartment("Computer Science");
+        
+        // Seed sample course catalog for Information Systems
+        isDept.newCourse("Application Engineering", "INFO5100", 4);
+        isDept.newCourse("Data Science Engineering Methods", "INFO6105", 4);
+
+        // Seed sample course catalog for Computer Science
+        csDept.newCourse("Object-Oriented Design", "CS5004", 4);
+        csDept.newCourse("Algorithms", "CS5800", 4);
 
         // ===== CREATE 30 PERSONS =====
         PersonDirectory persondirectory = business.getPersonDirectory();
