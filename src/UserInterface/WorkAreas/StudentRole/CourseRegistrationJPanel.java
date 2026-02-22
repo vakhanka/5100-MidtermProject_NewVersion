@@ -6,11 +6,15 @@ package UserInterface.WorkAreas.StudentRole;
 
 import Business.Business;
 import Business.Profiles.StudentProfile;
+import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import university.CourseSchedule.CourseLoad;
 import university.CourseSchedule.CourseOffer;
 import university.CourseSchedule.CourseSchedule;
+import university.CourseSchedule.SeatAssignment;
 import university.Department.Department;
 
 
@@ -45,7 +49,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         
         //HL: get university student profile & course schedule 
         //HL: To-Do: confirm getDepartment() getter existes on Business.java with Polina ****************************
-        Department dept = business.getDepartment(); //HL: added import using AltEnter 
+        Department dept = business.getDepartment(); //HL: added import using AltEnter  
         if (dept != null){
             uniStudentProfile = dept.getStudentDirectory().findStudent(student.getPerson().getPersonId()); 
             currentSchedule = dept.getCourseSchedule(CURRENT_SEMESTER); 
@@ -207,22 +211,37 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
+        
+        performSearch();
+        
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnEnrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnrollActionPerformed
         // TODO add your handling code here:
+        
+        enrollInCourse();
+        
     }//GEN-LAST:event_btnEnrollActionPerformed
 
     private void btnDropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDropActionPerformed
         // TODO add your handling code here:
+        
+        dropCourse();
+        
     }//GEN-LAST:event_btnDropActionPerformed
 
     private void btnPayTuitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayTuitionActionPerformed
         // TODO add your handling code here:
+        
+        goToTuition(); 
+                
     }//GEN-LAST:event_btnPayTuitionActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
+        
+        goBack();
+        
     }//GEN-LAST:event_btnBackActionPerformed
 
 
@@ -251,8 +270,181 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
             lblStatus.setText("Course schedule not found for " + CURRENT_SEMESTER);
             return;
         }
-        for (CourseOffer co : currentSchedule.getSchedule()){ //needs method in CourseSchedule, not HL responsibility 
+        for (CourseOffer co : currentSchedule.getSchedule()){ //needs method in CourseSchedule from Lanre, not HL responsibility 
             addRowtoTable(co); 
         }
     }
+    
+    //HL: helper method, builds a row from CourseOffer & adds to table (Lanre)  
+    private void addRowtoTable(CourseOffer co){
+        DefaultTableModel model = (DefaultTableModel) tblCourse.getModel();
+        String courseId   = co.getCourseNumber();
+        String courseName = co.getSubjectCourse().name; 
+        String teacher = (co.getFacultyProfile() != null) ? co.getFacultyProfile().getPerson().getPersonId() : "TBA"; 
+        int credits = co.getCreditHours(); 
+        
+        //HL: TO DO "See Registrat" needs to be replaced once Lanre mreges getEnrolledCount() to CourseOffer so available seats can be calculated
+        String seats = "See registrar"; 
+        model.addRow(new Object[]{courseId, courseName, teacher, credits, seats}); 
+        
+    }
+    
+    //HL: search method by comboSearch selection (Course ID, Teacher Name, Course Name)
+    private void performSearch(){
+        String query = fieldSearch.getText().trim().toLowerCase();
+        String searchType = (String) comboSearch.getSelectedItem();
+        
+        //HL: if search box is empty, table reverts to show all courses 
+        if (query.isEmpty()){
+            loadAllCourses();
+            lblStatus.setText(" ");
+            return; 
+        }
+        if (currentSchedule == null) return; 
+        
+        DefaultTableModel model = (DefaultTableModel) tblCourse.getModel();
+        model.setRowCount(0); // clear before repopulating
+        
+        for (CourseOffer co : currentSchedule.getSchedule()){ //needs method in CourseSchedule from Lanre, not HL responsibility
+            boolean match = false; 
+            
+            //HL: combo box selection - search by Course ID
+            if (searchType.equals("Course ID")){
+                match = co.getCourseNumber().toLowerCase().contains(query);
+            }
+            //HL: combo box selection - search by Teacher name 
+            else if (searchType.equals("Teacher Name")){
+                if (co.getFacultyProfile() != null){
+                    String name = co.getFacultyProfile().getPerson().getPersonId().toLowerCase();
+                    match = name.contains(query); 
+                }
+            }
+            //HL: combo box selection - search by Course Name 
+            else if (searchType.equals("Course Name")){
+                match = co.getSubjectCourse().name.toLowerCase().contains(query);
+            }
+            if (match) addRowtoTable(co); //HL: if match is found add, add course offer to table 
+        }
+        //HL: if there are no matches, inform student in Status 
+        if (model.getRowCount() == 0){
+            lblStatus.setForeground(java.awt.Color.RED);
+            lblStatus.setText("No matching courses found: " + fieldSearch.getText().trim()); 
+        } else {
+            lblStatus.setText(" ");
+        }
+    }
+    
+    //HL: method to enroll a student in a course selected in the JTable 
+    private void enrollInCourse(){
+        int selectedRow = tblCourse.getSelectedRow();
+        //HL: check if row is selected, return error message if null 
+        if (selectedRow < 0){
+            JOptionPane.showMessageDialog(this, "Please select a course for enrollment."); //HL: added import using AltEnter 
+            return; 
+        }
+        if (currentSchedule == null || uniStudentProfile == null) return; 
+        
+        String courseId = (String) ((DefaultTableModel) tblCourse.getModel()).getValueAt(selectedRow, 0); 
+        CourseOffer co = currentSchedule.getCourseOfferByNumber(courseId);
+        if (co == null) return;
+        
+        //HL: To-Do********************
+        //HL: remove comments once Lanre merges isAtCapacity() to CourseOffer.java 
+        /*if (co.isAtCapacity()){
+            JOptionPane.showMessageDialog(this, "Course is full.");
+            return; 
+        }*/
+        
+        //HL: gets existing or creates new course load for semester 
+        CourseLoad cl = uniStudentProfile.getCurrentCourseLoad(); //HL: added import using AltEnter 
+        if (cl == null){
+            cl = uniStudentProfile.newCourseLoad(CURRENT_SEMESTER);
+        }
+        
+        //HL: caps student @ 8-credits per semester per assignment instructions 
+        int currentCredits = cl.getTotalCredits();
+        int newCredits     = co.getCreditHours();
+        if (currentCredits + newCredits > 8){ 
+            JOptionPane.showMessageDialog(this, "Cannot enroll:" + " adding these exceeds the 8-credit limit" + "Current credits: " + currentCredits);
+            return; 
+        }
+        
+        //HL: if not at credit limit, enroll student in course & assign seat 
+        SeatAssignment sa = co.assignEmptySeat(cl); //HL: added import using AltEnter 
+        //HL: if course is full... 
+        if (sa == null){
+            JOptionPane.showMessageDialog(this, "No seats available, cannot enroll");
+            return; 
+        }
+        
+        //HL: on successful enrollment, add course price to student's tuition balance 
+        uniStudentProfile.setBalance(uniStudentProfile.getBalanace() + co.getSubjectCourse().getCoursePrice()); //HL: added getBalance() to StudentProfile.java 
+        lblStatus.setForeground(new java.awt.Color(0, 128, 0));
+        lblStatus.setText("Successfully enrolled in " + courseId); 
+        loadAllCourses(); //HL: refreshes table 
+        
+    }
+    
+    //HL: method for the Student to drop a course (selected in JTable) from their course load & refund if already paid 
+    private void dropCourse(){
+        int selectedRow = tblCourse.getSelectedRow(); 
+        
+        //HL: if row isn't selected
+        if (selectedRow < 0){
+            JOptionPane.showMessageDialog(this, "Must select course before dropping.");
+            return; 
+        }
+        if (uniStudentProfile == null) return; 
+        
+        String courseId = (String) ((DefaultTableModel) tblCourse.getModel()).getValueAt(selectedRow, 0); 
+        
+        CourseLoad cl = uniStudentProfile.getCurrentCourseLoad();
+        if (cl == null){
+            JOptionPane.showMessageDialog(this, "You are currently not enrolled in a course this semester");
+            return; 
+        }
+        
+        //HL: Find SeatAssignment for selected course 
+        SeatAssignment toRemove = null; 
+        for (SeatAssignment sa : cl.getSeatAssignments()){
+            if (sa.getAssociatedCourse().getCOurseNumber().equals(courseId)){
+                toRemove = sa;
+                break; 
+            }
+        }
+        if (toRemove == null){
+            JOptionPane.showMessageDialog(this, "You aren't enrolled in " + courseId); 
+            return; 
+        }
+        
+        //HL: issue refund 
+        if (uniStudentProfile.isTuitionPaid()){
+            double refundAmt = toRemove.getAssociatedCourse().getCoursePrice();
+            uniStudentProfile.refund(refundAmt, courseId);
+            lblStatus.setForeground(new java.awt.Color(0, 128, 0));
+            lblStatus.setText("Dropped " + courseId + " - refunded $" + String.format("%.2f", refundAmt) + " successfully.");
+        } else{
+            lblStatus.setForeground(java.awt.Color.RED);
+            lblStatus.setText("Dropped " + courseId);
+        }
+        //HL: remove seat assignment from student's course load 
+        cl.getSeatAssignments().remove(toRemove);
+        loadAllCourses(); //HL: refreshes table 
+        
+    }
+    
+    //HL: navigate student to Tuition Payment JPanel **********not yet created*********
+    private void goToTuition(){ 
+        TuitionPaymentJPanel panel = new TuitionPaymentJPanel(business, student, CardSequencePanel); 
+        CardSequencePanel.add("Tuition", panel);
+        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel); //HL: added import using AltEnter 
+    }
+    
+    //HL: return student to previous panel 
+    private void goBack(){
+        CardSequencePanel.remove(this);
+        ((CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
+    }
+    
+    
 }
