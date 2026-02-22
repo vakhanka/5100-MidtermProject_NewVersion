@@ -122,7 +122,7 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
 
         btnRegCourseOfferingMgmt.setBackground(new java.awt.Color(102, 153, 255));
         btnRegCourseOfferingMgmt.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegCourseOfferingMgmt.setText("Course Offering");
+        btnRegCourseOfferingMgmt.setText("Course Offering Management");
         btnRegCourseOfferingMgmt.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnRegCourseOfferingMgmt.setMaximumSize(new java.awt.Dimension(200, 40));
         btnRegCourseOfferingMgmt.setMinimumSize(new java.awt.Dimension(20, 23));
