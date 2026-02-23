@@ -13,20 +13,26 @@ import Business.Person.Person;
  */
 public class EmployeeProfile extends Profile {
     
+    private String role;
+    
     //bridge to Persona Profile
     private university.Persona.Faculty.FacultyProfile universityProfile;
 
 
 
-    public EmployeeProfile(Person p) {
+    public EmployeeProfile(Person p, String role) {
 
-        super(p); 
-
+        super(p);
+        this.role = role;
     }
+    
+    
+    
     @Override
     public String getRole(){
-        return  "Admin";
+        return  role;
     }
+    
     
     // methods to link to the university package personas
     public void linkUniversityProfile(

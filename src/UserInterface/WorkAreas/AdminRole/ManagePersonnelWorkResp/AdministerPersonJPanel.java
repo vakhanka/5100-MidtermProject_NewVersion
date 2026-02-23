@@ -10,15 +10,13 @@ import Business.Person.Person;
 import Business.Profiles.EmployeeProfile;
 import Business.Profiles.Profile;
 import Business.Profiles.StudentProfile;
-//import Business.Profiles.FacultyProfile;
+//import Business.Profiles.FacultyProfile; TO DO When Emmanuael creates it
 import Business.UserAccounts.UserAccount;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
-
 import javax.swing.JPanel;
-import university.Persona.Faculty.FacultyProfile;
 
 /**
  *
@@ -70,10 +68,6 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         lblConfirmPassword = new javax.swing.JLabel();
         pwConfirmPassword = new javax.swing.JPasswordField();
         txtName = new javax.swing.JTextField();
-        lblHelper1 = new javax.swing.JLabel();
-        txtHelper1 = new javax.swing.JTextField();
-        txtHelper2 = new javax.swing.JTextField();
-        lblHelper2 = new javax.swing.JLabel();
         btnEdit = new javax.swing.JButton();
         lblProfileType = new javax.swing.JLabel();
         txtCreated = new javax.swing.JTextField();
@@ -82,7 +76,9 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         lblCreated = new javax.swing.JLabel();
         lblLastLogin = new javax.swing.JLabel();
         lblLastUpdate = new javax.swing.JLabel();
-        txtProfileType = new javax.swing.JTextField();
+        cbxRole = new javax.swing.JComboBox<>();
+        btnSavePw = new javax.swing.JButton();
+        btnResetPw = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -101,7 +97,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         add(lblTitle);
         lblTitle.setBounds(21, 20, 550, 28);
         add(txtUsername);
-        txtUsername.setBounds(140, 190, 140, 30);
+        txtUsername.setBounds(140, 140, 140, 30);
 
         btnSave.setText("Save");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -110,41 +106,29 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             }
         });
         add(btnSave);
-        btnSave.setBounds(518, 350, 72, 23);
+        btnSave.setBounds(520, 250, 72, 23);
 
         lblName.setText("Name");
         add(lblName);
-        lblName.setBounds(90, 150, 50, 20);
+        lblName.setBounds(90, 200, 50, 20);
 
         lblUsername.setText("Username");
         add(lblUsername);
-        lblUsername.setBounds(70, 200, 70, 20);
+        lblUsername.setBounds(70, 150, 70, 20);
         add(pwPassword);
-        pwPassword.setBounds(140, 240, 140, 30);
+        pwPassword.setBounds(300, 370, 140, 30);
 
         lblPassword.setText("Password");
         add(lblPassword);
-        lblPassword.setBounds(70, 250, 70, 20);
+        lblPassword.setBounds(230, 380, 70, 20);
 
         lblConfirmPassword.setText("Confirm Password ");
         add(lblConfirmPassword);
-        lblConfirmPassword.setBounds(30, 300, 110, 20);
+        lblConfirmPassword.setBounds(190, 430, 110, 20);
         add(pwConfirmPassword);
-        pwConfirmPassword.setBounds(140, 290, 140, 30);
+        pwConfirmPassword.setBounds(300, 420, 140, 30);
         add(txtName);
-        txtName.setBounds(140, 140, 140, 30);
-
-        lblHelper1.setText("Title");
-        add(lblHelper1);
-        lblHelper1.setBounds(410, 100, 40, 20);
-        add(txtHelper1);
-        txtHelper1.setBounds(450, 90, 140, 30);
-        add(txtHelper2);
-        txtHelper2.setBounds(450, 140, 140, 30);
-
-        lblHelper2.setText("Department");
-        add(lblHelper2);
-        lblHelper2.setBounds(370, 150, 80, 20);
+        txtName.setBounds(140, 190, 140, 30);
 
         btnEdit.setText("Edit");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -153,31 +137,51 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             }
         });
         add(btnEdit);
-        btnEdit.setBounds(210, 350, 72, 23);
+        btnEdit.setBounds(210, 250, 72, 23);
 
         lblProfileType.setText("Profile Type");
         add(lblProfileType);
         lblProfileType.setBounds(60, 100, 80, 20);
         add(txtCreated);
-        txtCreated.setBounds(450, 190, 140, 30);
+        txtCreated.setBounds(450, 90, 140, 30);
         add(txtLastLogin);
-        txtLastLogin.setBounds(450, 240, 140, 30);
+        txtLastLogin.setBounds(450, 140, 140, 30);
         add(txtLastUpdate);
-        txtLastUpdate.setBounds(450, 290, 140, 30);
+        txtLastUpdate.setBounds(450, 190, 140, 30);
 
         lblCreated.setText("Created Date");
         add(lblCreated);
-        lblCreated.setBounds(370, 200, 80, 16);
+        lblCreated.setBounds(370, 100, 80, 16);
 
         lblLastLogin.setText("Last Login Date");
         add(lblLastLogin);
-        lblLastLogin.setBounds(360, 250, 90, 16);
+        lblLastLogin.setBounds(360, 150, 90, 16);
 
         lblLastUpdate.setText("Last Update Date");
         add(lblLastUpdate);
-        lblLastUpdate.setBounds(350, 300, 100, 20);
-        add(txtProfileType);
-        txtProfileType.setBounds(140, 90, 140, 30);
+        lblLastUpdate.setBounds(350, 200, 100, 20);
+
+        cbxRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Registrar", "Faculty", "Student" }));
+        add(cbxRole);
+        cbxRole.setBounds(140, 92, 140, 30);
+
+        btnSavePw.setText("Save password");
+        btnSavePw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSavePwActionPerformed(evt);
+            }
+        });
+        add(btnSavePw);
+        btnSavePw.setBounds(487, 420, 110, 23);
+
+        btnResetPw.setText("Reset Password");
+        btnResetPw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetPwActionPerformed(evt);
+            }
+        });
+        add(btnResetPw);
+        btnResetPw.setBounds(340, 250, 120, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -199,15 +203,26 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         seteditmode();
     }//GEN-LAST:event_btnEditActionPerformed
 
+    private void btnResetPwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetPwActionPerformed
+        // Reset password sequence. Turns on hidden fields, sets them to editable.
+        resetpassword();
+    }//GEN-LAST:event_btnResetPwActionPerformed
+
+    private void btnSavePwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePwActionPerformed
+        // save password sequence (extract passwords, validate, save)
+        savepassword();
+    }//GEN-LAST:event_btnSavePwActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnResetPw;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnSavePw;
+    private javax.swing.JComboBox<String> cbxRole;
     private javax.swing.JLabel lblConfirmPassword;
     private javax.swing.JLabel lblCreated;
-    private javax.swing.JLabel lblHelper1;
-    private javax.swing.JLabel lblHelper2;
     private javax.swing.JLabel lblLastLogin;
     private javax.swing.JLabel lblLastUpdate;
     private javax.swing.JLabel lblName;
@@ -218,27 +233,52 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     private javax.swing.JPasswordField pwConfirmPassword;
     private javax.swing.JPasswordField pwPassword;
     private javax.swing.JTextField txtCreated;
-    private javax.swing.JTextField txtHelper1;
-    private javax.swing.JTextField txtHelper2;
     private javax.swing.JTextField txtLastLogin;
     private javax.swing.JTextField txtLastUpdate;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtProfileType;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
     private void populatefields() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        //Get the Person for the user account
+        Person person = selecteduseraccount.getAssociatedPersonProfile().getPerson();
+        
+        //Populate common fields
+        txtName.setText(person.getPersonId());
+        txtUsername.setText(selecteduseraccount.getUserLoginName());
+        txtLastLogin.setText(formatTimestamp(selecteduseraccount.getLastlogintimestamp()));
+        pwPassword.setVisible(false);
+        pwConfirmPassword.setVisible(false);
+        lblPassword.setVisible(false);
+        lblConfirmPassword.setVisible(false);
+        txtCreated.setText(formatTimestamp(person.getCreatedtimestamp()));
+        txtLastUpdate.setText(formatTimestamp(selecteduseraccount.getLastupdatetimestamp()));
+        cbxRole.setSelectedItem(selecteduseraccount.getProfile().getRole()); 
+        btnSavePw.setVisible(false);
 
+        //Get Profile
+        /*Populate any role-specific fields and attributes when they are created
+        Profile profile = selecteduseraccount.getAssociatedPersonProfile();
+        
+        if (profile instanceof EmployeeProfile) {
+        EmployeeProfile ep = (EmployeeProfile) profile;
+        
+        }
+        
+        else if (profile instanceof FacultyProfile) {
+        FacultyProfile fp = (FacultyProfile) profile;
+       
+        }
+        else if (profile instanceof StudentProfile) {
+            StudentProfile sp = (StudentProfile) profile;
+   
+            }
+        }*/
+    }
     private void setviewmode() {
-        txtProfileType.setEnabled(false);
+        cbxRole.setEnabled(false);
         txtName.setEnabled(false);
         txtUsername.setEnabled(false);
-        pwPassword.setEnabled(false);
-        pwConfirmPassword.setEnabled(false);
-        txtHelper2.setEnabled(false);
-        txtHelper1.setEnabled(false);
         txtLastLogin.setEnabled(false);
         txtLastUpdate.setEnabled(false);
         txtCreated.setEnabled(false);
@@ -248,48 +288,30 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     // Extract values from fields
         String name = txtName.getText().trim();
         String username = txtUsername.getText().trim();
-        char[] passwordChars = pwPassword.getPassword();
-        char[] confirmChars = pwConfirmPassword.getPassword();
+        String role = (String) cbxRole.getSelectedItem();
     
     // Validate fields
+        if (role==null){
+            JOptionPane.showMessageDialog(this, "Please select a role");
+            return;
+        }
+        
         if (name.isBlank() || username.isBlank()) {
             JOptionPane.showMessageDialog(this, "Name and Username are required");
             return;
         }
-    
-    // If passwords are entered, validate they match
-        if (passwordChars.length > 0) {
-            if (!Arrays.equals(passwordChars, confirmChars)) {
-                JOptionPane.showMessageDialog(this, "Passwords don't match");
-                return;
-            }
-    // Update password
-        String newPassword = new String(passwordChars);
-        selecteduseraccount.setPassword(newPassword);
         
-    // Update person name
+    // Update person name, user id, and role
         Person person = selecteduseraccount.getAssociatedPersonProfile().getPerson();
         person.setId(name);
-        
         selecteduseraccount.setUsername(username);
-        
         Profile profile = selecteduseraccount.getAssociatedPersonProfile();
-    
+        
         if (profile instanceof EmployeeProfile) {
             EmployeeProfile ep = (EmployeeProfile) profile;
-            //ep.setTitle(txtHelper1.getText());
-           // ep.setDepartment(txtHelper2.getText());
+            ep.setRole(role);  
         }
- /*       else if (profile instanceof FacultyProfile) {
-            FacultyProfile fp = (FacultyProfile) profile;
-            fp.setRank(txtHelper1.getText());
-            fp.setAcademicDepartment(txtHelper2.getText());
-        }*/
-        else if (profile instanceof StudentProfile) {
-        StudentProfile sp = (StudentProfile) profile;
-        //sp.setStudentNUID(txtHelper1.getText());
-        }
-        
+
     // Update the "last updated" timestamp
         selecteduseraccount.updatelastupdate();
     
@@ -298,15 +320,15 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         CardSequencePanel.remove(this);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
             }
-        }
+        
+
         private String formatTimestamp(LocalDateTime timestamp) {
         if (timestamp == null) {
             return "Never";
         }
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
-    return timestamp.format(formatter);
-    }
-    
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
+        return timestamp.format(formatter);
+        }
 
     private void seteditmode() {
         txtName.setEnabled(true);
@@ -316,8 +338,50 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         txtLastLogin.setEnabled(true);
         txtLastUpdate.setEnabled(true);
         txtCreated.setEnabled(true);
-        txtHelper2.setEnabled(true);
-        txtHelper1.setEnabled(true);
+        cbxRole.setEnabled(true);
     }
+
+    private void resetpassword() {
+        pwPassword.setVisible(true);
+        pwConfirmPassword.setVisible(true);
+        btnSavePw.setVisible(true);
+        pwPassword.setEnabled(true);
+        pwConfirmPassword.setEnabled(true);
+        lblPassword.setVisible(true);
+        lblConfirmPassword.setVisible(true);
+    }
+    
+    private void savepassword() {
+        // Extract passwords
+        char[] passwordChars = pwPassword.getPassword();
+        char[] confirmChars = pwConfirmPassword.getPassword();
+        
+        //validate password isn't empty
+        if (passwordChars == null || passwordChars.length == 0) {
+            JOptionPane.showMessageDialog(this, "Please enter a password");
+            return;
+        }
+    
+        // If passwords are entered, validate they match
+        if (passwordChars.length > 0) {
+            if (!Arrays.equals(passwordChars, confirmChars)) {
+                JOptionPane.showMessageDialog(this, "Passwords don't match");
+                return;
+            }
+           
+        // Update password
+        String newPassword = new String(passwordChars);
+        selecteduseraccount.setPassword(newPassword);
+   
+        // Update the "last updated" timestamp
+        selecteduseraccount.updatelastupdate();
+        
+        }
+        
+        // Show success and go back
+        JOptionPane.showMessageDialog(this, "Password updated successfully");
+        CardSequencePanel.remove(this);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
+            }
 
 }

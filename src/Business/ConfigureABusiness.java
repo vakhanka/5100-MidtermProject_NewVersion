@@ -74,16 +74,16 @@ class ConfigureABusiness {
         // ===== CREATE 10 FACULTY PROFILES =====
         EmployeeDirectory employeedirectory = business.getEmployeeDirectory();
         
-        EmployeeProfile faculty1 = employeedirectory.newEmployeeProfile(person001);
-        EmployeeProfile faculty2 = employeedirectory.newEmployeeProfile(person002);
-        EmployeeProfile faculty3 = employeedirectory.newEmployeeProfile(person003);
-        EmployeeProfile faculty4 = employeedirectory.newEmployeeProfile(person004);
-        EmployeeProfile faculty5 = employeedirectory.newEmployeeProfile(person005);
-        EmployeeProfile faculty6 = employeedirectory.newEmployeeProfile(person006);
-        EmployeeProfile faculty7 = employeedirectory.newEmployeeProfile(person007);
-        EmployeeProfile faculty8 = employeedirectory.newEmployeeProfile(person008);
-        EmployeeProfile faculty9 = employeedirectory.newEmployeeProfile(person009);
-        EmployeeProfile faculty10 = employeedirectory.newEmployeeProfile(person010);
+        EmployeeProfile faculty1 = employeedirectory.newEmployeeProfile(person001, "Faculty");
+        EmployeeProfile faculty2 = employeedirectory.newEmployeeProfile(person002, "Faculty");
+        EmployeeProfile faculty3 = employeedirectory.newEmployeeProfile(person003, "Faculty");
+        EmployeeProfile faculty4 = employeedirectory.newEmployeeProfile(person004, "Faculty");
+        EmployeeProfile faculty5 = employeedirectory.newEmployeeProfile(person005, "Faculty");
+        EmployeeProfile faculty6 = employeedirectory.newEmployeeProfile(person006, "Faculty");
+        EmployeeProfile faculty7 = employeedirectory.newEmployeeProfile(person007, "Faculty");
+        EmployeeProfile faculty8 = employeedirectory.newEmployeeProfile(person008, "Faculty");
+        EmployeeProfile faculty9 = employeedirectory.newEmployeeProfile(person009, "Faculty");
+        EmployeeProfile faculty10 = employeedirectory.newEmployeeProfile(person010, "Faculty");
 
         // ===== CREATE 10 STUDENT PROFILES =====
         StudentDirectory studentdirectory = business.getStudentDirectory();
@@ -100,8 +100,8 @@ class ConfigureABusiness {
         StudentProfile student10 = studentdirectory.newStudentProfile(person020);
 
         // ===== CREATE ADMIN & REGISTRAR =====
-        EmployeeProfile admin = employeedirectory.newEmployeeProfile(person021);
-        EmployeeProfile registrar = employeedirectory.newEmployeeProfile(person022);
+        EmployeeProfile admin = employeedirectory.newEmployeeProfile(person021, "Admin");
+        EmployeeProfile registrar = employeedirectory.newEmployeeProfile(person022, "Registrar");
 
         // ===== CREATE USER ACCOUNTS =====
         UserAccountDirectory uadirectory = business.getUserAccountDirectory();

@@ -26,9 +26,9 @@ public class EmployeeDirectory {
 
     }
 
-    public EmployeeProfile newEmployeeProfile(Person p) {
+    public EmployeeProfile newEmployeeProfile(Person p, String role) {
 
-        EmployeeProfile sp = new EmployeeProfile(p);
+        EmployeeProfile sp = new EmployeeProfile(p, role);
         employeelist.add(sp);
         return sp;
     }

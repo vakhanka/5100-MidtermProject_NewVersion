@@ -59,4 +59,20 @@ public class FacultyProfile {
         return false;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public ArrayList<FacultyAssignment> getFacultyassignments() {
+        return facultyassignments;
+    }
+
+    public void setFacultyassignments(ArrayList<FacultyAssignment> facultyassignments) {
+        this.facultyassignments = facultyassignments;
+    }
+
 }
