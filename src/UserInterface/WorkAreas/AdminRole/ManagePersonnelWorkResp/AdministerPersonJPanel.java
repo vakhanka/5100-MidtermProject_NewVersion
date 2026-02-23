@@ -363,10 +363,9 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         }
     
         // If passwords are entered, validate they match
-        if (passwordChars.length > 0) {
-            if (!Arrays.equals(passwordChars, confirmChars)) {
-                JOptionPane.showMessageDialog(this, "Passwords don't match");
-                return;
+        if (!Arrays.equals(passwordChars, confirmChars)) {
+            JOptionPane.showMessageDialog(this, "Passwords don't match");
+            return;
             }
            
         // Update password
@@ -375,9 +374,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
    
         // Update the "last updated" timestamp
         selecteduseraccount.updatelastupdate();
-        
-        }
-        
+
         // Show success and go back
         JOptionPane.showMessageDialog(this, "Password updated successfully");
         CardSequencePanel.remove(this);
