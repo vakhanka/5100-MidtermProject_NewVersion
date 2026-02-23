@@ -9,12 +9,33 @@ package UserInterface.WorkAreas.FacultyRole;
  * @author emmanuelcroll
  */
 public class ManageEnrollmentJPanel extends javax.swing.JPanel {
+       private boolean enrollmentOpen = true;
+
+
 
     /**
      * Creates new form ManageEnrollmentJPanel
      */
-    public ManageEnrollmentJPanel() {
+     public ManageEnrollmentJPanel() {
         initComponents();
+        populateCourseDropdown();
+    }
+     private void populateCourseDropdown() {
+        cmbSelectCourses.removeAllItems();
+        cmbSelectCourses.addItem("INFO 5100 - Application Engineering");
+        cmbSelectCourses.addItem("INFO 6150 - Web Design");
+        
+        updateStatusLabel();
+    }
+    
+    private void updateStatusLabel() {
+        if (enrollmentOpen) {
+            lblCurrentSyllabusStatus.setText("OPEN");
+            lblCurrentSyllabusStatus.setForeground(new java.awt.Color(0, 128, 0));
+        } else {
+            lblCurrentSyllabusStatus.setText("CLOSED");
+            lblCurrentSyllabusStatus.setForeground(new java.awt.Color(255, 0, 0));
+        }
     }
 
     /**
@@ -42,12 +63,22 @@ public class ManageEnrollmentJPanel extends javax.swing.JPanel {
         lblCurrentSyllabus.setText("Enrollment Status");
 
         btnOpenEnrollment.setText("Open Enrollment");
+        btnOpenEnrollment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenEnrollmentActionPerformed(evt);
+            }
+        });
 
         cmbSelectCourses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         lblCurrentSyllabusStatus.setText("Open");
 
         btnCloseEnrollment.setText("Close Enrollment");
+        btnCloseEnrollment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseEnrollmentActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -93,6 +124,26 @@ public class ManageEnrollmentJPanel extends javax.swing.JPanel {
                 .addContainerGap(149, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnOpenEnrollmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenEnrollmentActionPerformed
+        // TODO add your handling code here:
+        enrollmentOpen = true;
+        updateStatusLabel();
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Enrollment opened for " + cmbSelectCourses.getSelectedItem(),
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnOpenEnrollmentActionPerformed
+
+    private void btnCloseEnrollmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseEnrollmentActionPerformed
+        // TODO add your handling code here:
+        enrollmentOpen = false;
+        updateStatusLabel();
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Enrollment closed for " + cmbSelectCourses.getSelectedItem(),
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnCloseEnrollmentActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

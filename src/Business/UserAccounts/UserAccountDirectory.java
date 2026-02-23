@@ -54,4 +54,9 @@ public class UserAccountDirectory {
      {
          return useraccountlist;
      }
+     
+     //Add delete user functionality
+     public void removeUser(UserAccount ua){
+         useraccountlist.remove(ua);
+     }
 }

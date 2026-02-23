@@ -13,9 +13,53 @@ public class CoursePerformanceJPanel extends javax.swing.JPanel {
     /**
      * Creates new form CoursePerformanceJPanel
      */
-    public CoursePerformanceJPanel() {
+     public CoursePerformanceJPanel() {
         initComponents();
+        populateDropdowns();
     }
+      private void populateDropdowns() {
+        cmbSelectCourse.removeAllItems();
+        cmbSelectCourse.addItem("INFO 5100 - Application Engineering");
+        cmbSelectCourse.addItem("INFO 6150 - Web Design");
+        
+        cmbSemester.removeAllItems();
+        cmbSemester.addItem("Fall 2024");
+        cmbSemester.addItem("Spring 2024");
+        cmbSemester.addItem("Fall 2023");
+        
+        cmbSelectCourse.addActionListener(e -> loadPerformanceData());
+        cmbSemester.addActionListener(e -> loadPerformanceData());
+        
+        loadPerformanceData();
+    }
+    
+    private void loadPerformanceData() {
+        lblAverageGradeValue.setText("3.45");
+        lblEnrollmentValue.setText("18 students");
+        lblClassGPAValue.setText("B+");
+        
+        String[][] distributionData = {
+            {"A", "5", "28%"},
+            {"A-", "2", "11%"},
+            {"B+", "4", "22%"},
+            {"B", "5", "28%"},
+            {"B-", "1", "6%"},
+            {"C+", "1", "6%"}
+        };
+        
+        String[] columnNames = {"Grade", "Count", "Percentage"};
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(distributionData, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tblGradeDistribution.setModel(model);
+    }
+     
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,10 +96,20 @@ public class CoursePerformanceJPanel extends javax.swing.JPanel {
         lblGradeDistribution.setText("Grade Distribution:");
 
         cmbSelectCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSelectCourse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSelectCourseActionPerformed(evt);
+            }
+        });
 
         lblSemester.setText("Semester:");
 
         cmbSemester.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSemester.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSemesterActionPerformed(evt);
+            }
+        });
 
         lblAverageGradeValue.setText("jLabel6");
 
@@ -89,6 +143,11 @@ public class CoursePerformanceJPanel extends javax.swing.JPanel {
         distributionScrollPane.setViewportView(tblGradeDistribution);
 
         btnExport.setText("Export Report");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -158,6 +217,26 @@ public class CoursePerformanceJPanel extends javax.swing.JPanel {
                 .addContainerGap(36, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        // TODO add your handling code here:
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Report exported successfully!",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnExportActionPerformed
+
+    private void cmbSelectCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSelectCourseActionPerformed
+        // TODO add your handling code here:
+            loadPerformanceData();
+
+    }//GEN-LAST:event_cmbSelectCourseActionPerformed
+
+    private void cmbSemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSemesterActionPerformed
+        // TODO add your handling code here:
+            loadPerformanceData();
+
+    }//GEN-LAST:event_cmbSemesterActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

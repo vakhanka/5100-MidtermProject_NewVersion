@@ -92,6 +92,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Open Enrollment"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOpenEnrollmentActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbSelectCourses">
       <Properties>
@@ -117,6 +120,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Close Enrollment"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCloseEnrollmentActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

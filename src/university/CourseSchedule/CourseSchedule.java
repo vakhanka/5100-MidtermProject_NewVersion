@@ -64,4 +64,28 @@ public class CourseSchedule {
         return sum;
     }
 
+    public CourseCatalog getCoursecatalog() {
+        return coursecatalog;
+    }
+
+    public void setCoursecatalog(CourseCatalog coursecatalog) {
+        this.coursecatalog = coursecatalog;
+    }
+
+    public ArrayList<CourseOffer> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ArrayList<CourseOffer> schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
 }

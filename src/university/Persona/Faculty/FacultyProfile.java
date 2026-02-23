@@ -64,4 +64,20 @@ public class FacultyProfile {
         return person.getPersonId(); // since Persona.Person stores the name as id
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public ArrayList<FacultyAssignment> getFacultyassignments() {
+        return facultyassignments;
+    }
+
+    public void setFacultyassignments(ArrayList<FacultyAssignment> facultyassignments) {
+        this.facultyassignments = facultyassignments;
+    }
+
 }
