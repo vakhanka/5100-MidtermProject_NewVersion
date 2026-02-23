@@ -145,7 +145,7 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         Profile profile = useraccount.getAssociatedPersonProfile();
 
 
-        if (profile instanceof EmployeeProfile) {
+        if (r.equals("Admin")) {
 
             adminworkarea = new AdminRoleWorkAreaJPanel(business, CardSequencePanel);
             CardSequencePanel.removeAll();
@@ -164,14 +164,21 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 
         }
 
- /*      if (profile instanceof FacultyProfile) {
+        if (r.equals("Faculty")) {
             facultyworkarea = new FacultyWorkAreaJPanel(business, CardSequencePanel);
             CardSequencePanel.removeAll();
             CardSequencePanel.add("faculty", facultyworkarea);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
         }
-*/
+      /*    if (r.equals("Registrar")) {
+            registrarworkarea = new RegistrarWorkAreaJPanel(business, CardSequencePanel);
+            CardSequencePanel.removeAll();
+            CardSequencePanel.add("registrar", registrarworkarea);
+            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+
+        } */ //TO DO Pending Landre's Merge
+
 
     }//GEN-LAST:event_LoginButtonActionPerformed
 
