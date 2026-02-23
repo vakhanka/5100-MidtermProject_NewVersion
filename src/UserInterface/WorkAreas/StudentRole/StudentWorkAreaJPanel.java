@@ -196,9 +196,9 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         
         //HL: Graduation Audit Button, navigates student to Graduation Audit panel
-        GraduationAuditJPanel panel = new GraduationAuditJPanel(business, student, CardSequencePanel);
+        /*GraduationAuditJPanel panel = new GraduationAuditJPanel(business, student, CardSequencePanel);
         CardSequencePanel.add("GraduationAudit", panel);
-        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel); // HL: added import using AltEnter 
+        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel); // HL: added import using AltEnter */
 
     }//GEN-LAST:event_graduationAuditButtonActionPerformed
 
@@ -217,9 +217,9 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         
         //HL: Transcript Button - navigates student to Transcript panel 
-        TranscriptJPanel panel = new TranscriptJPanel(business, student, CardSequencePanel);
+        /*TranscriptJPanel panel = new TranscriptJPanel(business, student, CardSequencePanel);
         CardSequencePanel.add("Transcript", panel);
-        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);*/
     }//GEN-LAST:event_transcriptButtonActionPerformed
 
 

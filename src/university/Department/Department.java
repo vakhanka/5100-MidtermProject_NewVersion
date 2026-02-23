@@ -116,10 +116,7 @@ public class Department {
 
     }
     
-    public university.Persona.Faculty.FacultyDirectory getFacultyDirectory() {
-        return facultydirectory;
-    }
-    
+  
     @Override
     public String toString() {
         return name;

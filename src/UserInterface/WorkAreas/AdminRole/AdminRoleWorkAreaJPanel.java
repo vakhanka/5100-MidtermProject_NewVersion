@@ -12,7 +12,7 @@ package UserInterface.WorkAreas.AdminRole;
 
 import Business.Business;
 import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.ManageUserAccountsJPanel;
-import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
+import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.CreateNewUserAccountJPanel;
 
 import javax.swing.JPanel;
 
@@ -172,7 +172,7 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
 
-        ManagePersonsJPanel aos = new ManagePersonsJPanel(business, CardSequencePanel);
+        CreateNewUserAccountJPanel aos = new CreateNewUserAccountJPanel(business, CardSequencePanel);
 
         CardSequencePanel.add("Manage Persons", aos);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
