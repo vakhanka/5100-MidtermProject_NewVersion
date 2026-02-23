@@ -7,11 +7,13 @@ package UserInterface.WorkAreas.RegistrarRole;
 import Business.Business;
 import Business.Profiles.RegistrarProfile;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import university.CourseCatalog.Course;
 import university.CourseSchedule.CourseOffer;
 import university.CourseSchedule.CourseSchedule;
 import university.Department.Department;
+import university.Persona.Faculty.FacultyProfile;
 
 /**
  *
@@ -22,6 +24,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
     Business business;
     RegistrarProfile registrar;
+    private JPanel CardSequencePanel;
     /**
      * Creates new form ManageCourseOfferingsJPanel
      */
@@ -64,6 +67,13 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         btnSetCapacity = new javax.swing.JButton();
         lblSelectedOffering = new javax.swing.JLabel();
         cmbCourse = new javax.swing.JComboBox<>();
+        lblRoom = new javax.swing.JLabel();
+        txtRoom = new javax.swing.JTextField();
+        lblTime = new javax.swing.JLabel();
+        txtTime = new javax.swing.JTextField();
+        btnSaveSchedule = new javax.swing.JButton();
+        lblFaculty = new javax.swing.JLabel();
+        cmbFaculty = new javax.swing.JComboBox();
 
         lblDepartment.setText("Department");
 
@@ -94,11 +104,11 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Course", "Course Name", "Credit", "Capacity", "Enrolled", "Revenue"
+                "Course", "Course Name", "Credit", "Faculty", "Capacity", "Enrolled", "Revenue", "Room", "Time"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -113,6 +123,11 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblCourseOfferings);
 
         btnBack.setText("<<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         btnCreateOffering.setText("Create Offering");
         btnCreateOffering.addActionListener(new java.awt.event.ActionListener() {
@@ -134,32 +149,75 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
         cmbCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        lblRoom.setText("Room");
+
+        txtRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRoomActionPerformed(evt);
+            }
+        });
+
+        lblTime.setText("Time Slot");
+
+        txtTime.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTimeActionPerformed(evt);
+            }
+        });
+
+        btnSaveSchedule.setText("Save");
+        btnSaveSchedule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveScheduleActionPerformed(evt);
+            }
+        });
+
+        lblFaculty.setText("Faculty");
+
+        cmbFaculty.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFaculty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbFacultyActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnSaveSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDepartment)
                             .addComponent(lblSemester))
-                        .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbDepartment, 0, 112, Short.MAX_VALUE)
-                            .addComponent(txtSemester))))
-                .addGap(202, 202, 202))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblRoom)
+                                .addGap(45, 45, 45)
+                                .addComponent(txtRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblFaculty)
+                                    .addComponent(lblTime))
+                                .addGap(45, 45, 45)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtTime, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                    .addComponent(cmbFaculty, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmbCourse, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(8, 8, 8)
+                        .addGap(18, 18, 18)
                         .addComponent(btnCreateOffering)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,27 +236,35 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDepartment)
-                    .addComponent(cmbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblRoom)
+                    .addComponent(txtRoom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSemester)
-                    .addComponent(txtSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnLoad)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSelectedOffering, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cmbCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnCreateOffering)))
+                    .addComponent(txtSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTime)
+                    .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBack)
+                    .addComponent(btnLoad)
+                    .addComponent(lblFaculty)
+                    .addComponent(cmbFaculty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addComponent(btnSaveSchedule)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSelectedOffering)
+                    .addComponent(btnBack))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCapacity)
                     .addComponent(spnCapacity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSetCapacity))
+                    .addComponent(btnSetCapacity)
+                    .addComponent(cmbCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCreateOffering))
                 .addGap(51, 51, 51))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -210,13 +276,23 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
     private void tblCourseOfferingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseOfferingsMouseClicked
         // TODO add your handling code here:
         int row = tblCourseOfferings.getSelectedRow();
-        if (row >= 0) {
-            spnCapacity.setEnabled(true);
-            btnSetCapacity.setEnabled(true);
-
-            int currentCapacity = Integer.parseInt(tblCourseOfferings.getValueAt(row, 4).toString());
-            spnCapacity.setValue(currentCapacity);
+        if (row < 0) {
+            return; // comment: no selection
         }
+
+        spnCapacity.setEnabled(true);
+        btnSetCapacity.setEnabled(true);
+
+        // comment: column indexes after adding Faculty + Room + Time
+        // 0 Course, 1 Name, 2 Credit, 3 Faculty, 4 Capacity, 5 Enrolled, 6 Revenue, 7 Room, 8 Time
+        Object capObj = tblCourseOfferings.getValueAt(row, 4);
+        spnCapacity.setValue(capObj == null ? 0 : Integer.parseInt(capObj.toString()));
+
+        Object roomObj = tblCourseOfferings.getValueAt(row, 7);
+        Object timeObj = tblCourseOfferings.getValueAt(row, 8);
+
+        txtRoom.setText(roomObj == null ? "" : roomObj.toString());
+        txtTime.setText(timeObj == null ? "" : timeObj.toString());
     }//GEN-LAST:event_tblCourseOfferingsMouseClicked
 
     private void cmbDepartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDepartmentActionPerformed
@@ -245,12 +321,17 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
                 selectedDept = d;
                 break;
             }
-        }
+        }   
+        
         if (selectedDept == null) {
             JOptionPane.showMessageDialog(this, "Selected department not found.");
             return;
         }
-
+        
+        // comment: debug faculty list size per department
+        System.out.println("Dept=" + selectedDept + ", facultyCount="
+                + selectedDept.getFacultyDirectory().getTeacherlist().size());
+        
         // Get or create the semester schedule
         CourseSchedule cs = selectedDept.getCourseSchedule(semester);
         if (cs == null) {
@@ -259,10 +340,12 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         
         // Populate course dropdown from department catalog
         cmbCourse.removeAllItems();
-
         for (Course c : selectedDept.getCourseCatalog().getCourseList()) {
             cmbCourse.addItem(c.getCOurseNumber());  // simple version
         }
+        
+        // Populate faculty dropdown for selected department
+        populateFacultyDropdown(selectedDept); // load faculty using stable model replacement
 
         // Populate table
         populateOfferingsTable(cs);
@@ -274,56 +357,82 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLoadActionPerformed
 
     private void btnCreateOfferingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateOfferingActionPerformed
-        // TODO add your handling code here:
-        // Read selected course from dropdown
-        String courseNumber = (String) cmbCourse.getSelectedItem();
-        if (courseNumber == null) {
-            JOptionPane.showMessageDialog(this, "Please select a course.");
-            return;
-        }
+        // Create a new CourseOffer for the selected course in the selected semester
 
-        // Read semester input
-        String semester = txtSemester.getText().trim();
-        if (semester.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a Semester (e.g., Winter 2026).");
-            return;
-        }
-
-        // Read selected department name from dropdown
+        // Validate department + semester context
         String deptName = (String) cmbDepartment.getSelectedItem();
+        String semester = txtSemester.getText().trim();
+
         if (deptName == null || deptName.isBlank()) {
             JOptionPane.showMessageDialog(this, "Please select a Department.");
-            return;
+            return; // cannot create offering without department
+        }
+        if (semester.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a Semester (e.g., Fall 2026).");
+            return; // cannot create offering without semester
         }
 
-        // Find the actual Department object (combo stores Strings)
+        // Validate course selection 
+        String courseNumber = (String) cmbCourse.getSelectedItem();
+        if (courseNumber == null || courseNumber.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Please select a Course to offer.");
+            return; // cannot create offering without selecting a course
+        }
+
+        // Find Department object
         Department selectedDept = null;
         for (Department d : business.getDepartments()) {
             if (d.toString().equals(deptName)) {
                 selectedDept = d;
-                break;
+                break; // stop searching once department is found
             }
         }
         if (selectedDept == null) {
             JOptionPane.showMessageDialog(this, "Selected department not found.");
-            return;
+            return; // safety check
+        }
+        
+        // if faculty list is empty (e.g., user did not press Load), populate it now
+        if (cmbFaculty.getItemCount() == 0) {
+            cmbFaculty.removeAllItems(); // clear any old items before loading
+            for (FacultyProfile fp : selectedDept.getFacultyDirectory().getTeacherlist()) {
+                cmbFaculty.addItem(fp); // add faculty objects so Save can cast properly
+            }
         }
 
-        // Get or create the course schedule for the semester
+        // Get or create CourseSchedule for this semester
         CourseSchedule cs = selectedDept.getCourseSchedule(semester);
         if (cs == null) {
-            cs = selectedDept.newCourseSchedule(semester);
+            cs = selectedDept.newCourseSchedule(semester); // create schedule if missing
         }
 
-        // Prevent duplicate offerings
+        // Prevent duplicates (one offering per course per semester in your design)
         if (cs.getCourseOfferByNumber(courseNumber) != null) {
             JOptionPane.showMessageDialog(this, "This course is already offered for " + semester + ".");
-            return;
+            return; // avoid duplicate course offering entries
         }
 
-        // Create offering and refresh table
-        cs.newCourseOffer(courseNumber);
-        populateOfferingsTable(cs);
+        // Create the offering
+        CourseOffer newOffer = cs.newCourseOffer(courseNumber);
+        
+        // create CourseOffer from catalog course number
+        if (newOffer == null) {
+            JOptionPane.showMessageDialog(this, "Course not found in catalog. Click Load and select a valid course.");
+            return; // prevents silent failure if dropdown has invalid values
+        }
+
+        // set a default capacity so it shows as non-zero immediately
+        // newOffer.generatSeats // default seat capacity for new offerings (optional)
+        // Refresh the table to show the new offering
+
+        populateOfferingsTable(cs); // table should now include the newly created offering
+        populateFacultyDropdown(selectedDept);
+
+        
+        spnCapacity.setValue(0); // reset spinner after creating an offering
+        spnCapacity.setEnabled(false); // capacity only editable after row selection
+        btnSetCapacity.setEnabled(false); // disable until row selected
+        tblCourseOfferings.clearSelection(); // avoid accidental capacity edit on wrong row
         
     }//GEN-LAST:event_btnCreateOfferingActionPerformed
 
@@ -398,24 +507,150 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
         // Refresh table to reflect updated capacity
         populateOfferingsTable(cs);
+        
+        spnCapacity.setValue(0); // reset spinner after capacity update
+        spnCapacity.setEnabled(false); // disable capacity until a row is selected again
+        btnSetCapacity.setEnabled(false); // disable button until a row is selected again
+        tblCourseOfferings.clearSelection(); // clear row selection so user must reselect intentionally
     }//GEN-LAST:event_btnSetCapacityActionPerformed
+
+    private void txtRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRoomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRoomActionPerformed
+
+    private void txtTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTimeActionPerformed
+
+    private void btnSaveScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveScheduleActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblCourseOfferings.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select an offering first.");
+            return; // prevent saving schedule when no row is selected
+        }
+
+        String room = txtRoom.getText();
+        String timeSlot = txtTime.getText();
+
+        // Basic validation to avoid empty schedule fields
+        if (room == null || room.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Room cannot be empty.");
+            return; // stop if room is blank
+        }
+        if (timeSlot == null || timeSlot.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Time Slot cannot be empty.");
+            return; // stop if time slot is blank
+        }
+
+        // Retrieve current semester and department context
+        String semester = txtSemester.getText().trim();
+        String deptName = (String) cmbDepartment.getSelectedItem();
+
+        if (deptName == null || deptName.isBlank() || semester.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please load a department and semester first.");
+            return; // ensure context exists before updating model
+        }
+
+        // Find Department object
+        Department selectedDept = null;
+        for (Department d : business.getDepartments()) {
+            if (d.toString().equals(deptName)) {
+                selectedDept = d;
+                break;
+            }
+        }
+        if (selectedDept == null) {
+            JOptionPane.showMessageDialog(this, "Department not found.");
+            return; // safety check in case dropdown and model mismatch
+        }
+
+        // Find schedule
+        CourseSchedule cs = selectedDept.getCourseSchedule(semester);
+        if (cs == null) {
+            JOptionPane.showMessageDialog(this, "Schedule not found. Click Load first.");
+            return; // avoid null schedule crashes
+        }
+
+        // Identify selected offering by course number (column 0)
+        String courseNumber = tblCourseOfferings.getValueAt(selectedRow, 0).toString();
+        CourseOffer co = cs.getCourseOfferByNumber(courseNumber);
+        
+        if (co == null) {
+            JOptionPane.showMessageDialog(this, "Course offering not found.");
+            return; // avoid updating a null offering
+        }
+
+        if (cmbFaculty.getItemCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No faculty loaded. Click Load first.");
+            return; // faculty dropdown is empty because Load was not pressed
+        }
+        
+        // retrieve selected FacultyProfile object from dropdown
+        FacultyProfile selectedFaculty = (FacultyProfile) cmbFaculty.getSelectedItem();
+
+        if (selectedFaculty == null) {
+            JOptionPane.showMessageDialog(this, "Please select a Faculty member.");
+            return; // comment: prevent saving without selecting faculty
+        }
+        
+        // assign faculty to the selected course offering
+        co.AssignAsTeacher(selectedFaculty);
+ 
+        // Update model fields
+        co.setRoom(room.trim());           // store room string inside CourseOffer
+        co.setTimeSlot(timeSlot.trim());   // store time slot string inside CourseOffer
+
+        // Refresh table so Room/Time columns show updates
+        populateOfferingsTable(cs); // redraw JTable with updated CourseOffer values
+        JOptionPane.showMessageDialog(this, "Faculty, Room and Time updated successfully.");
+        tblCourseOfferings.clearSelection(); // clear selection after save to avoid editing wrong row
+        txtRoom.setText(""); // clear room field after saving
+        txtTime.setText(""); // clear time field after saving
+
+    }//GEN-LAST:event_btnSaveScheduleActionPerformed
+
+    private void cmbFacultyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFacultyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbFacultyActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        // choose the CardLayout container used for navigation
+        JPanel container = (CardSequencePanel != null) ? CardSequencePanel : (JPanel) this.getParent();
+ 
+        // rebuild RegistrarWorkArea using its required constructor
+        RegistrarWorkAreaJPanel panel = new RegistrarWorkAreaJPanel(business, registrar, container);
+       
+        container.removeAll(); // remove current panel from the card container
+        container.add("RegistrarWorkArea", panel); // add registrar panel as the new card
+        ((java.awt.CardLayout) container.getLayout()).next(container); // navigate to it
+ 
+    }//GEN-LAST:event_btnBackActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnCreateOffering;
     private javax.swing.JButton btnLoad;
+    private javax.swing.JButton btnSaveSchedule;
     private javax.swing.JButton btnSetCapacity;
     private javax.swing.JComboBox<String> cmbCourse;
     private javax.swing.JComboBox<String> cmbDepartment;
+    private javax.swing.JComboBox cmbFaculty;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCapacity;
     private javax.swing.JLabel lblDepartment;
+    private javax.swing.JLabel lblFaculty;
+    private javax.swing.JLabel lblRoom;
     private javax.swing.JLabel lblSelectedOffering;
     private javax.swing.JLabel lblSemester;
+    private javax.swing.JLabel lblTime;
     private javax.swing.JSpinner spnCapacity;
     private javax.swing.JTable tblCourseOfferings;
+    private javax.swing.JTextField txtRoom;
     private javax.swing.JTextField txtSemester;
+    private javax.swing.JTextField txtTime;
     // End of variables declaration//GEN-END:variables
 
     private void populateDepartments() {
@@ -431,14 +666,41 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         dtm.setRowCount(0); // clear existing rows
 
         for (CourseOffer co : cs.getSchedule()) {
-            Object[] row = new Object[6];
+
+            Object[] row = new Object[9]; 
+
             row[0] = co.getCourseNumber();
             row[1] = co.getSubjectCourse().getName();
             row[2] = co.getCreditHours();
-            row[3] = co.getCapacity();
-            row[4] = co.getEnrolledCount();
-            row[5] = co.getTotalCourseRevenues();
+
+            // Retrieve faculty safely to avoid NullPointerException
+            if (co.getFacultyProfile() != null) {
+                row[3] = co.getFacultyProfile().toString();
+                // show faculty using FacultyProfile toString()
+            } else {
+                row[3] = "Unassigned"; // show status clearly if no faculty assigned
+            }
+
+            row[4] = co.getCapacity();
+            row[5] = co.getEnrolledCount();
+            row[6] = co.getTotalCourseRevenues();
+            row[7] = co.getRoom();
+            row[8] = co.getTimeSlot();
+
             dtm.addRow(row);
+        }
+    }  
+    
+    private void populateFacultyDropdown(Department selectedDept) {
+        // comment: always repopulate faculty list from the department directory
+        javax.swing.DefaultComboBoxModel model = new javax.swing.DefaultComboBoxModel();
+        for (FacultyProfile fp : selectedDept.getFacultyDirectory().getTeacherlist()) {
+            model.addElement(fp); // comment: store FacultyProfile objects (not strings)
+        }
+        cmbFaculty.setModel(model); // comment: replace model to avoid "mystery clears"
+
+        if (model.getSize() > 0) {
+            cmbFaculty.setSelectedIndex(0); // comment: keep a visible selection
         }
     }
 }

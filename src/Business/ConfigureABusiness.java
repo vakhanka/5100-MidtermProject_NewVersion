@@ -39,6 +39,30 @@ class ConfigureABusiness {
         csDept.newCourse("Object-Oriented Design", "CS5004", 4);
         csDept.newCourse("Algorithms", "CS5800", 4);
 
+        // ===== CREATE PERSONA FACULTY (for CourseOffer faculty assignment) =====
+        // NOTE: This is separate from Business.Person.Person used for UserAccounts.
+        // FacultyDirectory expects university.Persona.Person.
+        university.Persona.PersonDirectory personaPD = new university.Persona.PersonDirectory();
+
+        university.Persona.Person pf001 = personaPD.newPerson("John Smith");
+        university.Persona.Person pf002 = personaPD.newPerson("Sarah Johnson");
+        university.Persona.Person pf003 = personaPD.newPerson("Michael Chen");
+        university.Persona.Person pf004 = personaPD.newPerson("Emily Davis");
+        university.Persona.Person pf005 = personaPD.newPerson("David Wilson");
+
+        university.Persona.Faculty.FacultyProfile f1 = isDept.getFacultyDirectory().newFacultyProfile(pf001);
+        university.Persona.Faculty.FacultyProfile f2 = isDept.getFacultyDirectory().newFacultyProfile(pf002);
+        university.Persona.Faculty.FacultyProfile f3 = isDept.getFacultyDirectory().newFacultyProfile(pf003);
+        university.Persona.Faculty.FacultyProfile f4 = isDept.getFacultyDirectory().newFacultyProfile(pf004);
+        university.Persona.Faculty.FacultyProfile f5 = isDept.getFacultyDirectory().newFacultyProfile(pf005);
+        
+        // comment: Seed same faculty into Computer Science department
+        csDept.getFacultyDirectory().newFacultyProfile(pf001);
+        csDept.getFacultyDirectory().newFacultyProfile(pf002);
+        csDept.getFacultyDirectory().newFacultyProfile(pf003);
+        csDept.getFacultyDirectory().newFacultyProfile(pf004);
+        csDept.getFacultyDirectory().newFacultyProfile(pf005);
+        
         // ===== CREATE 30 PERSONS =====
         PersonDirectory persondirectory = business.getPersonDirectory();
         

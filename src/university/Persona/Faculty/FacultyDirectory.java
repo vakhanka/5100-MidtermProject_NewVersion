@@ -56,4 +56,9 @@ public class FacultyDirectory {
             return null; //not found after going through the whole list
          }
     
+    // comment: getter used by UI to list all available faculty
+    public ArrayList<FacultyProfile> getTeacherlist() {
+        return teacherlist; // comment: return internal teacher list
+    }
+    
 }

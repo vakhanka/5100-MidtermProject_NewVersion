@@ -40,6 +40,7 @@ public class Department {
         mastercoursecatalog = new HashMap<>();
         coursecatalog = new CourseCatalog(this);
         studentdirectory = new StudentDirectory(this); //pass the department object so it stays linked to it
+        facultydirectory = new FacultyDirectory(this); // initialize faculty directory
         persondirectory = new PersonDirectory();
         degree = new Degree("MSIS");
         
@@ -48,7 +49,7 @@ public class Department {
         degree.addCoreCourse(c);
         
     }
-public void addElectiveCourse(Course c){
+    public void addElectiveCourse(Course c){
         degree.addElectiveCourse(c);
         
     }
@@ -107,6 +108,10 @@ public void addElectiveCourse(Course c){
 
         co.assignEmptySeat(cl);
 
+    }
+    
+    public university.Persona.Faculty.FacultyDirectory getFacultyDirectory() {
+        return facultydirectory;
     }
     
     @Override
