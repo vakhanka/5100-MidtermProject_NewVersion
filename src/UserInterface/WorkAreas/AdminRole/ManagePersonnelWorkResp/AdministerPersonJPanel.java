@@ -93,7 +93,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         btnBack.setBounds(20, 430, 74, 23);
 
         lblTitle.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        lblTitle.setText("Manage Person Profile");
+        lblTitle.setText("Manage User Account");
         add(lblTitle);
         lblTitle.setBounds(21, 20, 550, 28);
         add(txtUsername);

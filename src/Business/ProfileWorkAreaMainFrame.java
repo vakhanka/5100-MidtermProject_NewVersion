@@ -174,7 +174,6 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
         }
-*/
  
         // Registrar role routing: load Registrar dashboard when user logs in as RegistrarProfile.
         

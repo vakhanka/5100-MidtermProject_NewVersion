@@ -59,4 +59,24 @@ public class UserAccountDirectory {
      public void removeUser(UserAccount ua){
          useraccountlist.remove(ua);
      }
+     /*public Person findPerson(String id) {
+
+        for (Person p : personlist) {
+
+            if (p.isMatch(id)) {
+                return p;
+            }
+        }
+            return null; //not found after going through the whole list
+         }*/
+     public UserAccount findusername (String un){
+         
+         for (UserAccount ua : useraccountlist){
+             
+             if (ua.getUserLoginName().equals(un)){
+                 return ua;
+             }
+        }
+         return null; // username not found
+     }
 }

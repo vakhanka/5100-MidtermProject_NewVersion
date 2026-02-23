@@ -72,10 +72,6 @@ public class CourseSchedule {
         this.coursecatalog = coursecatalog;
     }
 
-    public ArrayList<CourseOffer> getSchedule() {
-        return schedule;
-    }
-
     public void setSchedule(ArrayList<CourseOffer> schedule) {
         this.schedule = schedule;
     }
