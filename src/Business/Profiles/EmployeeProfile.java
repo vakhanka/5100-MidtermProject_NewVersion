@@ -25,6 +25,14 @@ public class EmployeeProfile extends Profile {
         super(p);
         this.role = role;
     }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
     
     
     
