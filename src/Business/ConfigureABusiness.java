@@ -10,6 +10,7 @@ import Business.Person.Person;
 import Business.Person.PersonDirectory;
 import Business.Profiles.EmployeeDirectory;
 import Business.Profiles.EmployeeProfile;
+import Business.Profiles.RegistrarProfile;
 import Business.Profiles.StudentDirectory;
 import Business.Profiles.StudentProfile;
 import Business.UserAccounts.UserAccount;
@@ -29,7 +30,42 @@ class ConfigureABusiness {
 
     static Business initialize() {
         Business business = new Business("Northeastern University");
+        
+        Department isDept = business.newDepartment("Information Systems");
+        Department csDept = business.newDepartment("Computer Science");
+        
+        // Seed sample course catalog for Information Systems
+        isDept.newCourse("Application Engineering", "INFO5100", 4);
+        isDept.newCourse("Data Science Engineering Methods", "INFO6105", 4);
 
+        // Seed sample course catalog for Computer Science
+        csDept.newCourse("Object-Oriented Design", "CS5004", 4);
+        csDept.newCourse("Algorithms", "CS5800", 4);
+
+        // ===== CREATE PERSONA FACULTY (for CourseOffer faculty assignment) =====
+        // NOTE: This is separate from Business.Person.Person used for UserAccounts.
+        // FacultyDirectory expects university.Persona.Person.
+        university.Persona.PersonDirectory personaPD = new university.Persona.PersonDirectory();
+
+        university.Persona.Person pf001 = personaPD.newPerson("John Smith");
+        university.Persona.Person pf002 = personaPD.newPerson("Sarah Johnson");
+        university.Persona.Person pf003 = personaPD.newPerson("Michael Chen");
+        university.Persona.Person pf004 = personaPD.newPerson("Emily Davis");
+        university.Persona.Person pf005 = personaPD.newPerson("David Wilson");
+
+        university.Persona.Faculty.FacultyProfile f1 = isDept.getFacultyDirectory().newFacultyProfile(pf001);
+        university.Persona.Faculty.FacultyProfile f2 = isDept.getFacultyDirectory().newFacultyProfile(pf002);
+        university.Persona.Faculty.FacultyProfile f3 = isDept.getFacultyDirectory().newFacultyProfile(pf003);
+        university.Persona.Faculty.FacultyProfile f4 = isDept.getFacultyDirectory().newFacultyProfile(pf004);
+        university.Persona.Faculty.FacultyProfile f5 = isDept.getFacultyDirectory().newFacultyProfile(pf005);
+        
+        // comment: Seed same faculty into Computer Science department
+        csDept.getFacultyDirectory().newFacultyProfile(pf001);
+        csDept.getFacultyDirectory().newFacultyProfile(pf002);
+        csDept.getFacultyDirectory().newFacultyProfile(pf003);
+        csDept.getFacultyDirectory().newFacultyProfile(pf004);
+        csDept.getFacultyDirectory().newFacultyProfile(pf005);
+        
         // ===== CREATE 30 PERSONS =====
         PersonDirectory persondirectory = business.getPersonDirectory();
         
@@ -100,8 +136,11 @@ class ConfigureABusiness {
         StudentProfile student10 = studentdirectory.newStudentProfile(person020);
 
         // ===== CREATE ADMIN & REGISTRAR =====
+        // comment: create admin employee using updated method signature from main
         EmployeeProfile admin = employeedirectory.newEmployeeProfile(person021, "Admin");
-        EmployeeProfile registrar = employeedirectory.newEmployeeProfile(person022, "Registrar");
+        
+        // Registrar is an administrative employee role; modeled as Profile subtype for role-based UI routing.
+        RegistrarProfile registrar = new RegistrarProfile(person022);
 
         // ===== CREATE USER ACCOUNTS =====
         UserAccountDirectory uadirectory = business.getUserAccountDirectory();
@@ -110,6 +149,7 @@ class ConfigureABusiness {
         UserAccount adminAccount = uadirectory.newUserAccount(admin, "admin", "admin123");
         
         // Registrar account
+        // Registrar login uses RegistrarProfile so the system loads RegistrarWorkAreaJPanel after authentication.
         UserAccount registrarAccount = uadirectory.newUserAccount(registrar, "registrar", "registrar123");
         
         // Faculty accounts

@@ -10,7 +10,8 @@ import Business.Profiles.EmployeeDirectory;
 import Business.Profiles.StudentDirectory;
 
 import Business.UserAccounts.UserAccountDirectory;
-import university.Department.Department;
+import java.util.ArrayList;
+import university.Department.Department; // Needed to store and manage university departments
 
 /**
  *
@@ -25,7 +26,8 @@ public class Business {
     UserAccountDirectory useraccountdirectory;
     StudentDirectory studentdirectory;
     
-
+    // list of all departments in the university
+    ArrayList<Department> departments;
 
     public Business(String n) {
         name = n;
@@ -36,7 +38,8 @@ public class Business {
         studentdirectory = new StudentDirectory();
         department = new university.Department.Department("Information Systems"); //bridge to the university package
 
-
+        // initialize department list 
+        departments = new ArrayList<>();
     }
 
     public PersonDirectory getPersonDirectory() {
@@ -55,7 +58,24 @@ public class Business {
     public StudentDirectory getStudentDirectory(){
         return studentdirectory;
     }
+    
+    /**
+     * Creates and registers a new Department in the university. Used during
+     * system initialization.
+     */
+    public Department newDepartment(String name) {
+        Department d = new Department(name);
+        departments.add(d);
+        return d;
+    }
 
+    /**
+     * Returns the list of departments. 
+     * Used by Registrar UI to populate department selection.
+     */
+    public ArrayList<Department> getDepartments() {
+        return departments;
+    }
     public university.Department.Department getDepartment(){
         return department;
     }

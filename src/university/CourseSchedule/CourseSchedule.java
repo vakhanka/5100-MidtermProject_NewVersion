@@ -48,6 +48,12 @@ public class CourseSchedule {
         return null;
     }
 
+    /* Returns the list of CourseOffer objects for this semester. 
+       Needed by Registrar UI to display semester offerings. */
+    public ArrayList<CourseOffer> getSchedule() {
+        return schedule;
+    }
+    
     public int calculateTotalRevenues() {
         int sum = 0;
         for (CourseOffer co : schedule) {
