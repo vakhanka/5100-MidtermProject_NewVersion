@@ -19,6 +19,9 @@ public class CourseOffer {
     Course course;
     ArrayList<Seat> seatlist;
     FacultyAssignment facultyassignment;
+    
+    private String room;
+    private String timeSlot;
 
     public CourseOffer(Course c) {
         course = c;
@@ -27,11 +30,15 @@ public class CourseOffer {
      
     public void AssignAsTeacher(FacultyProfile fp) {
 
-        facultyassignment = new FacultyAssignment(fp, this);
+        if (fp == null) {
+            facultyassignment = null;
+            return;
+        }
+        facultyassignment = fp.AssignAsTeacher(this);
     }
 
     public FacultyProfile getFacultyProfile() {
-        return facultyassignment.getFacultyProfile();
+        return facultyassignment == null ? null : facultyassignment.getFacultyProfile();
     }
 
     public String getCourseNumber() {
@@ -48,6 +55,13 @@ public class CourseOffer {
 
     }
 
+    public void addSeats(int additionalSeats) {
+        int currentSize = seatlist.size();
+        for (int i = 0; i < additionalSeats; i++) {
+            seatlist.add(new Seat(this, currentSize + i));
+        }
+    }
+    
     public Seat getEmptySeat() {
 
         for (Seat s : seatlist) {
@@ -59,7 +73,27 @@ public class CourseOffer {
         return null;
     }
 
+    /**
+     * Returns total seat capacity for this course offering. Capacity equals
+     * number of generated Seat objects.
+     */
 
+    public int getCapacity() {
+        return seatlist.size();
+    }
+
+    //Returns number of occupied seats (enrolled students).
+    
+    public int getEnrolledCount() {
+        int count = 0;
+        for (Seat s : seatlist) {
+            if (s.isOccupied()) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
     public SeatAssignment assignEmptySeat(CourseLoad cl) {
 
         Seat seat = getEmptySeat();
@@ -88,6 +122,39 @@ public class CourseOffer {
     }
     public int getCreditHours(){
         return course.getCredits();
+    }
+    
+    // ROOM & TIME 
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getTimeSlot() {
+        return timeSlot;
+    }
+
+    public void setTimeSlot(String timeSlot) {
+        this.timeSlot = timeSlot;
+    }
+
+    // Optional display helper for JTable
+    public String getScheduleDisplay() {
+        String r = (room == null) ? "" : room.trim();
+        String t = (timeSlot == null) ? "" : timeSlot.trim();
+        if (r.isEmpty() && t.isEmpty()) {
+            return "";
+        }
+        if (r.isEmpty()) {
+            return t;
+        }
+        if (t.isEmpty()) {
+            return r;
+        }
+        return r + " | " + t;
     }
 
 }

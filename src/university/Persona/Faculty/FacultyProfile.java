@@ -58,6 +58,11 @@ public class FacultyProfile {
         }
         return false;
     }
+    
+    @Override
+    public String toString() {
+        return person.getPersonId(); // since Persona.Person stores the name as id
+    }
 
     public Person getPerson() {
         return person;
