@@ -77,6 +77,10 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         cbxRole = new javax.swing.JComboBox<>();
         btnSavePw = new javax.swing.JButton();
         btnResetPw = new javax.swing.JButton();
+        txtEmail = new javax.swing.JTextField();
+        txtPhone = new javax.swing.JTextField();
+        lblEmail = new javax.swing.JLabel();
+        lblPhone = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -93,7 +97,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         lblTitle.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         lblTitle.setText("Manage User Account");
         add(lblTitle);
-        lblTitle.setBounds(21, 20, 550, 28);
+        lblTitle.setBounds(30, 20, 550, 28);
         add(txtUsername);
         txtUsername.setBounds(140, 140, 140, 30);
 
@@ -104,7 +108,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             }
         });
         add(btnSave);
-        btnSave.setBounds(520, 250, 72, 23);
+        btnSave.setBounds(520, 300, 72, 23);
 
         lblName.setText("Name");
         add(lblName);
@@ -135,23 +139,23 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             }
         });
         add(btnEdit);
-        btnEdit.setBounds(210, 250, 72, 23);
+        btnEdit.setBounds(210, 300, 72, 23);
 
         lblProfileType.setText("Profile Type");
         add(lblProfileType);
         lblProfileType.setBounds(60, 100, 80, 20);
         add(txtCreated);
-        txtCreated.setBounds(450, 90, 140, 30);
+        txtCreated.setBounds(140, 240, 140, 30);
         add(txtNUID);
-        txtNUID.setBounds(450, 140, 140, 30);
+        txtNUID.setBounds(450, 90, 140, 30);
 
         lblCreated.setText("Created Date");
         add(lblCreated);
-        lblCreated.setBounds(370, 100, 80, 16);
+        lblCreated.setBounds(60, 250, 80, 16);
 
         lblNUID.setText("NUID");
         add(lblNUID);
-        lblNUID.setBounds(360, 150, 90, 16);
+        lblNUID.setBounds(370, 100, 80, 16);
 
         cbxRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Registrar", "Faculty", "Student" }));
         add(cbxRole);
@@ -173,7 +177,19 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             }
         });
         add(btnResetPw);
-        btnResetPw.setBounds(340, 250, 120, 23);
+        btnResetPw.setBounds(340, 300, 120, 23);
+        add(txtEmail);
+        txtEmail.setBounds(450, 140, 140, 30);
+        add(txtPhone);
+        txtPhone.setBounds(450, 190, 140, 30);
+
+        lblEmail.setText("Email");
+        add(lblEmail);
+        lblEmail.setBounds(370, 150, 80, 16);
+
+        lblPhone.setText("Phone");
+        add(lblPhone);
+        lblPhone.setBounds(370, 200, 80, 16);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -215,17 +231,21 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbxRole;
     private javax.swing.JLabel lblConfirmPassword;
     private javax.swing.JLabel lblCreated;
+    private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblNUID;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblProfileType;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JPasswordField pwConfirmPassword;
     private javax.swing.JPasswordField pwPassword;
     private javax.swing.JTextField txtCreated;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNUID;
     private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
@@ -244,6 +264,8 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         txtCreated.setText(formatTimestamp(person.getCreatedtimestamp()));
         cbxRole.setSelectedItem(selecteduseraccount.getProfile().getRole()); 
         btnSavePw.setVisible(false);
+        txtEmail.setText(selecteduseraccount.getAssociatedPersonProfile().getEmail());
+        txtPhone.setText(selecteduseraccount.getAssociatedPersonProfile().getPhone());
 
         //Get Profile
         /*Populate any role-specific fields and attributes when they are created
@@ -270,6 +292,8 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         txtUsername.setEnabled(false);
         txtNUID.setEnabled(false);
         txtCreated.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtPhone.setEnabled(false);
     }
 
     private void updateuserinfo() {
@@ -278,6 +302,8 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         String username = txtUsername.getText().trim();
         String role = (String) cbxRole.getSelectedItem();
     //  String nuid = txtNUID.getText().trim();
+        String email = txtEmail.getText().trim();
+        String phone = txtPhone.getText().trim();
     
     // Validate fields 
         if (role==null){
@@ -285,22 +311,30 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             return;
         }
         
-        if (name.isBlank() || username.isBlank()) {
-            JOptionPane.showMessageDialog(this, "Name and Username are required");
+        if (name.isBlank() || username.isBlank() ||email.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Name, Email, and Username are required");
             return;
         }
     //Verify username is not taken
         UserAccount u = business.getUserAccountDirectory().findusername(username);
-        if (u!=null){
+        if (u != null && u != selecteduseraccount) {
             JOptionPane.showMessageDialog(this, "Username is taken. Please select another username.");
-            return;
+        return;
+        }
+        
+    //Verify email is not taken
+        if (business.getUserAccountDirectory().isEmailTaken(email, selecteduseraccount)) {
+            JOptionPane.showMessageDialog(this, "Email is already in use");
+        return;
         }
             
-    // Update person name, user id, and role
+    // Update person name, user id, email, phone, and role
         Person person = selecteduseraccount.getAssociatedPersonProfile().getPerson();
-        person.setId(name);
+        person.setFullname(name);
         selecteduseraccount.setUsername(username);
         Profile profile = selecteduseraccount.getAssociatedPersonProfile();
+        selecteduseraccount.getAssociatedPersonProfile().setEmail(email);
+        selecteduseraccount.getAssociatedPersonProfile().setPhone(phone);
         
         if (profile instanceof EmployeeProfile) {
             EmployeeProfile ep = (EmployeeProfile) profile;
@@ -332,6 +366,8 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "NUID cannot be edited");
         txtCreated.setEnabled(true);
         cbxRole.setEnabled(true);
+        txtEmail.setEnabled(true);
+        txtPhone.setEnabled(true);
     }
 
     private void resetpassword() {
