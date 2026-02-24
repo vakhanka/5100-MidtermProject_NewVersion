@@ -279,7 +279,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
     private void addRowtoTable(CourseOffer co){
         DefaultTableModel model = (DefaultTableModel) tblCourse.getModel();
         String courseId   = co.getCourseNumber();
-        String courseName = co.getSubjectCourse().name; 
+        String courseName = co.getSubjectCourse().getName(); 
         String teacher = (co.getFacultyProfile() != null) ? co.getFacultyProfile().getPerson().getPersonId() : "TBA"; 
         int credits = co.getCreditHours(); 
         
@@ -321,7 +321,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
             }
             //HL: combo box selection - search by Course Name 
             else if (searchType.equals("Course Name")){
-                match = co.getSubjectCourse().name.toLowerCase().contains(query);
+                match = co.getSubjectCourse().getName().toLowerCase().contains(query);
             }
             if (match) addRowtoTable(co); //HL: if match is found add, add course offer to table 
         }
@@ -435,9 +435,11 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
     
     //HL: navigate student to Tuition Payment JPanel **********not yet created*********
     private void goToTuition(){ 
+        /*
         TuitionPaymentJPanel panel = new TuitionPaymentJPanel(business, student, CardSequencePanel); 
         CardSequencePanel.add("Tuition", panel);
         ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel); //HL: added import using AltEnter 
+        */
     }
     
     //HL: return student to previous panel 
