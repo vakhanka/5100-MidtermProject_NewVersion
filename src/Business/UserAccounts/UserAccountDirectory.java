@@ -80,14 +80,19 @@ public class UserAccountDirectory {
          return null; // username not found
      }
      
-     // Method for verifying if an email exists
-    public boolean isEmailTaken(String email) {
-    for (UserAccount ua : useraccountlist) {
-        Profile p = ua.getAssociatedPersonProfile();
-        if (p.getEmail() != null && p.getEmail().equalsIgnoreCase(email)) {
-            return true;
+     // Method for verifying if an email exists for editing existing accounts. 
+    public boolean isEmailTaken(String email, UserAccount exclude) {
+        for (UserAccount ua : useraccountlist) {
+            if (ua == exclude) continue; // skip the current account
+            Profile p = ua.getAssociatedPersonProfile();
+            if (p.getEmail() != null && p.getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
+    //Method for verifying if the email exists for editing new accounts.
+    public boolean isEmailTaken(String email) {
+        return isEmailTaken(email, null);
+    }
 }
