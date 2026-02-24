@@ -14,8 +14,6 @@ import Business.Person.Person;
 public class StudentProfile extends Profile {
 
     Person person;
-    private String email;
-    private String phone;
     //   Transcript transcript;
     //   EmploymentHistroy employmenthistory;
     
@@ -24,30 +22,11 @@ public class StudentProfile extends Profile {
 
     public StudentProfile(Person p) {
         super(p);
-        this.email = email;
-        this.phone = phone;
+
 
 //        transcript = new Transcript(this);
 //        employmenthistory = new EmploymentHistroy();
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    
-    
 
     @Override
     public String getRole() {

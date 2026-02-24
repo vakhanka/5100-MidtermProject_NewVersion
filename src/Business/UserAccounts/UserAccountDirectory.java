@@ -79,4 +79,15 @@ public class UserAccountDirectory {
         }
          return null; // username not found
      }
+     
+     // Method for verifying if an email exists
+    public boolean isEmailTaken(String email) {
+    for (UserAccount ua : useraccountlist) {
+        Profile p = ua.getAssociatedPersonProfile();
+        if (p.getEmail() != null && p.getEmail().equalsIgnoreCase(email)) {
+            return true;
+        }
+    }
+    return false;
+}
 }
