@@ -71,11 +71,9 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         btnEdit = new javax.swing.JButton();
         lblProfileType = new javax.swing.JLabel();
         txtCreated = new javax.swing.JTextField();
-        txtLastLogin = new javax.swing.JTextField();
-        txtLastUpdate = new javax.swing.JTextField();
+        txtNUID = new javax.swing.JTextField();
         lblCreated = new javax.swing.JLabel();
-        lblLastLogin = new javax.swing.JLabel();
-        lblLastUpdate = new javax.swing.JLabel();
+        lblNUID = new javax.swing.JLabel();
         cbxRole = new javax.swing.JComboBox<>();
         btnSavePw = new javax.swing.JButton();
         btnResetPw = new javax.swing.JButton();
@@ -144,22 +142,16 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         lblProfileType.setBounds(60, 100, 80, 20);
         add(txtCreated);
         txtCreated.setBounds(450, 90, 140, 30);
-        add(txtLastLogin);
-        txtLastLogin.setBounds(450, 140, 140, 30);
-        add(txtLastUpdate);
-        txtLastUpdate.setBounds(450, 190, 140, 30);
+        add(txtNUID);
+        txtNUID.setBounds(450, 140, 140, 30);
 
         lblCreated.setText("Created Date");
         add(lblCreated);
         lblCreated.setBounds(370, 100, 80, 16);
 
-        lblLastLogin.setText("Last Login Date");
-        add(lblLastLogin);
-        lblLastLogin.setBounds(360, 150, 90, 16);
-
-        lblLastUpdate.setText("Last Update Date");
-        add(lblLastUpdate);
-        lblLastUpdate.setBounds(350, 200, 100, 20);
+        lblNUID.setText("NUID");
+        add(lblNUID);
+        lblNUID.setBounds(360, 150, 90, 16);
 
         cbxRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Registrar", "Faculty", "Student" }));
         add(cbxRole);
@@ -223,8 +215,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbxRole;
     private javax.swing.JLabel lblConfirmPassword;
     private javax.swing.JLabel lblCreated;
-    private javax.swing.JLabel lblLastLogin;
-    private javax.swing.JLabel lblLastUpdate;
+    private javax.swing.JLabel lblNUID;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblProfileType;
@@ -233,8 +224,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     private javax.swing.JPasswordField pwConfirmPassword;
     private javax.swing.JPasswordField pwPassword;
     private javax.swing.JTextField txtCreated;
-    private javax.swing.JTextField txtLastLogin;
-    private javax.swing.JTextField txtLastUpdate;
+    private javax.swing.JTextField txtNUID;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
@@ -244,15 +234,14 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         Person person = selecteduseraccount.getAssociatedPersonProfile().getPerson();
         
         //Populate common fields
-        txtName.setText(person.getPersonId());
+        txtName.setText(person.getFullname());
         txtUsername.setText(selecteduseraccount.getUserLoginName());
-        txtLastLogin.setText(formatTimestamp(selecteduseraccount.getLastlogintimestamp()));
+        txtNUID.setText(person.getPersonId());
         pwPassword.setVisible(false);
         pwConfirmPassword.setVisible(false);
         lblPassword.setVisible(false);
         lblConfirmPassword.setVisible(false);
         txtCreated.setText(formatTimestamp(person.getCreatedtimestamp()));
-        txtLastUpdate.setText(formatTimestamp(selecteduseraccount.getLastupdatetimestamp()));
         cbxRole.setSelectedItem(selecteduseraccount.getProfile().getRole()); 
         btnSavePw.setVisible(false);
 
@@ -279,8 +268,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         cbxRole.setEnabled(false);
         txtName.setEnabled(false);
         txtUsername.setEnabled(false);
-        txtLastLogin.setEnabled(false);
-        txtLastUpdate.setEnabled(false);
+        txtNUID.setEnabled(false);
         txtCreated.setEnabled(false);
     }
 
@@ -289,8 +277,9 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         String name = txtName.getText().trim();
         String username = txtUsername.getText().trim();
         String role = (String) cbxRole.getSelectedItem();
+    //  String nuid = txtNUID.getText().trim();
     
-    // Validate fields
+    // Validate fields 
         if (role==null){
             JOptionPane.showMessageDialog(this, "Please select a role");
             return;
@@ -300,7 +289,13 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Name and Username are required");
             return;
         }
-        
+    //Verify username is not taken
+        UserAccount u = business.getUserAccountDirectory().findusername(username);
+        if (u!=null){
+            JOptionPane.showMessageDialog(this, "Username is taken. Please select another username.");
+            return;
+        }
+            
     // Update person name, user id, and role
         Person person = selecteduseraccount.getAssociatedPersonProfile().getPerson();
         person.setId(name);
@@ -312,14 +307,12 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             ep.setRole(role);  
         }
 
-    // Update the "last updated" timestamp
-        selecteduseraccount.updatelastupdate();
-    
+ 
     // Show success and go back
         JOptionPane.showMessageDialog(this, "User account updated successfully");
         CardSequencePanel.remove(this);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
-            }
+        }
         
 
         private String formatTimestamp(LocalDateTime timestamp) {
@@ -335,8 +328,8 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         txtUsername.setEnabled(true);
         pwPassword.setEnabled(true);
         pwConfirmPassword.setEnabled(true);
-        txtLastLogin.setEnabled(true);
-        txtLastUpdate.setEnabled(true);
+        txtNUID.setEnabled(false);
+        JOptionPane.showMessageDialog(this, "NUID cannot be edited");
         txtCreated.setEnabled(true);
         cbxRole.setEnabled(true);
     }
@@ -379,6 +372,6 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Password updated successfully");
         CardSequencePanel.remove(this);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
-            }
+        }
 
 }
