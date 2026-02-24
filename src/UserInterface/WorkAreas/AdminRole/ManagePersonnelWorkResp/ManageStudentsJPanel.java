@@ -6,9 +6,12 @@
 package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
 import Business.Business;
+import Business.Person.PersonDirectory;
+import Business.Profiles.StudentDirectory;
 import Business.Profiles.StudentProfile;
 import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,12 +28,14 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
     Business business;
     UserAccount selecteduseraccount;
     UserAccountDirectory users;
+    PersonDirectory persondirectory;
 
     public ManageStudentsJPanel(Business bz, JPanel jp) {
 
         CardSequencePanel = jp;
         this.business = bz;
         this.users = business.getUserAccountDirectory();
+        this.persondirectory = business.getPersonDirectory();
         initComponents();
         populatetable();
 
@@ -88,6 +93,11 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         jScrollPane1.setBounds(50, 140, 540, 190);
 
         cbxSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "By Name", "By Department", "By NUID" }));
+        cbxSearchType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxSearchTypeActionPerformed(evt);
+            }
+        });
         add(cbxSearchType);
         cbxSearchType.setBounds(140, 100, 100, 22);
 
@@ -130,6 +140,10 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         search();
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    private void cbxSearchTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSearchTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxSearchTypeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -143,15 +157,8 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void populatetable() {
-        //declare the table
+        cleartable();
         DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
-
-        //Clear all rows starting with the end
-        int rc = tblStudents.getRowCount();
-        int i;
-        for (i = rc - 1; i >= 0; i--) {
-            ((DefaultTableModel) tblStudents.getModel()).removeRow(i);
-        }
         
         //get the directory of all user accoutns in the system
         UserAccountDirectory uad = business.getUserAccountDirectory();
@@ -166,39 +173,89 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         //cast to specific StudentProfile to access student-specific methods
         StudentProfile bizStudent = (StudentProfile) ua.getAssociatedPersonProfile();
         
-        // get university-side profile through the bridge
-        university.Persona.StudentProfile uniStudent = bizStudent.getUniversityProfile();
+        addrowtotable(model, bizStudent);
+    }
+}
+        
+    
+    private void search() {
+        cleartable();
+        DefaultTableModel model = (DefaultTableModel) tblStudents.getModel(); 
+        
+    //grab search type and search term
+        String searchtype = (String) cbxSearchType.getSelectedItem();
+        String searchterm = txtSearchField.getText().trim();
+        
+    //if search term is empty, reload the table
+        if(searchterm.isEmpty()){
+            populatetable();
+            return;
+        }
+    //Get the Studentdirectory    
+        StudentDirectory sd = business.getStudentDirectory();
+    
+    //branch based on search type
+    if(searchtype.equals("By NUID")){
+        StudentProfile foundid = sd.findStudentbyID(searchterm);
+        
+        if(foundid !=null){
+            addrowtotable(model, foundid);
+        }
+    }else if (searchtype.equals("By Name")){
+        ArrayList<StudentProfile> results = sd.searchByName(searchterm);
+        
+        for (StudentProfile sp: results){
+            addrowtotable(model, sp);
+        }
+    }else if(searchtype.equals("By Department")){
+        //TO DO Need to discuss populating multiple departments
+        
+        populatetable();
+    }
+    
+    }
+    
+    
+    
+    //Helper Methods
+    private void cleartable() {
+    //declare the table
+        DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
 
-        //create local variables for student fields
+    //Clear all rows starting with the end
+        int rc = tblStudents.getRowCount();
+        int i;
+        for (i = rc - 1; i >= 0; i--) {
+            ((DefaultTableModel) tblStudents.getModel()).removeRow(i);
+        }
+    }
+    
+    private void addrowtotable(DefaultTableModel model, StudentProfile bizStudent) {
+        //Get university package StudentProfile through the implemented bridge method
+        university.Persona.StudentProfile uniStudent = bizStudent.getUniversityProfile();
+        
+    //extract all column values from the profile
         String name     = bizStudent.getPerson().getFullname();
         String nuid     = bizStudent.getPerson().getPersonId();
         String email    = bizStudent.getEmail() != null ? bizStudent.getEmail() : "";
-        String dept     = "Information Systems"; // all students in same dept
+        String dept     = "Information Systems";
         String standing = "";
         String cellno   = bizStudent.getPhone() != null ? bizStudent.getPhone() : "";
-            
-        // Academic standing requires an active transcript
-        if (uniStudent != null) {                                                   //if the business StudentProfile has an equivalent University Persona Profile
-            university.Persona.Transcript transcript = uniStudent.getTranscript();  //get the transcript
-            java.util.ArrayList<String> semesters = transcript.getSemesters();      //get the semesters from the transcript
-            if (!semesters.isEmpty()) {                                             //if semesters is not null, call getAcademicStanding method            
+        
+    
+    // Get academic standing from university side if available
+        if (uniStudent != null) {
+            university.Persona.Transcript transcript = uniStudent.getTranscript();
+            java.util.ArrayList<String> semesters = transcript.getSemesters();
+            if (!semesters.isEmpty()) {
                 String latestSemester = semesters.get(semesters.size() - 1);
                 standing = transcript.getAcademicStanding(latestSemester);
             }
         }
-        //pack all values into an array in the same order as the table columns and add as a new row
+    
+    // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo
         Object[] row = new Object[]{name, nuid, email, dept, standing, cellno};
         model.addRow(row);
     }
-}
-        
-
-    
-    
-    private void search() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    
 
 }
