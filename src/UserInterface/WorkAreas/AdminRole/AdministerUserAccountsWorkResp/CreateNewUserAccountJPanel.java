@@ -10,6 +10,7 @@ import Business.Person.Person;
 import Business.Person.PersonDirectory;
 import Business.Profiles.EmployeeDirectory;
 import Business.Profiles.EmployeeProfile;
+import Business.Profiles.Profile;
 import Business.Profiles.RegistrarProfile;
 import Business.Profiles.StudentProfile;
 import Business.UserAccounts.UserAccount;
@@ -66,7 +67,7 @@ public class CreateNewUserAccountJPanel extends javax.swing.JPanel {
         lblName1 = new javax.swing.JLabel();
         lblName2 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
-        txtName2 = new javax.swing.JTextField();
+        txtName = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -144,8 +145,8 @@ public class CreateNewUserAccountJPanel extends javax.swing.JPanel {
         lblName2.setBounds(60, 150, 50, 20);
         add(txtEmail);
         txtEmail.setBounds(110, 190, 140, 30);
-        add(txtName2);
-        txtName2.setBounds(110, 140, 140, 30);
+        add(txtName);
+        txtName.setBounds(110, 140, 140, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -182,14 +183,14 @@ public class CreateNewUserAccountJPanel extends javax.swing.JPanel {
     private javax.swing.JPasswordField pwConfirmPassword;
     private javax.swing.JPasswordField pwPassword;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtName2;
+    private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
     private void saveuser() {
     // Extract values from fields
-        String name = txtPhone.getText().trim();
+        String name = txtName.getText().trim();
         String username = txtUsername.getText().trim();
         String role = (String) cbxRole.getSelectedItem();
         char[] passwordChars = pwPassword.getPassword();
@@ -200,7 +201,7 @@ public class CreateNewUserAccountJPanel extends javax.swing.JPanel {
         
         
     // Perform all validations
-    // Verify name, username, role are not blank
+    // Verify name, username, role, and email are not blank
         if (role==null){
             JOptionPane.showMessageDialog(this, "Please select a role.");
             return;
@@ -227,8 +228,12 @@ public class CreateNewUserAccountJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Username is taken. Please select another username.");
             return;
         }
-    
-    
+    //Verify email is not taken
+        if(business.getUserAccountDirectory().isEmailTaken(email)){
+            JOptionPane.showMessageDialog(this, "Email is already in use");
+            return;
+        }
+
 
 // Create new user account
     //Get the common directories    
@@ -238,9 +243,9 @@ public class CreateNewUserAccountJPanel extends javax.swing.JPanel {
     //Create Person
         Person np = pd.newPerson(name); // Create Person from Name Input
         if(role.equals("Student")){
-            savestudentprofile(np, username, password);
+            savestudentprofile(np, username, password, email, phone);
         }else{
-            saveemployeeprofile(np, username, password, role);
+            saveemployeeprofile(np, username, password, role, email, phone);
         }
     //Show Success Message
     JOptionPane.showMessageDialog(this, "User created successfully.");
@@ -250,39 +255,43 @@ public class CreateNewUserAccountJPanel extends javax.swing.JPanel {
     }
 
     private void clearfields() {
-        txtPhone.setText("");
         txtUsername.setText("");
         pwPassword.setText("");
+        pwConfirmPassword.setText("");  // was missing
         txtPhone.setText("");
         cbxRole.setSelectedIndex(0);
         txtEmail.setText("");
-        txtPhone.setText("");
+        txtName.setText("");
+        
     }    
         
 
-    private void savestudentprofile(Person np, String username, String password) {
+        private void savestudentprofile(Person np, String username, String password, String email, String phone) {
         StudentDirectory sd = business.getStudentDirectory();
         StudentProfile sp = sd.newStudentProfile(np);
-        UserAccountDirectory uad = business.getUserAccountDirectory();
-        UserAccount ua = uad.newUserAccount(sp, username, password);
+        sp.setEmail(email);    
+        sp.setPhone(phone);    
+        business.getUserAccountDirectory().newUserAccount(sp, username, password);
     }
 
-    private void saveemployeeprofile(Person np, String username, String password, String role) {
+        private void saveemployeeprofile(Person np, String username, String password, String role, String email, String phone) {
         EmployeeDirectory ed = business.getEmployeeDirectory();
-        if(role.equals("Registrar")){     
+        if (role.equals("Registrar")) {     
             RegistrarProfile rp = ed.newRegistrarProfile(np);
-            UserAccountDirectory uad = business.getUserAccountDirectory();
-            UserAccount ua1 = uad.newUserAccount(rp, username, password);    
-        } else if (role.equals("Admin")){
+            rp.setEmail(email);    
+            rp.setPhone(phone);    
+            business.getUserAccountDirectory().newUserAccount(rp, username, password);    
+        } else if (role.equals("Admin")) {
             EmployeeProfile ep = ed.newEmployeeProfile(np, "Admin");
-            UserAccountDirectory uad = business.getUserAccountDirectory();
-            UserAccount ua2 = uad.newUserAccount(ep, username, password);
+            ep.setEmail(email);    
+            ep.setPhone(phone);    
+            business.getUserAccountDirectory().newUserAccount(ep, username, password);
         } //else if (role.equals("Faculty")){                                               TO DO when FacultyProfile is live
             //FacultyProfile fp = ed.newFacultyProfile(np);
-            //UserAccountDirectory uad = business.getUserAccountDirectory();
-            //UserAccount ua3 = uad.newUserAccount(fp, username, password); 
-            
-    }
+            //fp.setEmail(email);
+            //fp.setPhone(phone);
+
+        }
         
     }
 
