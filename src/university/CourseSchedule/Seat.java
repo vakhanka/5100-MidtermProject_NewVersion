@@ -32,6 +32,13 @@ public class Seat {
         occupied = true;   
         return seatassignment;
     }
+    
+    public void releaseSeat() {
+        // Free this seat so another student can take it later
+        seatassignment = null;
+        occupied = false;
+    }
+    
     public CourseOffer getCourseOffer(){
         return courseoffer;
     }
