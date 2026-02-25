@@ -14,6 +14,7 @@ import Business.Profiles.StudentProfile;
 import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -39,6 +40,17 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         this.users = business.getUserAccountDirectory();
         this.persondirectory = business.getPersonDirectory();
         initComponents();
+    // Override table model to add hidden UserAccount column
+        tblEmployees.setModel(new DefaultTableModel(
+            new Object[][]{},
+            new String[]{"Name", "NUID", "Email", "Department", "CellNo", "Office Hours", "ua"}
+        )); 
+        
+    // Add hidden column to store ua object
+    // Hide the last column — it holds the UserAccount object, not for display
+        tblEmployees.getColumnModel().getColumn(6).setMinWidth(0);
+        tblEmployees.getColumnModel().getColumn(6).setMaxWidth(0);
+        tblEmployees.getColumnModel().getColumn(6).setWidth(0);        
         populatetable();
 
     }
@@ -79,13 +91,13 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
 
         tblEmployees.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Name", "NUID", "Email", "Department", "Academic Status", "CellNo", "Office Hours"
+                "Name", "NUID", "Email", "Department", "CellNo", "Office Hours"
             }
         ));
         jScrollPane1.setViewportView(tblEmployees);
@@ -94,6 +106,11 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         jScrollPane1.setBounds(40, 80, 540, 190);
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         add(btnDelete);
         btnDelete.setBounds(510, 420, 72, 23);
 
@@ -113,6 +130,21 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+
+    int row = tblEmployees.getSelectedRow();
+    if(row <0){
+        JOptionPane.showMessageDialog(this, "Please select a row to continue");
+        return;
+    }
+    // Retrieve UserAccount from hidden column 7
+    UserAccount u = (UserAccount) tblEmployees.getValueAt(row, 6);
+    if (u == null) return;
+
+    users.removeUser(u);
+    populatetable();
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -144,6 +176,7 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         
         addrowtotable(model, bizEmployee);
     }
+
 }
 
     
@@ -169,11 +202,13 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         String dept     = "Information Systems";
         String standing = "";
         String cellno   = bizEmployee.getPhone() != null ? bizEmployee.getPhone() : "";
+    //  String officehrs = biz.Employee.getPerson.getOfficeHours();                             TO DO Needs to add the office Hours Attribute to the RegistrarProfile
         
-    
+    // Store nuid as an object to use on the hidden column
+        UserAccount ua = users.findUserAccount(nuid);
     
     // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo
-        Object[] row = new Object[]{name, nuid, email, dept, standing, cellno};
+        Object[] row = new Object[]{name, nuid, email, dept, standing, cellno, ua};                 ///TO DO Add Office hours once it exists
         model.addRow(row);
     }
 
