@@ -36,7 +36,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
     private CourseSchedule currentSchedule; // HL: added import using AltEnter
     
     //HL: match to the semester string used in ConfigureABusiness.java ********************confirm w/ team what semester we want to use
-    private static final String CURRENT_SEMESTER = "Spring 2026"; 
+    private static final String CURRENT_SEMESTER = "Fall 2025"; 
 
     /**
      * Creates new form CourseRegistrationJPanel

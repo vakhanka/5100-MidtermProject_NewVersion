@@ -175,6 +175,7 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 
         }
 
+ 
         // Registrar role routing: load Registrar dashboard when user logs in as RegistrarProfile.
         
         if (profile instanceof RegistrarProfile) {

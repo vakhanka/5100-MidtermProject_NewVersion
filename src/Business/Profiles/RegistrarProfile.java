@@ -11,8 +11,11 @@ import Business.Person.Person;
  * @author Lanre
  */
 public class RegistrarProfile extends Profile {
+    
+    
     public RegistrarProfile(Person p) {
         super(p);
+        
     }
 
     @Override

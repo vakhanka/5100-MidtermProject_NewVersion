@@ -114,8 +114,9 @@ public class Department {
 
         co.assignEmptySeat(cl);
 
-    }    
+    }
     
+  
     @Override
     public String toString() {
         return name;

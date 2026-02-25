@@ -35,7 +35,7 @@ public class StudentDirectory {
         return sp;
     }
 
-    public StudentProfile findStudent(String id) {
+    public StudentProfile findStudentbyID(String id) {
 
         for (StudentProfile sp : studentlist) {
 
@@ -44,6 +44,17 @@ public class StudentDirectory {
             }
         }
             return null; //not found after going through the whole list
-         }
+    }
+    
+    //adding a method to search by name
+    public ArrayList<StudentProfile> searchByName(String name) {
+    ArrayList<StudentProfile> results = new ArrayList<>();
+    for (StudentProfile sp : studentlist) {
+        if (sp.getPerson().getFullname().toLowerCase().contains(name.toLowerCase())) {
+            results.add(sp);
+        }
+    }
+    return results;
+}
     
 }

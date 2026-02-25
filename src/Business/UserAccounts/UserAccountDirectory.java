@@ -59,4 +59,40 @@ public class UserAccountDirectory {
      public void removeUser(UserAccount ua){
          useraccountlist.remove(ua);
      }
+     /*public Person findPerson(String id) {
+
+        for (Person p : personlist) {
+
+            if (p.isMatch(id)) {
+                return p;
+            }
+        }
+            return null; //not found after going through the whole list
+         }*/
+     public UserAccount findusername (String un){
+         
+         for (UserAccount ua : useraccountlist){
+             
+             if (ua.getUserLoginName().equals(un)){
+                 return ua;
+             }
+        }
+         return null; // username not found
+     }
+     
+     // Method for verifying if an email exists for editing existing accounts. 
+    public boolean isEmailTaken(String email, UserAccount exclude) {
+        for (UserAccount ua : useraccountlist) {
+            if (ua == exclude) continue; // skip the current account
+            Profile p = ua.getAssociatedPersonProfile();
+            if (p.getEmail() != null && p.getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    //Method for verifying if the email exists for editing new accounts.
+    public boolean isEmailTaken(String email) {
+        return isEmailTaken(email, null);
+    }
 }
