@@ -65,6 +65,12 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
 
         lblStudent.setText("Student");
 
+        cmbStudent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbStudentActionPerformed(evt);
+            }
+        });
+
         lblDepartment.setText("Department");
 
         lblSemester.setText("Semester");
@@ -113,10 +119,25 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         jScrollPane2.setViewportView(tblStudentSchedule);
 
         btnBack.setText("<<<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         btnEnroll.setText("Enroll");
+        btnEnroll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnrollActionPerformed(evt);
+            }
+        });
 
         btnDrop.setText("Drop");
+        btnDrop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDropActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -212,7 +233,117 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         // 4) Populate the offerings table
         populateOfferingsTable(currentSchedule);
 
+        university.CourseSchedule.CourseLoad cl = getSelectedStudentCourseLoad(semester);
+        if (cl != null) {
+            populateStudentScheduleTable(cl);
+        }
     }//GEN-LAST:event_btnLoadActionPerformed
+
+    private void cmbStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStudentActionPerformed
+        // TODO add your handling code here:
+        // Refresh student schedule only if semester is set and schedule is loaded
+        String semester = txtSemester.getText().trim();
+        if (semester.isEmpty()) {
+            return;
+        }
+        if (currentSchedule == null) {
+            return;
+        }
+
+        university.CourseSchedule.CourseLoad cl = getSelectedStudentCourseLoad(semester);
+        if (cl != null) {
+            populateStudentScheduleTable(cl);
+        }
+    }//GEN-LAST:event_cmbStudentActionPerformed
+
+    private void btnEnrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnrollActionPerformed
+        // TODO add your handling code here:
+        // 1) Ensure a course is selected in offerings table
+        int selectedRow = tblOfferings.getSelectedRow();
+        if (selectedRow < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Select a course to enroll.");
+            return;
+        }
+
+        // 2) Get semester
+        String semester = txtSemester.getText().trim();
+        if (semester.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Enter semester first.");
+            return;
+        }
+
+        // 3) Get selected course number from table
+        String courseNumber = tblOfferings.getValueAt(selectedRow, 0).toString();
+
+        // 4) Get selected student CourseLoad
+        university.CourseSchedule.CourseLoad cl = getSelectedStudentCourseLoad(semester);
+        if (cl == null) {
+            return;
+        }
+
+        // 5) Prevent duplicate enrollment
+        if (cl.isAlreadyEnrolled(courseNumber)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Student already enrolled.");
+            return;
+        }
+
+        // 6) Get CourseOffer from schedule
+        university.CourseSchedule.CourseOffer co
+                = currentSchedule.getCourseOfferByNumber(courseNumber);
+
+        // 7) Attempt seat assignment
+        university.CourseSchedule.SeatAssignment sa = cl.newSeatAssignment(co);
+
+        if (sa == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Course is full.");
+            return;
+        }
+
+        // 8) Refresh both tables
+        populateOfferingsTable(currentSchedule);
+        populateStudentScheduleTable(cl);
+    }//GEN-LAST:event_btnEnrollActionPerformed
+
+    private void btnDropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDropActionPerformed
+        // TODO add your handling code here:
+        // 1) Ensure a course is selected in the student schedule table
+        int selectedRow = tblStudentSchedule.getSelectedRow();
+        if (selectedRow < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Select an enrolled course to drop.");
+            return;
+        }
+
+        // 2) Get semester
+        String semester = txtSemester.getText().trim();
+        if (semester.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Enter semester first.");
+            return;
+        }
+
+        // 3) Get course number from selected row
+        String courseNumber = tblStudentSchedule.getValueAt(selectedRow, 0).toString();
+
+        // 4) Get the student's CourseLoad for the semester
+        university.CourseSchedule.CourseLoad cl = getSelectedStudentCourseLoad(semester);
+        if (cl == null) {
+            return;
+        }
+
+        // 5) Drop course (frees seat + removes seatassignment)
+        cl.dropCourse(courseNumber);
+
+        // 6) Refresh both tables
+        populateOfferingsTable(currentSchedule);
+        populateStudentScheduleTable(cl);
+    }//GEN-LAST:event_btnDropActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        // Go back to previous panel in CardLayout
+        CardSequencePanel.remove(this);
+        java.awt.CardLayout layout = (java.awt.CardLayout) CardSequencePanel.getLayout();
+        layout.previous(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -295,5 +426,27 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
 
             model.addRow(new Object[]{courseId, courseName, faculty, credits});
         }
+    }
+    
+    private university.CourseSchedule.CourseLoad getSelectedStudentCourseLoad(String semester) {
+        // Get selected Business student profile
+        StudentProfile sp = (StudentProfile) cmbStudent.getSelectedItem();
+        if (sp == null) {
+            return null;
+        }
+
+        // Bridge to university student profile (where transcript/courseload lives)
+        university.Persona.StudentProfile usp = sp.getUniversityProfile();
+        if (usp == null) {
+            return null;
+        }
+
+        // Get or create courseload for this semester
+        university.CourseSchedule.CourseLoad cl = usp.getCourseLoadBySemester(semester);
+        if (cl == null) {
+            cl = usp.newCourseLoad(semester);
+        }
+
+        return cl;
     }
 }
