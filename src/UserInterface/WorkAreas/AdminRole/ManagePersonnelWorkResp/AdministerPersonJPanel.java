@@ -10,7 +10,7 @@ import Business.Person.Person;
 import Business.Profiles.EmployeeProfile;
 import Business.Profiles.Profile;
 import Business.Profiles.StudentProfile;
-//import Business.Profiles.FacultyProfile; TO DO When Emmanuael creates it
+import Business.Profiles.FacultyProfile; 
 import Business.UserAccounts.UserAccount;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -43,10 +43,6 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
 
 
     }
-
-    //public void refreshTable() {
-
-    //}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -268,7 +264,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         txtPhone.setText(selecteduseraccount.getAssociatedPersonProfile().getPhone());
 
         //Get Profile
-        /*Populate any role-specific fields and attributes when they are created
+        //Populate any role-specific fields and attributes when they are created
         Profile profile = selecteduseraccount.getAssociatedPersonProfile();
         
         if (profile instanceof EmployeeProfile) {
@@ -284,8 +280,8 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             StudentProfile sp = (StudentProfile) profile;
    
             }
-        }*/
-    }
+        }
+    
     private void setviewmode() {
         cbxRole.setEnabled(false);
         txtName.setEnabled(false);
@@ -409,5 +405,5 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         CardSequencePanel.remove(this);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
         }
-
+  
 }
