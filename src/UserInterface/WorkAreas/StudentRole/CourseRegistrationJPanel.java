@@ -36,7 +36,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
     private CourseSchedule currentSchedule; // HL: added import using AltEnter
     
     //HL: match to the semester string used in ConfigureABusiness.java ********************confirm w/ team what semester we want to use
-    private static final String CURRENT_SEMESTER = "Spring 2026"; 
+    private static final String CURRENT_SEMESTER = "Fall 2025"; 
 
     /**
      * Creates new form CourseRegistrationJPanel
@@ -279,7 +279,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
     private void addRowtoTable(CourseOffer co){
         DefaultTableModel model = (DefaultTableModel) tblCourse.getModel();
         String courseId   = co.getCourseNumber();
-        String courseName = co.getSubjectCourse().name; 
+        String courseName = co.getSubjectCourse().getName(); 
         String teacher = (co.getFacultyProfile() != null) ? co.getFacultyProfile().getPerson().getPersonId() : "TBA"; 
         int credits = co.getCreditHours(); 
         
@@ -321,7 +321,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
             }
             //HL: combo box selection - search by Course Name 
             else if (searchType.equals("Course Name")){
-                match = co.getSubjectCourse().name.toLowerCase().contains(query);
+                match = co.getSubjectCourse().getName().toLowerCase().contains(query);
             }
             if (match) addRowtoTable(co); //HL: if match is found add, add course offer to table 
         }
