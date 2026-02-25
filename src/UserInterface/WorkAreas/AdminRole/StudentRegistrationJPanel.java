@@ -10,6 +10,7 @@ import university.CourseSchedule.CourseSchedule;
 import university.Department.Department;
 import Business.Profiles.StudentProfile;
 
+
 /**
  *
  * @author Lanre
@@ -34,6 +35,8 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
 
         populateDepartments(); // load departments into dropdown
         populateStudents();    // load students into dropdown
+  
+ 
     }
 
     /**
@@ -67,6 +70,11 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         lblSemester.setText("Semester");
 
         btnLoad.setText("Load");
+        btnLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadActionPerformed(evt);
+            }
+        });
 
         tblOfferings.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -172,6 +180,40 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
+        // TODO add your handling code here:
+        // 1) Read selected department from dropdown
+        //System.out.println("LOAD CLICKED");
+        Department d = (Department) cmbDepartment.getSelectedItem();
+        if (d == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Select a department.");
+            return;
+        }
+
+        // 2) Read semester from text field
+        String semester = txtSemester.getText().trim();
+        if (semester.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Enter a semester (e.g., Fall 2025).");
+            return;
+        }
+
+        // 3) Get the course schedule for that semester (create if missing)
+        currentSchedule = d.getCourseSchedule(semester);
+        if (currentSchedule == null) {
+            // create an empty schedule if it doesn't exist yet
+            currentSchedule = d.newCourseSchedule(semester);
+        }
+
+        //System.out.println("Dept=" + d + ", semester=" + semester);
+        
+        //System.out.println("Schedule is null? " + (currentSchedule == null));
+        //System.out.println("Offerings count = " + currentSchedule.getSchedule().size());
+        
+        // 4) Populate the offerings table
+        populateOfferingsTable(currentSchedule);
+
+    }//GEN-LAST:event_btnLoadActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -201,6 +243,57 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         cmbStudent.removeAllItems();
         for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
             cmbStudent.addItem(sp);
+        }
+    }
+
+    private void populateOfferingsTable(CourseSchedule cs) {
+        // clear and refill offerings table from schedule
+        javax.swing.table.DefaultTableModel model
+                = (javax.swing.table.DefaultTableModel) tblOfferings.getModel();
+        model.setRowCount(0);
+
+        for (university.CourseSchedule.CourseOffer co : cs.getSchedule()) {
+            // key used for enroll/drop lookups
+            String courseId = co.getCourseNumber();
+
+            // display-friendly course name
+            String courseName = co.getSubjectCourse().getName();
+
+            // show instructor if assigned, otherwise TBA
+            String faculty = (co.getFacultyProfile() != null)
+                    ? co.getFacultyProfile().getPerson().getPersonId()
+                    : "TBA";
+
+            // credits shown in table
+            int credits = co.getCreditHours();
+
+            
+            String seats = (co.getEmptySeat() != null) ? "Yes" : "Full";
+
+            model.addRow(new Object[]{courseId, courseName, faculty, credits, seats});
+        }
+    }
+
+    private void populateStudentScheduleTable(university.CourseSchedule.CourseLoad cl) {
+        // Clear and refill student schedule table from the CourseLoad
+        javax.swing.table.DefaultTableModel model
+                = (javax.swing.table.DefaultTableModel) tblStudentSchedule.getModel();
+        model.setRowCount(0);
+
+        for (university.CourseSchedule.SeatAssignment sa : cl.getSeatAssignments()) {
+
+            university.CourseSchedule.CourseOffer co = sa.getCourseOffer();
+
+            String courseId = co.getCourseNumber();                 // used for drop
+            String courseName = co.getSubjectCourse().getName();    // display name
+
+            String faculty = (co.getFacultyProfile() != null)
+                    ? co.getFacultyProfile().getPerson().getPersonId()
+                    : "TBA";
+
+            int credits = sa.getCreditHours();                      // course credits
+
+            model.addRow(new Object[]{courseId, courseName, faculty, credits});
         }
     }
 }
