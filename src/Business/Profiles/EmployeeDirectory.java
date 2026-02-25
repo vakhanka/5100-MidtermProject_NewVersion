@@ -19,14 +19,14 @@ public class EmployeeDirectory {
     Business business;
     ArrayList<EmployeeProfile> employeelist;
     ArrayList<RegistrarProfile> registrarlist;
-  //ArrayList<FacultyProfile> facultylist; To implement once FacultyProfile class exists  
+    ArrayList<FacultyProfile> facultylist;  
 
     public EmployeeDirectory(Business d) {
 
         business = d;
         employeelist = new ArrayList();
         registrarlist = new ArrayList();
-      //facultylist = new ArrayList();  TO DO when FacultyProfile is added  
+        facultylist = new ArrayList();    
 
     }
 
@@ -43,16 +43,13 @@ public class EmployeeDirectory {
         registrarlist.add(rp);
         return rp;
     }
-    
-    //TO DO When FacultyProfile is added
-    
-  /*public FacultyProfile newFacultyProfile(Person p) {
+     
+    public FacultyProfile newFacultyProfile(Person p) {
 
         FacultyProfile fp = new FacultyProfile(p);
         facultylist.add(fp);
         return fp;
     }  
-*/
 
     public EmployeeProfile findEmployee(String id) {
 
