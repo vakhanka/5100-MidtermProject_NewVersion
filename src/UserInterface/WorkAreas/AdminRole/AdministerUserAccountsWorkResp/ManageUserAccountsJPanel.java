@@ -43,7 +43,7 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
 
     public void refreshTable() {
 
-//clear supplier table
+
         int rc = UserAccountTable.getRowCount();
         int i;
         for (i = rc - 1; i >= 0; i--) {
@@ -58,11 +58,12 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
 
         for (UserAccount ua : uad.getUserAccountList()) {
 
-            Object[] row = new Object[5];
+            Object[] row = new Object[4];
             row[0] = ua;
-            row[1] = ua.getPersonId();
-            row[2] = formattimestamp(ua.getLastlogintimestamp());
-            row[3] = ua.getRole();
+            row[1] = ua.getRole();  
+            row[2] = ua.getPersonName();
+            row[3] = ua.getPersonId();
+            
 
             ((DefaultTableModel) UserAccountTable.getModel()).addRow(row);
         }
@@ -126,7 +127,7 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "User Name", "User ID (Full Name)", "Last Login", "Role"
+                "Username", "Role", "Full Name", "NUID"
             }
         ));
         UserAccountTable.addMouseListener(new java.awt.event.MouseAdapter() {

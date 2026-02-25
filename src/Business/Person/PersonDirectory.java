@@ -20,15 +20,22 @@ public class PersonDirectory {
        personlist = new ArrayList();
 
     }
+      //Auto ID Generation Method
+    private static int counter = 1000;
 
-    public Person newPerson(String id) {
+    public static String generateId() {
+    return "N" + String.format("%08d", counter++);
+    }  
 
-        Person p = new Person(id);
+    public Person newPerson(String fullname) {
+
+        String id = generateId();
+        Person p = new Person(id, fullname);
         personlist.add(p);
         return p;
     }
 
-    public Person findPerson(String id) {
+    public Person findPersonbyID(String id) {
 
         for (Person p : personlist) {
 
@@ -39,4 +46,14 @@ public class PersonDirectory {
             return null; //not found after going through the whole list
          }
     
+    //Method for searching by partial name
+    public ArrayList<Person> searchByName(String name) {
+    ArrayList<Person> results = new ArrayList<>();
+    for (Person p : personlist) {
+        if (p.getFullname().toLowerCase().contains(name.toLowerCase())) {
+            results.add(p);
+        }
+    }
+    return results;
+}
 }

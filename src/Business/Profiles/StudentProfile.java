@@ -14,7 +14,7 @@ import Business.Person.Person;
 public class StudentProfile extends Profile {
 
     Person person;
-//    Transcript transcript;
+    //   Transcript transcript;
     //   EmploymentHistroy employmenthistory;
     
     //bridge to Person in University Package
@@ -22,6 +22,7 @@ public class StudentProfile extends Profile {
 
     public StudentProfile(Person p) {
         super(p);
+
 
 //        transcript = new Transcript(this);
 //        employmenthistory = new EmploymentHistroy();
