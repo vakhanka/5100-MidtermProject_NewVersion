@@ -40,6 +40,7 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         this.users = business.getUserAccountDirectory();
         this.persondirectory = business.getPersonDirectory();
         initComponents();
+        
     // Override table model to add hidden UserAccount column
         tblEmployees.setModel(new DefaultTableModel(
             new Object[][]{},
@@ -76,7 +77,7 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         setLayout(null);
 
         lblPageTitle.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        lblPageTitle.setText("Student Accounts");
+        lblPageTitle.setText("Employee Accounts");
         add(lblPageTitle);
         lblPageTitle.setBounds(21, 20, 550, 28);
 
@@ -103,7 +104,7 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblEmployees);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(40, 80, 540, 190);
+        jScrollPane1.setBounds(40, 80, 800, 190);
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -115,6 +116,11 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         btnDelete.setBounds(510, 420, 72, 23);
 
         btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         add(btnEdit);
         btnEdit.setBounds(40, 290, 72, 23);
 
@@ -145,6 +151,23 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
     users.removeUser(u);
     populatetable();
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblEmployees.getSelectedRow();
+        
+        if(selectedRow >=0){
+            selecteduseraccount = (UserAccount) tblEmployees.getValueAt(selectedRow, 6);
+        }
+        
+        if(selecteduseraccount==null) 
+            return;
+            AdministerPersonJPanel mpjp = new AdministerPersonJPanel (selecteduseraccount,business, CardSequencePanel);
+            CardSequencePanel.add(mpjp);
+            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);        
+        
+        
+    }//GEN-LAST:event_btnEditActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -211,5 +234,21 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         Object[] row = new Object[]{name, nuid, email, dept, standing, cellno, ua};                 ///TO DO Add Office hours once it exists
         model.addRow(row);
     }
+    
+    private void tblEmployeesMousePressed(java.awt.event.MouseEvent evt) {                                              
+        // Extracts the row (user account) in the table that is selected by the user
+        int size = tblEmployees.getRowCount();
+        int selectedrow = tblEmployees.getSelectionModel().getLeadSelectionIndex();
+
+        if (selectedrow < 0 || selectedrow > size - 1) {
+            return;
+        }
+        selecteduseraccount = (UserAccount) tblEmployees.getValueAt(selectedrow, 6);
+        if (selecteduseraccount == null) {
+            return;
+        
+        
+        }        
+    }      
 
 }
