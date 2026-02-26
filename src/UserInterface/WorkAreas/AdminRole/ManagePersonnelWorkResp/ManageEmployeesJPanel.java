@@ -7,13 +7,9 @@ package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
 import Business.Business;
 import Business.Person.PersonDirectory;
-import Business.Profiles.EmployeeDirectory;
-import Business.Profiles.EmployeeProfile;
 import Business.Profiles.RegistrarProfile;
-import Business.Profiles.StudentProfile;
 import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -40,6 +36,8 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         this.users = business.getUserAccountDirectory();
         this.persondirectory = business.getPersonDirectory();
         initComponents();
+        
+        
         
     // Override table model to add hidden UserAccount column
         tblEmployees.setModel(new DefaultTableModel(
@@ -223,15 +221,14 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         String nuid     = bizEmployee.getPerson().getPersonId();
         String email    = bizEmployee.getEmail() != null ? bizEmployee.getEmail() : "";
         String dept     = "Information Systems";
-        String standing = "";
         String cellno   = bizEmployee.getPhone() != null ? bizEmployee.getPhone() : "";
-    //  String officehrs = biz.Employee.getPerson.getOfficeHours();                             TO DO Needs to add the office Hours Attribute to the RegistrarProfile
+        String officehrs = bizEmployee.getOfficeHours();                            
         
     // Store nuid as an object to use on the hidden column
         UserAccount ua = users.findUserAccount(nuid);
     
     // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo
-        Object[] row = new Object[]{name, nuid, email, dept, standing, cellno, ua};                 ///TO DO Add Office hours once it exists
+        Object[] row = new Object[]{name, nuid, email, dept, cellno, officehrs, ua};                 ///TO DO Add Office hours once it exists
         model.addRow(row);
     }
     
@@ -249,6 +246,8 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         
         
         }        
-    }      
+    }
+    
+
 
 }
