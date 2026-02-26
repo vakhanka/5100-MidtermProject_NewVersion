@@ -11,6 +11,7 @@ import Business.Profiles.EmployeeProfile;
 import Business.Profiles.Profile;
 import Business.Profiles.StudentProfile;
 import Business.Profiles.FacultyProfile; 
+import Business.Profiles.RegistrarProfile;
 import Business.UserAccounts.UserAccount;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -77,6 +78,8 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         txtPhone = new javax.swing.JTextField();
         lblEmail = new javax.swing.JLabel();
         lblPhone = new javax.swing.JLabel();
+        txtSpAttribute = new javax.swing.JTextField();
+        lblSpAttribute = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -186,6 +189,12 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         lblPhone.setText("Phone");
         add(lblPhone);
         lblPhone.setBounds(370, 200, 80, 16);
+        add(txtSpAttribute);
+        txtSpAttribute.setBounds(450, 240, 140, 30);
+
+        lblSpAttribute.setText("Special Attribute");
+        add(lblSpAttribute);
+        lblSpAttribute.setBounds(310, 250, 140, 20);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -233,6 +242,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblProfileType;
+    private javax.swing.JLabel lblSpAttribute;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JPasswordField pwConfirmPassword;
@@ -242,6 +252,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtNUID;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtSpAttribute;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
@@ -262,6 +273,8 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         btnSavePw.setVisible(false);
         txtEmail.setText(selecteduseraccount.getAssociatedPersonProfile().getEmail());
         txtPhone.setText(selecteduseraccount.getAssociatedPersonProfile().getPhone());
+        txtSpAttribute.setVisible(false);
+        lblSpAttribute.setVisible(false);
 
         //Get Profile
         //Populate any role-specific fields and attributes when they are created
@@ -269,7 +282,14 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         
         if (profile instanceof EmployeeProfile) {
         EmployeeProfile ep = (EmployeeProfile) profile;
+
         
+        }else if (profile instanceof RegistrarProfile) {
+        RegistrarProfile rp = (RegistrarProfile) profile;
+        lblSpAttribute.setText("Office Hours");
+        txtSpAttribute.setText(rp.getOfficeHours());
+        lblSpAttribute.setVisible(true);
+        txtSpAttribute.setVisible(true);
         }
         
         else if (profile instanceof FacultyProfile) {
@@ -282,6 +302,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             }
         }
     
+    
     private void setviewmode() {
         cbxRole.setEnabled(false);
         txtName.setEnabled(false);
@@ -290,6 +311,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         txtCreated.setEnabled(false);
         txtEmail.setEnabled(false);
         txtPhone.setEnabled(false);
+        txtSpAttribute.setEnabled(false);
     }
 
     private void updateuserinfo() {
@@ -335,7 +357,12 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         if (profile instanceof EmployeeProfile) {
             EmployeeProfile ep = (EmployeeProfile) profile;
             ep.setRole(role);  
-        }
+            
+    //Update special attribute Office Hours for the Registrar        
+        }else if (profile instanceof RegistrarProfile) {
+        RegistrarProfile rp = (RegistrarProfile) profile;
+        rp.setOfficeHours(txtSpAttribute.getText());
+}
 
  
     // Show success and go back
@@ -349,6 +376,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         if (timestamp == null) {
             return "Never";
         }
+       
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
         return timestamp.format(formatter);
         }
@@ -364,6 +392,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         cbxRole.setEnabled(true);
         txtEmail.setEnabled(true);
         txtPhone.setEnabled(true);
+        txtSpAttribute.setEnabled(true);
     }
 
     private void resetpassword() {
