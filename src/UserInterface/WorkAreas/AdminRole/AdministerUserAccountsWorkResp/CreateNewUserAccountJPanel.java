@@ -10,7 +10,7 @@ import Business.Person.Person;
 import Business.Person.PersonDirectory;
 import Business.Profiles.EmployeeDirectory;
 import Business.Profiles.EmployeeProfile;
-import Business.Profiles.Profile;
+import Business.Profiles.FacultyProfile;
 import Business.Profiles.RegistrarProfile;
 import Business.Profiles.StudentProfile;
 import Business.UserAccounts.UserAccount;
@@ -286,12 +286,13 @@ public class CreateNewUserAccountJPanel extends javax.swing.JPanel {
             ep.setEmail(email);    
             ep.setPhone(phone);    
             business.getUserAccountDirectory().newUserAccount(ep, username, password);
-        } //else if (role.equals("Faculty")){                                               TO DO when FacultyProfile is live
-            //FacultyProfile fp = ed.newFacultyProfile(np);
-            //fp.setEmail(email);
-            //fp.setPhone(phone);
+        }else if (role.equals("Faculty")){                                               
+            FacultyProfile fp = ed.newFacultyProfile(np);
+            fp.setEmail(email);
+            fp.setPhone(phone);
 
         }
         
     }
+}
 
