@@ -160,8 +160,8 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         
         if(selecteduseraccount==null) 
             return;
-            AdministerPersonJPanel mpjp = new AdministerPersonJPanel (selecteduseraccount,business, CardSequencePanel);
-            CardSequencePanel.add(mpjp);
+            AdministerRegistrarJPanel arp = new AdministerRegistrarJPanel (selecteduseraccount,business, CardSequencePanel);
+            CardSequencePanel.add(arp);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);        
         
         
