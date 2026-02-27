@@ -102,7 +102,7 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblEmployees);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(40, 80, 800, 190);
+        jScrollPane1.setBounds(40, 80, 550, 190);
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -161,7 +161,7 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         if(selecteduseraccount==null) 
             return;
             AdministerRegistrarJPanel arp = new AdministerRegistrarJPanel (selecteduseraccount,business, CardSequencePanel);
-            CardSequencePanel.add(arp);
+            CardSequencePanel.add("Administer Registrar Panel", arp);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);        
         
         
@@ -188,11 +188,11 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         //loop through the directory of all users
         for (UserAccount ua : uad.getUserAccountList()) {
             
-        //filter to only show Student Accounts
+        //filter to only show Registrar Accounts
         if (!(ua.getAssociatedPersonProfile() instanceof RegistrarProfile)) {
             continue;
         }
-        //cast to specific StudentProfile to access student-specific methods
+        //cast to specific RegistarProfile to access gegistrar-specific methods
         RegistrarProfile bizEmployee = (RegistrarProfile) ua.getAssociatedPersonProfile();
         
         addrowtotable(model, bizEmployee);
@@ -228,7 +228,7 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         UserAccount ua = users.findUserAccount(nuid);
     
     // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo
-        Object[] row = new Object[]{name, nuid, email, dept, cellno, officehrs, ua};                 ///TO DO Add Office hours once it exists
+        Object[] row = new Object[]{name, nuid, email, dept, cellno, officehrs, ua};                 
         model.addRow(row);
     }
     

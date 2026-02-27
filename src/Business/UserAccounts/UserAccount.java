@@ -55,6 +55,9 @@ public class UserAccount {
     public String getPersonId(){
         return profile.getPerson().getPersonId();
     }
+    public String getPersonName(){
+        return profile.getPerson().getFullname();
+    }
     public String getUserLoginName(){
         return username;
     }
