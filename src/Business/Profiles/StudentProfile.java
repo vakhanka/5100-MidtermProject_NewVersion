@@ -22,6 +22,7 @@ public class StudentProfile extends Profile {
 
     public StudentProfile(Person p) {
         super(p);
+        this.person = p; // sets this person for making findbyusername method work
 
 
 //        transcript = new Transcript(this);
