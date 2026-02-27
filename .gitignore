@@ -24,5 +24,9 @@ hs_err_pid*
 replay_pid*
 /build/
 /dist/
-/nbproject/private/
+# NetBeans user-specific files (DO NOT COMMIT)
+nbproject/private/
+nbproject/private.properties
+nbproject/private.xml
+nbproject/private/config.properties
 /build/
