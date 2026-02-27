@@ -58,6 +58,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         lblSearchBy = new javax.swing.JLabel();
         txtSearchField = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -121,6 +122,15 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         });
         add(btnSearch);
         btnSearch.setBounds(520, 100, 72, 23);
+
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+        add(btnEdit);
+        btnEdit.setBounds(510, 420, 72, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -144,9 +154,24 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxSearchTypeActionPerformed
 
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+    int selectedRow = tblStudents.getSelectedRow();
+        
+        if(selectedRow >=0){
+            selecteduseraccount = (UserAccount) tblStudents.getValueAt(selectedRow, 0);
+        }
+        
+        if(selecteduseraccount==null) return;
+        AdministerStudentJPanel asjp = new AdministerStudentJPanel (selecteduseraccount,business, CardSequencePanel);
+        CardSequencePanel.add(asjp);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);    
+        
+    }//GEN-LAST:event_btnEditActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> cbxSearchType;
     private javax.swing.JScrollPane jScrollPane1;
