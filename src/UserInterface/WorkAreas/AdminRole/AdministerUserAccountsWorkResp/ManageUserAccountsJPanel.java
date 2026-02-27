@@ -61,7 +61,7 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
             Object[] row = new Object[4];
             row[0] = ua;
             row[1] = ua.getRole();  
-            row[2] = ua.getPersonName();
+            row[2] = ua.getAssociatedPersonProfile().getPerson().getFullname();
             row[3] = ua.getPersonId();
             
 
