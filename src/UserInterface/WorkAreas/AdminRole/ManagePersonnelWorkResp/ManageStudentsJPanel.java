@@ -37,6 +37,18 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         this.users = business.getUserAccountDirectory();
         this.persondirectory = business.getPersonDirectory();
         initComponents();
+        
+        
+        //Override table model to add hidden UserAccount column
+        tblStudents.setModel(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Name","NUID","Email","Department","Academic Standing", "CellNo","ua"}
+        ));
+        
+        // Add hidden column to store an object
+        tblStudents.getColumnModel().getColumn(6).setMinWidth(0);
+        tblStudents.getColumnModel().getColumn(6).setMaxWidth(0);
+        tblStudents.getColumnModel().getColumn(6).setWidth(0);
         populatetable();
 
     }
@@ -58,6 +70,8 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         lblSearchBy = new javax.swing.JLabel();
         txtSearchField = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnClearSearch = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -121,6 +135,24 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         });
         add(btnSearch);
         btnSearch.setBounds(520, 100, 72, 23);
+
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+        add(btnEdit);
+        btnEdit.setBounds(510, 420, 72, 23);
+
+        btnClearSearch.setText("Clear Search");
+        btnClearSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearSearchActionPerformed(evt);
+            }
+        });
+        add(btnClearSearch);
+        btnClearSearch.setBounds(260, 70, 100, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -144,9 +176,32 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxSearchTypeActionPerformed
 
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+    int selectedRow = tblStudents.getSelectedRow();
+        
+        if(selectedRow >=0){
+            selecteduseraccount = (UserAccount) tblStudents.getValueAt(selectedRow, 6);
+        }
+        
+        if(selecteduseraccount==null) return;
+        AdministerStudentJPanel asjp = new AdministerStudentJPanel (selecteduseraccount,business, CardSequencePanel);
+        CardSequencePanel.add("Administer Student Panel",asjp);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);    
+        
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnClearSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearchActionPerformed
+        // TODO add your handling code here:
+
+        populatetable();
+        txtSearchField.setText("");
+    }//GEN-LAST:event_btnClearSearchActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnClearSearch;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> cbxSearchType;
     private javax.swing.JScrollPane jScrollPane1;
@@ -173,7 +228,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         //cast to specific StudentProfile to access student-specific methods
         StudentProfile bizStudent = (StudentProfile) ua.getAssociatedPersonProfile();
         
-        addrowtotable(model, bizStudent);
+        addrowtotable(model, bizStudent, ua);
     }
 }
         
@@ -181,6 +236,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
     private void search() {
         cleartable();
         DefaultTableModel model = (DefaultTableModel) tblStudents.getModel(); 
+        
         
     //grab search type and search term
         String searchtype = (String) cbxSearchType.getSelectedItem();
@@ -193,19 +249,21 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         }
     //Get the Studentdirectory    
         StudentDirectory sd = business.getStudentDirectory();
-    
+
     //branch based on search type
     if(searchtype.equals("By NUID")){
         StudentProfile foundid = sd.findStudentbyID(searchterm);
         
         if(foundid !=null){
-            addrowtotable(model, foundid);
+            UserAccount ua = users.findUserAccount(foundid.getPerson().getPersonId());
+            addrowtotable(model, foundid, ua);
         }
     }else if (searchtype.equals("By Name")){
         ArrayList<StudentProfile> results = sd.searchByName(searchterm);
         
         for (StudentProfile sp: results){
-            addrowtotable(model, sp);
+            UserAccount ua = users.findUserAccount(sp.getPerson().getPersonId());
+            addrowtotable(model, sp, ua);
         }
     }else if(searchtype.equals("By Department")){
         //TO DO Need to discuss populating multiple departments
@@ -230,7 +288,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         }
     }
     
-    private void addrowtotable(DefaultTableModel model, StudentProfile bizStudent) {
+    private void addrowtotable(DefaultTableModel model, StudentProfile bizStudent, UserAccount ua) {
         //Get university package StudentProfile through the implemented bridge method
         university.Persona.StudentProfile uniStudent = bizStudent.getUniversityProfile();
         
@@ -252,9 +310,8 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
                 standing = transcript.getAcademicStanding(latestSemester);
             }
         }
-    
-    // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo
-        Object[] row = new Object[]{name, nuid, email, dept, standing, cellno};
+    // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo, hidden column
+        Object[] row = new Object[]{name, nuid, email, dept, standing, cellno, ua};
         model.addRow(row);
     }
 

@@ -40,7 +40,7 @@ public abstract class Profile {
      
      
     
-     public abstract String getRole();
+    public abstract String getRole();
     
     public Person getPerson(){
         return person;

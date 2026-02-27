@@ -7,13 +7,9 @@ package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
 import Business.Business;
 import Business.Person.PersonDirectory;
-import Business.Profiles.EmployeeDirectory;
-import Business.Profiles.EmployeeProfile;
 import Business.Profiles.RegistrarProfile;
-import Business.Profiles.StudentProfile;
 import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -40,6 +36,9 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         this.users = business.getUserAccountDirectory();
         this.persondirectory = business.getPersonDirectory();
         initComponents();
+        
+        
+        
     // Override table model to add hidden UserAccount column
         tblEmployees.setModel(new DefaultTableModel(
             new Object[][]{},
@@ -76,7 +75,7 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         setLayout(null);
 
         lblPageTitle.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        lblPageTitle.setText("Student Accounts");
+        lblPageTitle.setText("Employee Accounts");
         add(lblPageTitle);
         lblPageTitle.setBounds(21, 20, 550, 28);
 
@@ -103,7 +102,7 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblEmployees);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(40, 80, 540, 190);
+        jScrollPane1.setBounds(40, 80, 550, 190);
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -115,6 +114,11 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         btnDelete.setBounds(510, 420, 72, 23);
 
         btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         add(btnEdit);
         btnEdit.setBounds(40, 290, 72, 23);
 
@@ -146,6 +150,23 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
     populatetable();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblEmployees.getSelectedRow();
+        
+        if(selectedRow >=0){
+            selecteduseraccount = (UserAccount) tblEmployees.getValueAt(selectedRow, 6);
+        }
+        
+        if(selecteduseraccount==null) 
+            return;
+            AdministerRegistrarJPanel arp = new AdministerRegistrarJPanel (selecteduseraccount,business, CardSequencePanel);
+            CardSequencePanel.add("Administer Registrar Panel", arp);
+            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);        
+        
+        
+    }//GEN-LAST:event_btnEditActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -167,11 +188,11 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         //loop through the directory of all users
         for (UserAccount ua : uad.getUserAccountList()) {
             
-        //filter to only show Student Accounts
+        //filter to only show Registrar Accounts
         if (!(ua.getAssociatedPersonProfile() instanceof RegistrarProfile)) {
             continue;
         }
-        //cast to specific StudentProfile to access student-specific methods
+        //cast to specific RegistarProfile to access gegistrar-specific methods
         RegistrarProfile bizEmployee = (RegistrarProfile) ua.getAssociatedPersonProfile();
         
         addrowtotable(model, bizEmployee);
@@ -200,16 +221,33 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         String nuid     = bizEmployee.getPerson().getPersonId();
         String email    = bizEmployee.getEmail() != null ? bizEmployee.getEmail() : "";
         String dept     = "Information Systems";
-        String standing = "";
         String cellno   = bizEmployee.getPhone() != null ? bizEmployee.getPhone() : "";
-    //  String officehrs = biz.Employee.getPerson.getOfficeHours();                             TO DO Needs to add the office Hours Attribute to the RegistrarProfile
+        String officehrs = bizEmployee.getOfficeHours();                            
         
     // Store nuid as an object to use on the hidden column
         UserAccount ua = users.findUserAccount(nuid);
     
     // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo
-        Object[] row = new Object[]{name, nuid, email, dept, standing, cellno, ua};                 ///TO DO Add Office hours once it exists
+        Object[] row = new Object[]{name, nuid, email, dept, cellno, officehrs, ua};                 
         model.addRow(row);
     }
+    
+    private void tblEmployeesMousePressed(java.awt.event.MouseEvent evt) {                                              
+        // Extracts the row (user account) in the table that is selected by the user
+        int size = tblEmployees.getRowCount();
+        int selectedrow = tblEmployees.getSelectionModel().getLeadSelectionIndex();
+
+        if (selectedrow < 0 || selectedrow > size - 1) {
+            return;
+        }
+        selecteduseraccount = (UserAccount) tblEmployees.getValueAt(selectedrow, 6);
+        if (selecteduseraccount == null) {
+            return;
+        
+        
+        }        
+    }
+    
+
 
 }

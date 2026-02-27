@@ -22,6 +22,7 @@ public class FacultyProfile extends Profile {
 
     public FacultyProfile(Person p) {
         super(p);
+        this.person = p;
 
 
 //        transcript = new Transcript(this);

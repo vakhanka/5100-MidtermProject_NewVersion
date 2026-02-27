@@ -7,11 +7,7 @@ package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
 import Business.Business;
 import Business.Person.Person;
-import Business.Profiles.EmployeeProfile;
-import Business.Profiles.Profile;
 import Business.Profiles.StudentProfile;
-import Business.Profiles.FacultyProfile; 
-import Business.Profiles.RegistrarProfile;
 import Business.UserAccounts.UserAccount;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +19,7 @@ import javax.swing.JPanel;
  *
  * @author kal bugrara
  */
-public class AdministerPersonJPanel extends javax.swing.JPanel {
+public class AdministerStudentJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ManageSuppliersJPanel
@@ -32,13 +28,12 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     UserAccount selecteduseraccount;
     Business business;
 
-    public AdministerPersonJPanel(UserAccount sua, Business bz, JPanel jp) {
+    public AdministerStudentJPanel(UserAccount sua, Business bz, JPanel jp) {
 
         CardSequencePanel = jp;
         this.business = bz;
         selecteduseraccount= sua;
         initComponents();
-        
         populatefields();
         setviewmode();
 
@@ -71,15 +66,13 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         txtNUID = new javax.swing.JTextField();
         lblCreated = new javax.swing.JLabel();
         lblNUID = new javax.swing.JLabel();
-        cbxRole = new javax.swing.JComboBox<>();
         btnSavePw = new javax.swing.JButton();
         btnResetPw = new javax.swing.JButton();
         txtEmail = new javax.swing.JTextField();
         txtPhone = new javax.swing.JTextField();
         lblEmail = new javax.swing.JLabel();
         lblPhone = new javax.swing.JLabel();
-        txtSpAttribute = new javax.swing.JTextField();
-        lblSpAttribute = new javax.swing.JLabel();
+        txtRole = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -94,7 +87,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         btnBack.setBounds(20, 430, 74, 23);
 
         lblTitle.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        lblTitle.setText("Manage User Account");
+        lblTitle.setText("Manage Student Account");
         add(lblTitle);
         lblTitle.setBounds(30, 20, 550, 28);
         add(txtUsername);
@@ -156,10 +149,6 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         add(lblNUID);
         lblNUID.setBounds(370, 100, 80, 16);
 
-        cbxRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Registrar", "Faculty", "Student" }));
-        add(cbxRole);
-        cbxRole.setBounds(140, 92, 140, 30);
-
         btnSavePw.setText("Save password");
         btnSavePw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,17 +178,21 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         lblPhone.setText("Phone");
         add(lblPhone);
         lblPhone.setBounds(370, 200, 80, 16);
-        add(txtSpAttribute);
-        txtSpAttribute.setBounds(450, 240, 140, 30);
 
-        lblSpAttribute.setText("Special Attribute");
-        add(lblSpAttribute);
-        lblSpAttribute.setBounds(310, 250, 140, 20);
+        txtRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRoleActionPerformed(evt);
+            }
+        });
+        add(txtRole);
+        txtRole.setBounds(140, 92, 140, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
-        CardSequencePanel.remove(this);
+        // I want to load a fresh ManageEmployeesJPanel so that the table refreshes
+                    
+        ManageStudentsJPanel msp = new ManageStudentsJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Students Panel", msp);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
 
@@ -226,6 +219,10 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         savepassword();
     }//GEN-LAST:event_btnSavePwActionPerformed
 
+    private void txtRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRoleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRoleActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -233,7 +230,6 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnResetPw;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSavePw;
-    private javax.swing.JComboBox<String> cbxRole;
     private javax.swing.JLabel lblConfirmPassword;
     private javax.swing.JLabel lblCreated;
     private javax.swing.JLabel lblEmail;
@@ -242,7 +238,6 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblProfileType;
-    private javax.swing.JLabel lblSpAttribute;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JPasswordField pwConfirmPassword;
@@ -252,148 +247,100 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtNUID;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhone;
-    private javax.swing.JTextField txtSpAttribute;
+    private javax.swing.JTextField txtRole;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
     private void populatefields() {
         //Get the Person for the user account
         Person person = selecteduseraccount.getAssociatedPersonProfile().getPerson();
-        
+                
         //Populate common fields
         txtName.setText(person.getFullname());
         txtUsername.setText(selecteduseraccount.getUserLoginName());
         txtNUID.setText(person.getPersonId());
+        txtCreated.setText(formatTimestamp(person.getCreatedtimestamp()));
+        txtEmail.setText(selecteduseraccount.getAssociatedPersonProfile().getEmail());
+        txtPhone.setText(selecteduseraccount.getAssociatedPersonProfile().getPhone());
+        txtRole.setText("Student");
+                
+        //hide password fields
         pwPassword.setVisible(false);
         pwConfirmPassword.setVisible(false);
         lblPassword.setVisible(false);
         lblConfirmPassword.setVisible(false);
-       // txtCreated.setText(formatTimestamp(person.getCreatedtimestamp()));
-        //txtLastUpdate.setText(formatTimestamp(selecteduseraccount.getLastupdatetimestamp()));
-        cbxRole.setSelectedItem(selecteduseraccount.getProfile().getRole()); 
         btnSavePw.setVisible(false);
-        txtEmail.setText(selecteduseraccount.getAssociatedPersonProfile().getEmail());
-        txtPhone.setText(selecteduseraccount.getAssociatedPersonProfile().getPhone());
-        txtSpAttribute.setVisible(false);
-        lblSpAttribute.setVisible(false);
-
-        //Get Profile
-        //Populate any role-specific fields and attributes when they are created
-        Profile profile = selecteduseraccount.getAssociatedPersonProfile();
         
-        if (profile instanceof EmployeeProfile) {
-        EmployeeProfile ep = (EmployeeProfile) profile;
-
+        // Populate Student-specific field
+        //RegistrarProfile rp = (RegistrarProfile) selecteduseraccount.getAssociatedPersonProfile();
+        //txtOfficeHours.setText(rp.getOfficeHours() != null ? rp.getOfficeHours() : "");
+    }
         
-        }else if (profile instanceof RegistrarProfile) {
-        RegistrarProfile rp = (RegistrarProfile) profile;
-        lblSpAttribute.setText("Office Hours");
-        txtSpAttribute.setText(rp.getOfficeHours());
-        lblSpAttribute.setVisible(true);
-        txtSpAttribute.setVisible(true);
-        }
-        
-        else if (profile instanceof FacultyProfile) {
-        FacultyProfile fp = (FacultyProfile) profile;
-       
-        }
-        else if (profile instanceof StudentProfile) {
-            StudentProfile sp = (StudentProfile) profile;
-   
-            }
-        }
-    
-    
     private void setviewmode() {
-        cbxRole.setEnabled(false);
         txtName.setEnabled(false);
         txtUsername.setEnabled(false);
         txtNUID.setEnabled(false);
         txtCreated.setEnabled(false);
         txtEmail.setEnabled(false);
         txtPhone.setEnabled(false);
-        txtSpAttribute.setEnabled(false);
+        txtRole.setEnabled(false);
+       // txtOfficeHours.setEnabled(false);
     }
 
     private void updateuserinfo() {
-    // Extract values from fields
         String name = txtName.getText().trim();
         String username = txtUsername.getText().trim();
-        String role = (String) cbxRole.getSelectedItem();
-    //  String nuid = txtNUID.getText().trim();
         String email = txtEmail.getText().trim();
         String phone = txtPhone.getText().trim();
-    
-    // Validate fields 
-        if (role==null){
-            JOptionPane.showMessageDialog(this, "Please select a role");
-            return;
-        }
-        
-        if (name.isBlank() || username.isBlank() ||email.isBlank()) {
+     //   String officeHours = txtOfficeHours.getText().trim();
+
+        // Validate required fields
+        if (name.isBlank() || username.isBlank() || email.isBlank()) {
             JOptionPane.showMessageDialog(this, "Name, Email, and Username are required");
             return;
         }
-    //Verify username is not taken
+
+        // Verify username is not taken
         UserAccount u = business.getUserAccountDirectory().findusername(username);
         if (u != null && u != selecteduseraccount) {
             JOptionPane.showMessageDialog(this, "Username is taken. Please select another username.");
-        return;
+            return;
         }
-        
-    //Verify email is not taken
+
+        // Verify email is not taken
         if (business.getUserAccountDirectory().isEmailTaken(email, selecteduseraccount)) {
             JOptionPane.showMessageDialog(this, "Email is already in use");
-        return;
+            return;
         }
-            
-    // Update person name, user id, email, phone, and role
+
+        // Save common fields
         Person person = selecteduseraccount.getAssociatedPersonProfile().getPerson();
         person.setFullname(name);
         selecteduseraccount.setUsername(username);
-        Profile profile = selecteduseraccount.getAssociatedPersonProfile();
         selecteduseraccount.getAssociatedPersonProfile().setEmail(email);
         selecteduseraccount.getAssociatedPersonProfile().setPhone(phone);
-        
-        if (profile instanceof EmployeeProfile) {
-            EmployeeProfile ep = (EmployeeProfile) profile;
-            ep.setRole(role);  
-            
-    //Update special attribute Office Hours for the Registrar        
-        }else if (profile instanceof RegistrarProfile) {
-        RegistrarProfile rp = (RegistrarProfile) profile;
-        rp.setOfficeHours(txtSpAttribute.getText());
-}
 
- 
-    // Show success and go back
-        JOptionPane.showMessageDialog(this, "User account updated successfully");
-        CardSequencePanel.remove(this);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
-        }
-        
+        // Save Student-specific field
+     //   StudentProfile sp = (StudentProfile) selecteduseraccount.getAssociatedPersonProfile();
+     //   sp.setOfficeHours(officeHours);
 
-        private String formatTimestamp(LocalDateTime timestamp) {
-        if (timestamp == null) {
-            return "Never";
-        }
-       
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
-        return timestamp.format(formatter);
-        }
+        // Update timestamp
+        selecteduseraccount.updatelastupdate();
+        JOptionPane.showMessageDialog(this, "Student Account Updated Successfully.");
+
+        
+    }
 
     private void seteditmode() {
         txtName.setEnabled(true);
         txtUsername.setEnabled(true);
-        pwPassword.setEnabled(true);
-        pwConfirmPassword.setEnabled(true);
         txtNUID.setEnabled(false);
         JOptionPane.showMessageDialog(this, "NUID cannot be edited");
-        txtCreated.setEnabled(true);
-        cbxRole.setEnabled(true);
+        txtCreated.setEnabled(false);
         txtEmail.setEnabled(true);
         txtPhone.setEnabled(true);
-        txtSpAttribute.setEnabled(true);
+        
+      //  txtOfficeHours.setEnabled(true);  
     }
 
     private void resetpassword() {
@@ -403,37 +350,32 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         pwPassword.setEnabled(true);
         pwConfirmPassword.setEnabled(true);
         lblPassword.setVisible(true);
-        lblConfirmPassword.setVisible(true);
+        lblConfirmPassword.setVisible(true);   
     }
-    
-    private void savepassword() {
-        // Extract passwords
-        char[] passwordChars = pwPassword.getPassword();
-        char[] confirmChars = pwConfirmPassword.getPassword();
-        
-        //validate password isn't empty
-        if (passwordChars == null || passwordChars.length == 0) {
-            JOptionPane.showMessageDialog(this, "Please enter a password");
-            return;
-        }
-    
-        // If passwords are entered, validate they match
-        if (!Arrays.equals(passwordChars, confirmChars)) {
-            JOptionPane.showMessageDialog(this, "Passwords don't match");
-            return;
-            }
-           
-        // Update password
-        String newPassword = new String(passwordChars);
-        selecteduseraccount.setPassword(newPassword);
-   
-        // Update the "last updated" timestamp
-        selecteduseraccount.updatelastupdate();
 
-        // Show success and go back
-        JOptionPane.showMessageDialog(this, "Password updated successfully");
-        CardSequencePanel.remove(this);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
-        }
+    private void savepassword() {
+    char[] passwordChars = pwPassword.getPassword(); 
+    char[] confirmChars = pwConfirmPassword.getPassword(); 
+    
+    if (passwordChars == null || passwordChars.length == 0) { 
+        JOptionPane.showMessageDialog(this, "Please enter a password"); 
+        return; 
+    } 
+    if (!Arrays.equals(passwordChars, confirmChars)) { 
+        JOptionPane.showMessageDialog(this, "Passwords don't match"); 
+        return; 
+    } 
+    selecteduseraccount.setPassword(new String(passwordChars)); 
+    selecteduseraccount.updatelastupdate(); 
+    JOptionPane.showMessageDialog(this, "Password updated successfully"); 
+
+     
+    }        
+
+    private String formatTimestamp(LocalDateTime timestamp) {
+    if (timestamp == null) return "Never";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
+    return timestamp.format(formatter);    
+    }
   
 }

@@ -267,20 +267,20 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtSpAttribute">
+    <Component class="javax.swing.JTextField" name="txtOfficeHours">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="450" y="240" width="140" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblSpAttribute">
+    <Component class="javax.swing.JLabel" name="lblOfficeHours">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Special Attribute"/>
+        <Property name="text" type="java.lang.String" value="Office Hours"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="310" y="250" width="140" height="20"/>
+          <AbsoluteConstraints x="370" y="250" width="80" height="20"/>
         </Constraint>
       </Constraints>
     </Component>

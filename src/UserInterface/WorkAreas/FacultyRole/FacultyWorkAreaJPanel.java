@@ -11,7 +11,7 @@
 package UserInterface.WorkAreas.FacultyRole;
 
 import Business.Business;
-import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.CreateNewUserAccountJPanel;
+import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.CreateNewUserAccountJPanel;
 import javax.swing.JPanel;
 
 /**

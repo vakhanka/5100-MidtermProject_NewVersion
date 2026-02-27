@@ -11,13 +11,24 @@ import Business.Person.Person;
  * @author Lanre
  */
 public class RegistrarProfile extends Profile {
-    
+    private String officeHours;
     
     public RegistrarProfile(Person p) {
         super(p);
+        this.officeHours = officeHours;
+        
         
     }
 
+    public String getOfficeHours() {
+        return officeHours;
+    }
+
+    public void setOfficeHours(String officeHours) {
+        this.officeHours = officeHours;
+    }
+    
+    
     @Override
     public String getRole() {
         return "Registrar";
