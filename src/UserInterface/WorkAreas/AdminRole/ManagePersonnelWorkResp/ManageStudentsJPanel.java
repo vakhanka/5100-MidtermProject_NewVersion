@@ -37,6 +37,18 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         this.users = business.getUserAccountDirectory();
         this.persondirectory = business.getPersonDirectory();
         initComponents();
+        
+        
+        //Override table model to add hidden UserAccount column
+        tblStudents.setModel(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Name","NUID","Email","Department","Academic Standing", "CellNo","ua"}
+        ));
+        
+        // Add hidden column to store an object
+        tblStudents.getColumnModel().getColumn(6).setMinWidth(0);
+        tblStudents.getColumnModel().getColumn(6).setMaxWidth(0);
+        tblStudents.getColumnModel().getColumn(6).setWidth(0);
         populatetable();
 
     }
@@ -158,12 +170,12 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
     int selectedRow = tblStudents.getSelectedRow();
         
         if(selectedRow >=0){
-            selecteduseraccount = (UserAccount) tblStudents.getValueAt(selectedRow, 0);
+            selecteduseraccount = (UserAccount) tblStudents.getValueAt(selectedRow, 6);
         }
         
         if(selecteduseraccount==null) return;
         AdministerStudentJPanel asjp = new AdministerStudentJPanel (selecteduseraccount,business, CardSequencePanel);
-        CardSequencePanel.add(asjp);
+        CardSequencePanel.add("Administer Student Panel",asjp);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);    
         
     }//GEN-LAST:event_btnEditActionPerformed
@@ -198,7 +210,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         //cast to specific StudentProfile to access student-specific methods
         StudentProfile bizStudent = (StudentProfile) ua.getAssociatedPersonProfile();
         
-        addrowtotable(model, bizStudent);
+        addrowtotable(model, bizStudent, ua);
     }
 }
         
@@ -206,6 +218,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
     private void search() {
         cleartable();
         DefaultTableModel model = (DefaultTableModel) tblStudents.getModel(); 
+        
         
     //grab search type and search term
         String searchtype = (String) cbxSearchType.getSelectedItem();
@@ -218,19 +231,21 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         }
     //Get the Studentdirectory    
         StudentDirectory sd = business.getStudentDirectory();
-    
+
     //branch based on search type
     if(searchtype.equals("By NUID")){
         StudentProfile foundid = sd.findStudentbyID(searchterm);
         
         if(foundid !=null){
-            addrowtotable(model, foundid);
+            UserAccount ua = users.findUserAccount(foundid.getPerson().getPersonId());
+            addrowtotable(model, foundid, ua);
         }
     }else if (searchtype.equals("By Name")){
         ArrayList<StudentProfile> results = sd.searchByName(searchterm);
         
         for (StudentProfile sp: results){
-            addrowtotable(model, sp);
+            UserAccount ua = users.findUserAccount(sp.getPerson().getPersonId());
+            addrowtotable(model, sp, ua);
         }
     }else if(searchtype.equals("By Department")){
         //TO DO Need to discuss populating multiple departments
@@ -255,7 +270,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         }
     }
     
-    private void addrowtotable(DefaultTableModel model, StudentProfile bizStudent) {
+    private void addrowtotable(DefaultTableModel model, StudentProfile bizStudent, UserAccount ua) {
         //Get university package StudentProfile through the implemented bridge method
         university.Persona.StudentProfile uniStudent = bizStudent.getUniversityProfile();
         
@@ -277,9 +292,8 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
                 standing = transcript.getAcademicStanding(latestSemester);
             }
         }
-    
-    // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo
-        Object[] row = new Object[]{name, nuid, email, dept, standing, cellno};
+    // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo, hidden column
+        Object[] row = new Object[]{name, nuid, email, dept, standing, cellno, ua};
         model.addRow(row);
     }
 
