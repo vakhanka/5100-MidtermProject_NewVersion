@@ -232,7 +232,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
 
     private void btnPayTuitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayTuitionActionPerformed
         // TODO add your handling code here:
-        
+        //HL: navigates student to TuitionPaymentJPanel
         goToTuition(); 
                 
     }//GEN-LAST:event_btnPayTuitionActionPerformed
