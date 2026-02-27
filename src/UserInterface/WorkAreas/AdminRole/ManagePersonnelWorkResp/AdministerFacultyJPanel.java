@@ -7,7 +7,6 @@ package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
 import Business.Business;
 import Business.Person.Person;
-import Business.Profiles.RegistrarProfile;
 import Business.UserAccounts.UserAccount;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author kal bugrara
  */
-public class AdministerRegistrarJPanel extends javax.swing.JPanel {
+public class AdministerFacultyJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ManageSuppliersJPanel
@@ -28,7 +27,7 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
     UserAccount selecteduseraccount;
     Business business;
 
-    public AdministerRegistrarJPanel(UserAccount sua, Business bz, JPanel jp) {
+    public AdministerFacultyJPanel(UserAccount sua, Business bz, JPanel jp) {
 
         CardSequencePanel = jp;
         this.business = bz;
@@ -66,7 +65,6 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
         txtNUID = new javax.swing.JTextField();
         lblCreated = new javax.swing.JLabel();
         lblNUID = new javax.swing.JLabel();
-        cbxRole = new javax.swing.JComboBox<>();
         btnSavePw = new javax.swing.JButton();
         btnResetPw = new javax.swing.JButton();
         txtEmail = new javax.swing.JTextField();
@@ -75,6 +73,7 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
         lblPhone = new javax.swing.JLabel();
         txtOfficeHours = new javax.swing.JTextField();
         lblOfficeHours = new javax.swing.JLabel();
+        txtRole = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -89,7 +88,7 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
         btnBack.setBounds(20, 430, 74, 23);
 
         lblTitle.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        lblTitle.setText("Manage User Account");
+        lblTitle.setText("Manage Faculty Account");
         add(lblTitle);
         lblTitle.setBounds(30, 20, 550, 28);
         add(txtUsername);
@@ -151,10 +150,6 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
         add(lblNUID);
         lblNUID.setBounds(370, 100, 80, 16);
 
-        cbxRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Registrar", "Faculty", "Student" }));
-        add(cbxRole);
-        cbxRole.setBounds(140, 92, 140, 30);
-
         btnSavePw.setText("Save password");
         btnSavePw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -190,14 +185,18 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
         lblOfficeHours.setText("Office Hours");
         add(lblOfficeHours);
         lblOfficeHours.setBounds(370, 250, 80, 20);
+
+        txtRole.setText("Faculty");
+        add(txtRole);
+        txtRole.setBounds(140, 92, 140, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // I want to load a fresh ManageEmployeesJPanel so that the table refreshes
-        CardSequencePanel.remove(this);
         
-        ManageEmployeesJPanel mep = new ManageEmployeesJPanel(business, CardSequencePanel);
-        CardSequencePanel.add("Manage Employees Panel", mep);
+        
+        ManageFacultyJPanel mfjp = new ManageFacultyJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Faculty Panel", mfjp);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
 
@@ -231,7 +230,6 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnResetPw;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSavePw;
-    private javax.swing.JComboBox<String> cbxRole;
     private javax.swing.JLabel lblConfirmPassword;
     private javax.swing.JLabel lblCreated;
     private javax.swing.JLabel lblEmail;
@@ -251,6 +249,7 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtOfficeHours;
     private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtRole;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
@@ -265,6 +264,7 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
         txtCreated.setText(formatTimestamp(person.getCreatedtimestamp()));
         txtEmail.setText(selecteduseraccount.getAssociatedPersonProfile().getEmail());
         txtPhone.setText(selecteduseraccount.getAssociatedPersonProfile().getPhone());
+        txtRole.setText("Faculty");
         
         //hide password fields
         pwPassword.setVisible(false);
@@ -274,8 +274,8 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
         btnSavePw.setVisible(false);
         
         // Populate Registrar-specific field
-        RegistrarProfile rp = (RegistrarProfile) selecteduseraccount.getAssociatedPersonProfile();
-        txtOfficeHours.setText(rp.getOfficeHours() != null ? rp.getOfficeHours() : "");
+       // FacultyProfile rp = (FacultyProfile) selecteduseraccount.getAssociatedPersonProfile();
+      //  txtOfficeHours.setText(rp.getOfficeHours() != null ? rp.getOfficeHours() : "");
     }
         
     private void setviewmode() {
@@ -285,7 +285,8 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
         txtCreated.setEnabled(false);
         txtEmail.setEnabled(false);
         txtPhone.setEnabled(false);
-        txtOfficeHours.setEnabled(false);
+        txtRole.setEnabled(false);
+       // txtOfficeHours.setEnabled(false);
     }
 
     private void updateuserinfo() {
@@ -293,7 +294,7 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
         String username = txtUsername.getText().trim();
         String email = txtEmail.getText().trim();
         String phone = txtPhone.getText().trim();
-        String officeHours = txtOfficeHours.getText().trim();
+      //  String officeHours = txtOfficeHours.getText().trim();
 
         // Validate required fields
         if (name.isBlank() || username.isBlank() || email.isBlank()) {
@@ -321,29 +322,27 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
         selecteduseraccount.getAssociatedPersonProfile().setEmail(email);
         selecteduseraccount.getAssociatedPersonProfile().setPhone(phone);
 
-        // Save Registrar-specific field
-        RegistrarProfile rp = (RegistrarProfile) selecteduseraccount.getAssociatedPersonProfile();
-        rp.setOfficeHours(officeHours);
+        // Save Faculty-specific field(s) 
+      //  FacultyProfile rp = (FacultyProfile) selecteduseraccount.getAssociatedPersonProfile();
+     //   rp.setOfficeHours(officeHours);
 
         // Update timestamp
         selecteduseraccount.updatelastupdate();
 
-        // Navigate back to fresh ManageEmployeesJPanel
-        JOptionPane.showMessageDialog(this, "Registrar account updated successfully");
-        CardSequencePanel.remove(this);
-        ManageEmployeesJPanel mep = new ManageEmployeesJPanel(business, CardSequencePanel);
-        CardSequencePanel.add("Manage Employees Panel", mep);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        // Navigate back to fresh ManageFacultyJPanel
+        JOptionPane.showMessageDialog(this, "Faculty account updated successfully");
+        
     }
 
     private void seteditmode() {
-        pwPassword.setVisible(true);
-        pwConfirmPassword.setVisible(true);
-        btnSavePw.setVisible(true);
-        pwPassword.setEnabled(true);
-        pwConfirmPassword.setEnabled(true);
-        lblPassword.setVisible(true);
-        lblConfirmPassword.setVisible(true);   
+        txtName.setEnabled(true);
+        txtUsername.setEnabled(true);
+        txtNUID.setEnabled(false);
+        JOptionPane.showMessageDialog(this, "NUID and role cannot be edited");
+        txtCreated.setEnabled(false);
+        txtEmail.setEnabled(true);
+        txtPhone.setEnabled(true);
+        txtOfficeHours.setEnabled(true);   
     }
 
     private void resetpassword() {
@@ -371,10 +370,7 @@ public class AdministerRegistrarJPanel extends javax.swing.JPanel {
     selecteduseraccount.setPassword(new String(passwordChars)); 
     selecteduseraccount.updatelastupdate(); 
     JOptionPane.showMessageDialog(this, "Password updated successfully"); 
-    CardSequencePanel.remove(this); 
-    ManageEmployeesJPanel mep = new ManageEmployeesJPanel(business, CardSequencePanel); 
-    CardSequencePanel.add("Manage Employees Panel", mep); 
-    ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    
      
     }        
 
