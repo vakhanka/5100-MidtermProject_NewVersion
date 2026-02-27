@@ -61,5 +61,17 @@ public class EmployeeDirectory {
         }
             return null; //not found after going through the whole list
          }
+
+    
+    //add a search by name method
+    public ArrayList<EmployeeProfile> searchByName(String name) {
+    ArrayList<EmployeeProfile> results = new ArrayList<>();
+    for (EmployeeProfile ep : employeelist) {
+        if (ep.getPerson().getFullname().toLowerCase().contains(name.toLowerCase())) {
+            results.add(ep);
+        }
+    }
+    return results;
+}    
     
 }
