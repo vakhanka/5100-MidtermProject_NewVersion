@@ -7,10 +7,11 @@ package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
 import Business.Business;
 import Business.Person.PersonDirectory;
-import Business.Profiles.FacultyProfile;
-import Business.Profiles.RegistrarProfile;
+import Business.Profiles.EmployeeDirectory;
+import Business.Profiles.EmployeeProfile;
 import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -71,6 +72,10 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
         btnDelete = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
+        cbxSearchType = new javax.swing.JComboBox<>();
+        lblSearchBy = new javax.swing.JLabel();
+        txtSearchField = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -103,7 +108,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblFaculty);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(40, 80, 550, 190);
+        jScrollPane1.setBounds(50, 140, 550, 190);
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -121,11 +126,41 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
             }
         });
         add(btnEdit);
-        btnEdit.setBounds(40, 290, 72, 23);
+        btnEdit.setBounds(50, 350, 72, 23);
 
         btnSave.setText("Save");
         add(btnSave);
-        btnSave.setBounds(130, 290, 72, 23);
+        btnSave.setBounds(140, 350, 72, 23);
+
+        cbxSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "By Name", "By Department", "By NUID" }));
+        cbxSearchType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxSearchTypeActionPerformed(evt);
+            }
+        });
+        add(cbxSearchType);
+        cbxSearchType.setBounds(140, 100, 100, 22);
+
+        lblSearchBy.setText("Search By");
+        add(lblSearchBy);
+        lblSearchBy.setBounds(140, 80, 70, 16);
+
+        txtSearchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchFieldActionPerformed(evt);
+            }
+        });
+        add(txtSearchField);
+        txtSearchField.setBounds(260, 100, 190, 22);
+
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+        add(btnSearch);
+        btnSearch.setBounds(520, 100, 72, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -167,15 +202,32 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnEditActionPerformed
 
+    private void cbxSearchTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSearchTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxSearchTypeActionPerformed
+
+    private void txtSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchFieldActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        search();
+    }//GEN-LAST:event_btnSearchActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JComboBox<String> cbxSearchType;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblPageTitle;
+    private javax.swing.JLabel lblSearchBy;
     private javax.swing.JTable tblFaculty;
+    private javax.swing.JTextField txtSearchField;
     // End of variables declaration//GEN-END:variables
 
     private void populatetable() {
@@ -189,13 +241,15 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
         for (UserAccount ua : uad.getUserAccountList()) {
             
         //filter to only show Faculty Accounts
-        if (!(ua.getAssociatedPersonProfile() instanceof FacultyProfile)) {
+        if (!(ua.getAssociatedPersonProfile() instanceof EmployeeProfile)) {
             continue;
         }
-        //cast to specific FacultyProfile to access student-specific methods
-        FacultyProfile bizFaculty = (FacultyProfile) ua.getAssociatedPersonProfile();
-        
-        addrowtotable(model, bizFaculty);    
+        EmployeeProfile ep = (EmployeeProfile) ua.getAssociatedPersonProfile();
+        if(!ep.getRole().equals("Faculty")){
+            continue;
+        }
+             
+        addrowtotable(model, ep);    
     }
 }
 
@@ -212,20 +266,23 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
     
     }
 
-    private void addrowtotable(DefaultTableModel model, FacultyProfile bizFaculty) {
+    private void addrowtotable(DefaultTableModel model, EmployeeProfile ep) {
+    //Get University package Facultyprofile through the bridge
+    university.Persona.Faculty.FacultyProfile uniFaculty = ep.getUniversityProfile();
+
     //extract all column values from the profile
-        String name     = bizFaculty.getPerson().getFullname();
-        String nuid     = bizFaculty.getPerson().getPersonId();
-        String email    = bizFaculty.getEmail() != null ? bizFaculty.getEmail() : "";
+        String name     = ep.getPerson().getFullname();
+        String nuid     = ep.getPerson().getPersonId();
+        String email    = ep.getEmail() != null ? ep.getEmail() : "";
         String dept     = "Information Systems";
-        String cellno   = bizFaculty.getPhone() != null ? bizFaculty.getPhone() : "";
-        //String officehrs = bizFaculty.getOfficeHours();                            
+        String cellno   = ep.getPhone() != null ? ep.getPhone() : "";
+        String officehrs = "";                            
         
     // Store nuid as an object to use on the hidden column
         UserAccount ua = users.findUserAccount(nuid);
     
     // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo
-        Object[] row = new Object[]{name, nuid, email, dept, cellno, "officehrs", ua};                 
+        Object[] row = new Object[]{name, nuid, email, dept, cellno, officehrs, ua};                 
         model.addRow(row);    
     }
     
@@ -243,6 +300,42 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
         
         
         }        
+    }
+
+    private void search() {
+        cleartable();
+        DefaultTableModel model = (DefaultTableModel) tblFaculty.getModel();
+        
+        String searchtype = (String) cbxSearchType.getSelectedItem();
+        String searchterm = txtSearchField.getText().trim();
+        
+        if(searchterm.isEmpty()){
+            populatetable();
+            return;
+        }
+        
+        EmployeeDirectory ed = business.getEmployeeDirectory();
+        
+        if(searchtype.equals("By NUID")){
+            EmployeeProfile foundid = ed.findEmployee(searchterm);
+            
+            if(foundid !=null){
+                UserAccount ua = users.findUserAccount(foundid.getPerson().getPersonId());
+                addrowtotable(model,foundid);
+                }
+            }else if (searchtype.equals("By Name")){
+                ArrayList<EmployeeProfile> results = ed.searchByName(searchterm);
+                
+                for (EmployeeProfile ep: results){
+                    UserAccount ua = users.findUserAccount(ep.getPerson().getPersonId());
+                    addrowtotable(model,ep);
+                }
+            }else if(searchtype.equals("By Department")){     //TO DO Need to discuss populating multiple departments
+        
+
+        populatetable();
+    
+        }
     }
     
     
