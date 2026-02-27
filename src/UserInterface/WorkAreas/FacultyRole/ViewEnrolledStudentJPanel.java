@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UserInterface.WorkAreas.FacultyRole;
+import Business.Business;
+import Business.Profiles.StudentProfile;
+
 
 /**
  *
@@ -13,49 +16,60 @@ public class ViewEnrolledStudentJPanel extends javax.swing.JPanel {
     /**
      * Creates new form ViewEnrolledStudentJPanel
      */
-    public ViewEnrolledStudentJPanel() {
+    
+    Business business;
+    javax.swing.JPanel CardSequencePanel;
+    
+    public ViewEnrolledStudentJPanel(Business b, javax.swing.JPanel clp) {
+        business = b;
+        CardSequencePanel = clp;
         initComponents();
         populateCourseDropdown();
     }
     
      private void populateCourseDropdown() {
         cmbSelectCourse.removeAllItems();
-        cmbSelectCourse.addItem("INFO 5100 - Application Engineering");
-        cmbSelectCourse.addItem("INFO 6150 - Web Design");
-        
+        java.util.ArrayList<university.CourseSchedule.CourseOffer> offers =
+            business.getDepartment().getCourseSchedule("Fall 2025").getSchedule();
+        for (university.CourseSchedule.CourseOffer co : offers) {
+            cmbSelectCourse.addItem(co.getCourseNumber() + " - " +
+                co.getSubjectCourse().getName());
+        }
         cmbSelectCourse.addActionListener(e -> loadEnrolledStudents());
         loadEnrolledStudents();
     }
     
     private void loadEnrolledStudents() {
         String selected = (String) cmbSelectCourse.getSelectedItem();
-        
-        String[][] mockStudents;
-        if (selected != null && selected.contains("5100")) {
-            mockStudents = new String[][] {
-                {"S001", "Alex Thompson", "alex.thompson@northeastern.edu", "A"},
-                {"S002", "Emma Williams", "emma.williams@northeastern.edu", "B+"},
-                {"S003", "Noah Lee", "noah.lee@northeastern.edu", "A-"},
-                {"S004", "Olivia Harris", "olivia.harris@northeastern.edu", "B"},
-                {"S005", "Liam Clark", "liam.clark@northeastern.edu", "A"}
-            };
-        } else {
-            mockStudents = new String[][] {
-                {"S006", "Sophia Lewis", "sophia.lewis@northeastern.edu", "A"},
-                {"S007", "Mason Walker", "mason.walker@northeastern.edu", "B+"},
-                {"S008", "Ava Hall", "ava.hall@northeastern.edu", "B"}
-            };
-        }
-        
-        String[] columnNames = {"Student ID", "Name", "Email", "Grade"};
-        
-        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(mockStudents, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
+        if (selected == null) return;
+        String courseNum = selected.split(" - ")[0].trim();
+
+        // Get all students and check if enrolled in this course
+        java.util.ArrayList<StudentProfile> allStudents =
+            business.getStudentDirectory().getStudentlist();
+
+        java.util.ArrayList<String[]> rows = new java.util.ArrayList<>();
+        for (StudentProfile bsp : allStudents) {
+            university.Persona.StudentProfile usp = bsp.getUniversityProfile();
+            if (usp == null) continue;
+            for (university.CourseSchedule.SeatAssignment sa : usp.getCourseList()) {
+                if (sa.getCourseOffer().getCourseNumber().equals(courseNum)) {
+                    rows.add(new String[]{
+                        bsp.getPerson().getPersonId(),
+                        bsp.getPerson().getFullname(),
+                        sa.getGrade()
+                    });
+                }
             }
-        };
-        
+        }
+
+        String[][] data = rows.toArray(new String[0][]);
+        String[] cols = {"Student ID", "Name", "Current Grade"};
+        javax.swing.table.DefaultTableModel model =
+            new javax.swing.table.DefaultTableModel(data, cols) {
+                @Override
+                public boolean isCellEditable(int row, int col) { return false; }
+            };
         tblEnrolledStudents.setModel(model);
     }
 

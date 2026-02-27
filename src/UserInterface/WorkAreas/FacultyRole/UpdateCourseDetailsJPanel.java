@@ -4,6 +4,9 @@
  */
 package UserInterface.WorkAreas.FacultyRole;
 
+import Business.Business;
+
+
 /**
  *
  * @author emmanuelcroll
@@ -13,35 +16,38 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
     /**
      * Creates new form UpdateCourseDetailsJPanel
      */
+    
+    Business business;
+    javax.swing.JPanel CardSequencePanel;
+
      public UpdateCourseDetailsJPanel() {
         initComponents();
         populateCourseDropdown();
     }
      private void populateCourseDropdown() {
         cmbSelectCourses.removeAllItems();
-        cmbSelectCourses.addItem("INFO 5100 - Application Engineering");
-        cmbSelectCourses.addItem("INFO 6150 - Web Design");
-        
-        cmbSelectCourses.addActionListener(e -> loadCourseDetails());
-        
-        if (cmbSelectCourses.getItemCount() > 0) {
-            loadCourseDetails();
+        java.util.ArrayList<university.CourseSchedule.CourseOffer> offers =
+            business.getDepartment().getCourseSchedule("Fall 2025").getSchedule();
+        for (university.CourseSchedule.CourseOffer co : offers) {
+            cmbSelectCourses.addItem(co.getCourseNumber() + " - " +
+                co.getSubjectCourse().getName());
         }
+        if (cmbSelectCourses.getItemCount() > 0) loadCourseDetails();
     }
+
     
     private void loadCourseDetails() {
         String selected = (String) cmbSelectCourses.getSelectedItem();
-        if (selected != null && selected.contains("5100")) {
-            fieldCourseTitle.setText("Application Engineering and Development");
-            fieldDescription.setText("Advanced software development using Java");
-            fieldSchedule.setText("Mon/Wed 6:00-9:15 PM");
-            fieldCapacity.setText("25");
-        } else if (selected != null && selected.contains("6150")) {
-            fieldCourseTitle.setText("Web Design and User Experience");
-            fieldDescription.setText("User-centered design principles");
-            fieldSchedule.setText("Tue/Thu 6:00-9:15 PM");
-            fieldCapacity.setText("25");
-        }
+        if (selected == null) return;
+        String courseNum = selected.split(" - ")[0].trim();
+        university.CourseSchedule.CourseOffer co =
+            business.getDepartment().getCourseSchedule("Fall 2025")
+                .getCourseOfferByNumber(courseNum);
+        if (co == null) return;
+        fieldCourseTitle.setText(co.getSubjectCourse().getName());
+        fieldCapacity.setText(String.valueOf(co.getCapacity()));
+        fieldSchedule.setText(co.getScheduleDisplay().isEmpty() ? "TBD" : co.getScheduleDisplay());
+        fieldDescription.setText("Course: " + co.getCourseNumber());
     }
     
    
