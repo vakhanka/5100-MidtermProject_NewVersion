@@ -30,3 +30,8 @@ nbproject/private.properties
 nbproject/private.xml
 nbproject/private/config.properties
 /build/
+
+# Backups / scratch files
+backup_not_compiled/
+*_BACKUP.java
+*_BACKUP.form
