@@ -3,31 +3,55 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp;
+package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
+import Business.Business;
+import Business.Person.PersonDirectory;
+import Business.Profiles.FacultyProfile;
+import Business.Profiles.RegistrarProfile;
 import Business.UserAccounts.UserAccount;
+import Business.UserAccounts.UserAccountDirectory;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *h
  * @author kal bugrara
  */
 
-public class CreateUserAccountJPanel extends javax.swing.JPanel {
+public class ManageFacultyJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ManageSuppliersJPanel
      */
     JPanel CardSequencePanel;
-
+    Business business;
     UserAccount selecteduseraccount;
+    UserAccountDirectory users;
+    PersonDirectory persondirectory;
 
-    public CreateUserAccountJPanel(UserAccount sua, JPanel jp) {
+   
+
+    public ManageFacultyJPanel(Business bz, JPanel jp) {
 
         CardSequencePanel = jp;
-        selecteduseraccount= sua;
+        this.business = bz;
+        this.users = business.getUserAccountDirectory();
+        this.persondirectory = business.getPersonDirectory();
         initComponents();
-        //display user details here
+        
+            // Override table model to add hidden UserAccount column
+        tblFaculty.setModel(new DefaultTableModel(
+            new Object[][]{},
+            new String[]{"Name", "NUID", "Email", "Department", "CellNo", "Office Hours", "ua"}
+        )); 
+        // Add hidden column to store ua object
+    // Hide the last column — it holds the UserAccount object, not for display
+        tblFaculty.getColumnModel().getColumn(6).setMinWidth(0);
+        tblFaculty.getColumnModel().getColumn(6).setMaxWidth(0);
+        tblFaculty.getColumnModel().getColumn(6).setWidth(0);        
+        populatetable();
 
     }
 
@@ -42,24 +66,17 @@ public class CreateUserAccountJPanel extends javax.swing.JPanel {
 
         lblPageTitle = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
-        txtUsername = new javax.swing.JTextField();
-        btnSave = new javax.swing.JButton();
-        lblName = new javax.swing.JLabel();
-        lblUsername = new javax.swing.JLabel();
-        txtName = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblFaculty = new javax.swing.JTable();
+        btnDelete = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
-        lblProfileType = new javax.swing.JLabel();
-        cbxRole = new javax.swing.JComboBox<>();
-        pwPassword = new javax.swing.JPasswordField();
-        lblPassword = new javax.swing.JLabel();
-        lblConfirmPassword = new javax.swing.JLabel();
-        pwConfirmPassword = new javax.swing.JPasswordField();
+        btnSave = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
 
         lblPageTitle.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        lblPageTitle.setText("Create New User Account");
+        lblPageTitle.setText("Faculty Accounts");
         add(lblPageTitle);
         lblPageTitle.setBounds(21, 20, 550, 28);
 
@@ -70,57 +87,45 @@ public class CreateUserAccountJPanel extends javax.swing.JPanel {
             }
         });
         add(btnBack);
-        btnBack.setBounds(40, 420, 100, 23);
-        add(txtUsername);
-        txtUsername.setBounds(280, 190, 140, 30);
+        btnBack.setBounds(50, 420, 100, 23);
 
-        btnSave.setText("Save");
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
+        tblFaculty.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Name", "NUID", "Email", "Department", "CellNo", "Office Hours"
+            }
+        ));
+        jScrollPane1.setViewportView(tblFaculty);
+
+        add(jScrollPane1);
+        jScrollPane1.setBounds(40, 80, 550, 190);
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
+                btnDeleteActionPerformed(evt);
             }
         });
-        add(btnSave);
-        btnSave.setBounds(350, 360, 72, 23);
+        add(btnDelete);
+        btnDelete.setBounds(510, 420, 72, 23);
 
-        lblName.setText("Name");
-        add(lblName);
-        lblName.setBounds(230, 150, 50, 20);
-
-        lblUsername.setText("Username");
-        add(lblUsername);
-        lblUsername.setBounds(210, 200, 70, 20);
-        add(txtName);
-        txtName.setBounds(280, 140, 140, 30);
-
-        btnEdit.setText("Clear");
+        btnEdit.setText("Edit");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditActionPerformed(evt);
             }
         });
         add(btnEdit);
-        btnEdit.setBounds(190, 360, 80, 23);
+        btnEdit.setBounds(40, 290, 72, 23);
 
-        lblProfileType.setText("Profile Type");
-        add(lblProfileType);
-        lblProfileType.setBounds(200, 100, 80, 20);
-
-        cbxRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Registrar", "Faculty", "Student" }));
-        add(cbxRole);
-        cbxRole.setBounds(280, 90, 140, 30);
-        add(pwPassword);
-        pwPassword.setBounds(280, 240, 140, 30);
-
-        lblPassword.setText("Password");
-        add(lblPassword);
-        lblPassword.setBounds(210, 250, 70, 20);
-
-        lblConfirmPassword.setText("Confirm Password ");
-        add(lblConfirmPassword);
-        lblConfirmPassword.setBounds(170, 300, 110, 20);
-        add(pwConfirmPassword);
-        pwConfirmPassword.setBounds(280, 290, 140, 30);
+        btnSave.setText("Save");
+        add(btnSave);
+        btnSave.setBounds(130, 290, 72, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -131,44 +136,114 @@ public class CreateUserAccountJPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnBackActionPerformed
 
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
-        saveuser();
-    }//GEN-LAST:event_btnSaveActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+
+        int row = tblFaculty.getSelectedRow();
+        if(row <0){
+            JOptionPane.showMessageDialog(this, "Please select a row to continue");
+            return;
+        }
+        // Retrieve UserAccount from hidden column 7
+        UserAccount u = (UserAccount) tblFaculty.getValueAt(row, 6);
+        if (u == null) return;
+
+        users.removeUser(u);
+        populatetable();
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // clear all fields
-        clearfields();
+        // TODO add your handling code here:
+        int selectedRow = tblFaculty.getSelectedRow();
+
+        if(selectedRow >=0){
+            selecteduseraccount = (UserAccount) tblFaculty.getValueAt(selectedRow, 6);
+        }
+
+        if(selecteduseraccount==null)
+        return;
+        AdministerFacultyJPanel afjp = new AdministerFacultyJPanel (selecteduseraccount,business, CardSequencePanel);
+        CardSequencePanel.add("Administer Faculty Panel",afjp);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+
     }//GEN-LAST:event_btnEditActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSave;
-    private javax.swing.JComboBox<String> cbxRole;
-    private javax.swing.JLabel lblConfirmPassword;
-    private javax.swing.JLabel lblName;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblPageTitle;
-    private javax.swing.JLabel lblPassword;
-    private javax.swing.JLabel lblProfileType;
-    private javax.swing.JLabel lblUsername;
-    private javax.swing.JPasswordField pwConfirmPassword;
-    private javax.swing.JPasswordField pwPassword;
-    private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtUsername;
+    private javax.swing.JTable tblFaculty;
     // End of variables declaration//GEN-END:variables
 
-    private void clearfields() {
-        txtName.setText("");
-        txtUsername.setText("");
-        pwPassword.setText("");
-        pwConfirmPassword.setText("");
-        cbxRole.addItem("Admin");
+    private void populatetable() {
+        cleartable();
+        DefaultTableModel model = (DefaultTableModel) tblFaculty.getModel();
+        
+        //get the directory of all user accoutns in the system
+        UserAccountDirectory uad = business.getUserAccountDirectory();
+                
+        //loop through the directory of all users
+        for (UserAccount ua : uad.getUserAccountList()) {
+            
+        //filter to only show Faculty Accounts
+        if (!(ua.getAssociatedPersonProfile() instanceof FacultyProfile)) {
+            continue;
+        }
+        //cast to specific FacultyProfile to access student-specific methods
+        FacultyProfile bizFaculty = (FacultyProfile) ua.getAssociatedPersonProfile();
+        
+        addrowtotable(model, bizFaculty);    
+    }
+}
+
+    private void cleartable() {
+        //declare the table
+        DefaultTableModel model = (DefaultTableModel) tblFaculty.getModel();
+
+    //Clear all rows starting with the end
+        int rc = tblFaculty.getRowCount();
+        int i;
+        for (i = rc - 1; i >= 0; i--) {
+            ((DefaultTableModel) tblFaculty.getModel()).removeRow(i);
+        }
+    
     }
 
-    private void saveuser() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void addrowtotable(DefaultTableModel model, FacultyProfile bizFaculty) {
+    //extract all column values from the profile
+        String name     = bizFaculty.getPerson().getFullname();
+        String nuid     = bizFaculty.getPerson().getPersonId();
+        String email    = bizFaculty.getEmail() != null ? bizFaculty.getEmail() : "";
+        String dept     = "Information Systems";
+        String cellno   = bizFaculty.getPhone() != null ? bizFaculty.getPhone() : "";
+        //String officehrs = bizFaculty.getOfficeHours();                            
+        
+    // Store nuid as an object to use on the hidden column
+        UserAccount ua = users.findUserAccount(nuid);
+    
+    // Package into array matching column order: Name, NUID, Email, Dept, Standing, CellNo
+        Object[] row = new Object[]{name, nuid, email, dept, cellno, "officehrs", ua};                 
+        model.addRow(row);    
     }
+    
+    private void tblFacultyMousePressed(java.awt.event.MouseEvent evt) {                                              
+        // Extracts the row (user account) in the table that is selected by the user
+        int size = tblFaculty.getRowCount();
+        int selectedrow = tblFaculty.getSelectionModel().getLeadSelectionIndex();
 
+        if (selectedrow < 0 || selectedrow > size - 1) {
+            return;
+        }
+        selecteduseraccount = (UserAccount) tblFaculty.getValueAt(selectedrow, 6);
+        if (selecteduseraccount == null) {
+            return;
+        
+        
+        }        
+    }
+    
+    
 }
