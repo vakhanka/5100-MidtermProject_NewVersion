@@ -21,7 +21,7 @@ public class Business {
 
     String name;
     PersonDirectory persondirectory; //all people profiles regardless of the role
-    private university.Department.Department department;
+    private Department department;
     EmployeeDirectory employeedirectory;
     UserAccountDirectory useraccountdirectory;
     StudentDirectory studentdirectory;
@@ -35,9 +35,11 @@ public class Business {
         persondirectory = new PersonDirectory();
         employeedirectory = new EmployeeDirectory(this);
         useraccountdirectory = new UserAccountDirectory();
-        studentdirectory = new StudentDirectory();
-        department = new university.Department.Department("Information Systems"); //bridge to the university package
+        
+        department = new Department("Information Systems"); //bridge to the university package
 
+        studentdirectory = new StudentDirectory();
+        
         // initialize department list 
         departments = new ArrayList<>();
     }
@@ -58,6 +60,7 @@ public class Business {
     public StudentDirectory getStudentDirectory(){
         return studentdirectory;
     }
+    
     
     /**
      * Creates and registers a new Department in the university. Used during

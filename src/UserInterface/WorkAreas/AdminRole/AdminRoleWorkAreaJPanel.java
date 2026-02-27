@@ -12,6 +12,8 @@ package UserInterface.WorkAreas.AdminRole;
 
 import Business.Business;
 import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.ManageUserAccountsJPanel;
+import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
+import java.awt.CardLayout;
 import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.CreateNewUserAccountJPanel;
 import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManageEmployeesJPanel;
 import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManageFacultyJPanel;
@@ -49,6 +51,12 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton4 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        btnStudentRegistration = new javax.swing.JButton();
         btnAdministerUserAccounts = new javax.swing.JButton();
         btnManageFaculty = new javax.swing.JButton();
         btnRegisterPersons = new javax.swing.JButton();
@@ -142,6 +150,20 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnStudentRegistration.setBackground(new java.awt.Color(102, 153, 255));
+        btnStudentRegistration.setFont(getFont());
+        btnStudentRegistration.setForeground(new java.awt.Color(255, 255, 255));
+        btnStudentRegistration.setText("Student Registration");
+        btnStudentRegistration.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnStudentRegistration.setMaximumSize(new java.awt.Dimension(145, 40));
+        btnStudentRegistration.setMinimumSize(new java.awt.Dimension(20, 20));
+        btnStudentRegistration.setPreferredSize(new java.awt.Dimension(240, 25));
+        btnStudentRegistration.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStudentRegistrationIdentifyEventsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -220,6 +242,13 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
         CardSequencePanel.add("Manage Employees Panel", mep);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_btnManageEmployeesActionPerformed
+
+    private void btnStudentRegistrationIdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStudentRegistrationIdentifyEventsActionPerformed
+        // TODO add your handling code here:
+        StudentRegistrationJPanel panel = new StudentRegistrationJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("StudentRegistration", panel);
+        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_btnStudentRegistrationIdentifyEventsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

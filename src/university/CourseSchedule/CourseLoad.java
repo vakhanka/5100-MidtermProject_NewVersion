@@ -28,6 +28,36 @@ public class CourseLoad {
         return sa;
     }
     
+    public SeatAssignment findSeatAssignmentByCourseNumber(String courseNumber) {
+        // Find the student's seat assignment for a specific course number
+        for (SeatAssignment sa : seatassignments) {
+            if (sa.getCourseOffer() != null && sa.getCourseOffer().getCourseNumber().equals(courseNumber)) {
+                return sa;
+            }
+        }
+        return null;
+    }
+
+    public boolean isAlreadyEnrolled(String courseNumber) {
+        // Prevent duplicate enrollments in the same course
+        return findSeatAssignmentByCourseNumber(courseNumber) != null;
+    }
+
+    public void dropCourse(String courseNumber) {
+        // Drop a course: free the seat and remove the assignment from the student's courseload
+        SeatAssignment sa = findSeatAssignmentByCourseNumber(courseNumber);
+        if (sa == null) {
+            return;
+        }
+
+        Seat seat = sa.getSeat();
+        if (seat != null) {
+            seat.releaseSeat(); // Free the seat in the course offering
+        }
+
+        seatassignments.remove(sa); // Remove from student's enrolled list
+    }
+    
     public void registerStudent(SeatAssignment sa){
         
         
