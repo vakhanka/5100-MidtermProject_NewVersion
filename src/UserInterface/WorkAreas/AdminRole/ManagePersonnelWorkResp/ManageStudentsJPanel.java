@@ -71,6 +71,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         txtSearchField = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
+        btnClearSearch = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -143,6 +144,15 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         });
         add(btnEdit);
         btnEdit.setBounds(510, 420, 72, 23);
+
+        btnClearSearch.setText("Clear Search");
+        btnClearSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearSearchActionPerformed(evt);
+            }
+        });
+        add(btnClearSearch);
+        btnClearSearch.setBounds(260, 70, 100, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -180,9 +190,17 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_btnEditActionPerformed
 
+    private void btnClearSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearchActionPerformed
+        // TODO add your handling code here:
+
+        populatetable();
+        txtSearchField.setText("");
+    }//GEN-LAST:event_btnClearSearchActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnClearSearch;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> cbxSearchType;
