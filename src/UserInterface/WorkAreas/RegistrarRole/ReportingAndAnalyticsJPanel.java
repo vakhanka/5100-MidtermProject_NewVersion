@@ -4,17 +4,46 @@
  */
 package UserInterface.WorkAreas.RegistrarRole;
 
+import Business.Business;
+import Business.Profiles.RegistrarProfile;
+import Business.Profiles.StudentProfile;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import university.CourseSchedule.CourseLoad;
+import university.CourseSchedule.SeatAssignment;
+import university.Department.Department;
+
 /**
  *
  * @author Lanre
  */
 public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
-
+    private Business business;
+    private JPanel CardSequencePanel;
+    private RegistrarProfile registrar;
     /**
      * Creates new form ReportingAndAnalyticsJPanel
      */
-    public ReportingAndAnalyticsJPanel() {
+    public ReportingAndAnalyticsJPanel(Business business, RegistrarProfile registrar, JPanel CardSequencePanel) {
         initComponents();
+        this.business = business;
+        this.registrar = registrar;
+        this.CardSequencePanel = CardSequencePanel;
+
+        populateDepartments();
+        populateSemesters();
+
+        if (cmbDepartment.getItemCount() > 0) {
+            cmbDepartment.setSelectedIndex(0);
+        }
+        if (cmbSemester.getItemCount() > 0) {
+            cmbSemester.setSelectedIndex(0);
+        }
+
+        // show empty table headers initially
+        setEnrollmentTableModel();
     }
 
     /**
@@ -82,17 +111,6 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnEnrollmentReport)
-                        .addGap(226, 226, 226))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnBack)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGpaDistribution)
-                        .addGap(165, 165, 165))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -105,12 +123,18 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
                                     .addComponent(lblDepartment))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cmbDepartment, 0, 143, Short.MAX_VALUE)
+                                    .addComponent(btnEnrollmentReport, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                                    .addComponent(cmbDepartment, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(cmbSemester, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(34, 34, 34)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(179, 179, 179)
+                        .addComponent(btnBack)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnGpaDistribution)))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,9 +149,9 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSemester)
                     .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnEnrollmentReport)
                 .addGap(18, 18, 18)
+                .addComponent(btnEnrollmentReport)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -139,6 +163,70 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
 
     private void btnEnrollmentReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnrollmentReportActionPerformed
         // TODO add your handling code here:
+        String selectedSemester = (String) cmbSemester.getSelectedItem();
+        String selectedDept = (String) cmbDepartment.getSelectedItem();
+
+        if (selectedSemester == null) {
+            return;
+        }
+        if (selectedDept == null) {
+            selectedDept = "All";
+        }
+
+        setEnrollmentTableModel();
+        DefaultTableModel model = (DefaultTableModel) tblReport.getModel();
+        model.setRowCount(0);
+
+        // key: dept|courseId|courseName  value: count
+        Map<String, Integer> counts = new HashMap<>();
+
+        for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
+
+            university.Persona.StudentProfile up = sp.getUniversityProfile();
+            if (up == null) {
+                continue;
+            }
+
+            CourseLoad cl = up.getCourseLoadBySemester(selectedSemester);
+            if (cl == null) {
+                continue;
+            }
+
+            for (SeatAssignment sa : cl.getSeatAssignments()) {
+                if (sa == null || sa.getAssociatedCourse() == null) {
+                    continue;
+                }
+
+                String courseId = safe(sa.getAssociatedCourse().getCOurseNumber());
+                String courseName = safe(sa.getAssociatedCourse().getName());
+
+                // Department name:
+                // If you can’t get it from the course/offering, we still respect the selected filter.
+                String deptName = resolveDepartmentName(sa, selectedDept);
+
+                // If user selected a department and we resolved a different one, skip
+                if (!"All".equals(selectedDept) && !selectedDept.equals(deptName)) {
+                    continue;
+                }
+
+                String key = deptName + "|" + courseId + "|" + courseName;
+                counts.put(key, counts.getOrDefault(key, 0) + 1);
+            }
+        }
+
+        // Render rows
+        for (Map.Entry<String, Integer> e : counts.entrySet()) {
+            String[] parts = e.getKey().split("\\|", -1);
+            String dept = parts.length > 0 ? parts[0] : "";
+            String cid = parts.length > 1 ? parts[1] : "";
+            String cname = parts.length > 2 ? parts[2] : "";
+            model.addRow(new Object[]{dept, cid, cname, e.getValue()});
+        }
+
+        // if empty, show one row to indicate no data
+        if (model.getRowCount() == 0) {
+            model.addRow(new Object[]{"", "No enrollments found", "", 0});
+        }
     }//GEN-LAST:event_btnEnrollmentReportActionPerformed
 
     private void btnGpaDistributionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGpaDistributionActionPerformed
@@ -158,4 +246,51 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblTitle;
     private javax.swing.JTable tblReport;
     // End of variables declaration//GEN-END:variables
+
+    private void populateDepartments() {
+        cmbDepartment.removeAllItems();
+        cmbDepartment.addItem("All");
+
+        // If you have business.getDepartments() already (you do)
+        for (Department d : business.getDepartments()) {
+            cmbDepartment.addItem(d.toString());
+        }
+    }
+
+    private void populateSemesters() {
+        cmbSemester.removeAllItems();
+        cmbSemester.addItem("Fall 2026");
+        cmbSemester.addItem("Spring 2027");
+        cmbSemester.addItem("Summer 2027");
+    }
+
+    private void setEnrollmentTableModel() {
+        DefaultTableModel model = new DefaultTableModel(
+                new Object[]{"Department", "Course ID", "Course Name", "Enrolled"}, 0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
+
+        tblReport.setModel(model);
+    }
+    
+    private String safe(String s) {
+        return (s == null) ? "" : s;
+    }
+
+    /**
+     * Try to get department from the data model. If not available, fall back to
+     * selected dept or "All".
+     */
+    private String resolveDepartmentName(SeatAssignment sa, String selectedDept) {
+
+        // show selected dept if user chose one, else "All"
+        if (selectedDept != null && !"All".equals(selectedDept)) {
+            return selectedDept;
+        }
+        return "All";
+    }
 }
