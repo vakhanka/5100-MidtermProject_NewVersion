@@ -8,6 +8,7 @@ import Business.Business;
 import Business.Profiles.Profile;
 import Business.Profiles.RegistrarProfile;
 import javax.swing.JPanel;
+import UserInterface.WorkAreas.RegistrarRole.ManageProfileJPanel;
 
 /**
  *
@@ -188,6 +189,9 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnRegManageProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegManageProfileActionPerformed
         // TODO add your handling code here:
+        ManageProfileJPanel mp = new ManageProfileJPanel(business, registrar, CardSequencePanel);
+        CardSequencePanel.add("ManageProfileJPanel", mp);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_btnRegManageProfileActionPerformed
 
     private void btnRegCourseOfferingMgmtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegCourseOfferingMgmtActionPerformed

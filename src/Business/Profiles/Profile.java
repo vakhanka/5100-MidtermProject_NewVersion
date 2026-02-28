@@ -15,11 +15,11 @@ public abstract class Profile {
     Person person;
     private String email;
     private String phone;
-     public Profile(Person p){
+    private String officeLocation;
+    public Profile(Person p){
         person = p;
         this.email = email;
-        this.phone = phone;
-        
+        this.phone = phone;        
     }
 
     public String getEmail() {
@@ -37,8 +37,16 @@ public abstract class Profile {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-     
-     
+    
+    // For ManageProfile in Registrar 
+    public String getOfficeLocation() {
+        return officeLocation;
+    }
+    
+    // For ManageProfile in Registrar 
+    public void setOfficeLocation(String officeLocation) {
+        this.officeLocation = officeLocation;
+    } 
     
     public abstract String getRole();
     
@@ -46,8 +54,7 @@ public abstract class Profile {
         return person;
     }
      
-
-        public boolean isMatch(String id) {
+    public boolean isMatch(String id) {
         if (person.getPersonId().equals(id)) {
             return true;
         }
