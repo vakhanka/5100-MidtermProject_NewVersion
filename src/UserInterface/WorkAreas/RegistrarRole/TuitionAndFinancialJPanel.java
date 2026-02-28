@@ -6,7 +6,11 @@ package UserInterface.WorkAreas.RegistrarRole;
 
 import Business.Business;
 import Business.Profiles.RegistrarProfile;
+import Business.Profiles.StudentProfile;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import university.CourseSchedule.CourseLoad;
+import university.CourseSchedule.SeatAssignment;
 import university.Department.Department;
 
 /**
@@ -67,6 +71,11 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
         cmbSemester.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnLoad.setText("Load");
+        btnLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadActionPerformed(evt);
+            }
+        });
 
         tblTuitionAndFinancial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -113,6 +122,7 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -124,51 +134,114 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
                                         .addGap(82, 82, 82)
                                         .addComponent(btnDeptBreakdown))
                                     .addComponent(spReportOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(lblDepartment)
-                                    .addGap(23, 23, 23)
-                                    .addComponent(cmbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(34, 34, 34)
-                                    .addComponent(lblSemester)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(75, 75, 75)
-                                    .addComponent(btnLoad))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblDepartment)
+                                .addGap(23, 23, 23)
+                                .addComponent(cmbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(lblSemester)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(48, 48, 48)
+                                .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 63, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(lblTitle)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDepartment)
-                    .addComponent(cmbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblSemester)
-                    .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLoad))
-                .addGap(36, 36, 36)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22)
-                .addComponent(lblFinancialReport)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTotalCollected)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnUnpaidSummary)
-                        .addComponent(btnDeptBreakdown)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnBack)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(btnBack))
-                    .addComponent(spReportOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(57, Short.MAX_VALUE))
+                        .addComponent(lblTitle)
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblDepartment)
+                            .addComponent(cmbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSemester)
+                            .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLoad))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblFinancialReport)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnTotalCollected)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnUnpaidSummary)
+                                .addComponent(btnDeptBreakdown)))
+                        .addGap(18, 18, 18)
+                        .addComponent(spReportOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 43, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
+        // TODO add your handling code here:       
+        String selectedSemester = (String) cmbSemester.getSelectedItem();      
+        String selectedDept = (String) cmbDepartment.getSelectedItem();
+
+        DefaultTableModel model = (DefaultTableModel) tblTuitionAndFinancial.getModel();
+        model.setRowCount(0); // clear table
+
+        double totalCollected = 0.0;
+        double totalUnpaid = 0.0;
+
+        for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
+
+            university.Persona.StudentProfile up = sp.getUniversityProfile();
+           
+            if (up == null) {
+                continue;
+            }
+
+            CourseLoad cl = up.getCourseLoadBySemester(selectedSemester);
+            if (cl == null) {
+                continue;
+            }
+                    
+            double due = 0.0;
+
+            for (SeatAssignment sa : cl.getSeatAssignments()) {
+                if (sa == null || sa.getAssociatedCourse() == null) {
+                    continue;
+                }
+                due += sa.getAssociatedCourse().getCoursePrice();
+            }
+
+            if (due <= 0) {
+                continue;
+            }
+
+            double balance = up.getBalance();
+            double paid = due - balance;
+
+            if (paid < 0) {
+                paid = 0;
+            }
+            if (paid > due) {
+                paid = due;
+            }
+
+            String status = getStatus(due, balance);
+
+            totalCollected += paid;
+            if (balance > 0) {
+                totalUnpaid += balance;
+            }
+
+            model.addRow(new Object[]{
+                sp.getPerson().getPersonId(),
+                sp.getPerson().getFullname(),
+                String.format("%.2f", due),
+                String.format("%.2f", paid),
+                String.format("%.2f", balance),
+                status
+            });
+        }
+
+    }//GEN-LAST:event_btnLoadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -202,5 +275,18 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
         cmbSemester.addItem("Fall 2026");
         cmbSemester.addItem("Spring 2027");
         cmbSemester.addItem("Fall 2027");
+    }
+    
+    private String getStatus(double due, double balance) {
+        if (due <= 0) {
+            return "N/A";
+        }
+        if (balance <= 0) {
+            return "Paid";
+        }
+        if (balance >= due) {
+            return "Unpaid";
+        }
+        return "Partial";
     }
 }
