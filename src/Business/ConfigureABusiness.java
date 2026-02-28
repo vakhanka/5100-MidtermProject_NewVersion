@@ -193,6 +193,7 @@ class ConfigureABusiness {
 
         // Create semester schedule with 5 course offers
         university.CourseSchedule.CourseSchedule fall2025 = dept.newCourseSchedule("Fall 2025");
+        university.CourseSchedule.CourseSchedule spring2025 = dept.newCourseSchedule("Spring 2025");
         university.CourseSchedule.CourseOffer co1 = fall2025.newCourseOffer("INFO5100");
         co1.generatSeats(30);
         university.CourseSchedule.CourseOffer co2 = fall2025.newCourseOffer("INFO5200");
