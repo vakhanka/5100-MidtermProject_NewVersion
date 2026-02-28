@@ -87,6 +87,7 @@ public class StudentProfile {
     
     //HL: method to process payments - subtracts payment amount from balance & records the payment transaction 
     public void pay(double amt){
+        //balance -= amt;  // reduce outstanding balance
         String date = LocalDate.now().toString(); //HL: added import using AltEnter 
         paymentHistory.add(new TuitionRecord(date, amt, "Tuition Payment")); 
     }
