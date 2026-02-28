@@ -37,6 +37,7 @@ public class SeatAssignment {
     Seat seat;
     boolean like; //true means like and false means not like
     CourseLoad courseload;
+    private String submissionNote = ""; //HL: from CourseWorkJPanel 
     
     
     public SeatAssignment(CourseLoad cl, Seat s){
@@ -99,6 +100,19 @@ public class SeatAssignment {
     public float GetCourseStudentScore(){
         return getCreditHours()*grade;
     }*/
+
+    
+    //HL: method that returns the file path when student selects for submission, or empty if nothing has been submitted yet, called by CourseWorkJPanel 
+    public String getSubmissionNote() {
+        return submissionNote;
+    }
+
+    //HL: method to store file when student selects a file for assignemnt submission for a course, called by CourseWorkJPanel & clicks submit
+    public void submitAssignment(String filePath) {
+        if (filePath != null && !filePath.trim().isEmpty()) {
+        this.submissionNote = filePath.trim();
+    }
+    }
     
     
     
