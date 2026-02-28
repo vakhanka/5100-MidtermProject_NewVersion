@@ -6,6 +6,7 @@
 package university.Department;
 
 
+import java.util.ArrayList;
 import university.Employer.EmployerDirectory;
 import university.Persona.Faculty.FacultyDirectory;
 import university.Persona.PersonDirectory;
@@ -115,6 +116,11 @@ public class Department {
         co.assignEmptySeat(cl);
 
     }
+    
+    //method to retrieve all semesters
+    public ArrayList<CourseSchedule> getAllSchedules() {
+        return new ArrayList<>(mastercoursecatalog.values());
+}
     
   
     @Override
