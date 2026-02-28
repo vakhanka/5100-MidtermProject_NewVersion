@@ -9,6 +9,8 @@ import Business.Business;
 import Business.UserAccounts.UserAccount;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import university.CourseSchedule.CourseSchedule;
+import university.Department.Department;
 
 /**
  *h
@@ -31,7 +33,8 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
         this.business = bz;
         initComponents();
         loadusersbyrole();
-        //display user details here
+        loadCoursesBySemester();
+        
 
     }
 
@@ -222,6 +225,18 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
         model.addRow(new Object[]{"Registrar", registrarCount});
     
         tblActiveUsers.setModel(model);    }
+
+    private void loadCoursesBySemester() {
+        DefaultTableModel model = new DefaultTableModel(
+        new String[]{"Semester", "Courses Offered"}, 0
+        );
+
+        for (CourseSchedule cs : business.getDepartment().getAllSchedules()) {
+            model.addRow(new Object[]{cs.getSemester(), cs.getSchedule().size()});
+        }
+
+        tblCoursesPerSemester.setModel(model);
+    }
 
     
 
