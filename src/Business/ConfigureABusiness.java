@@ -31,12 +31,16 @@ class ConfigureABusiness {
     static Business initialize() {
         Business business = new Business("Northeastern University");
         
-        Department isDept = business.newDepartment("Information Systems");
+        Department isDept = business.getDepartment();
         Department csDept = business.newDepartment("Computer Science");
         
         // Seed sample course catalog for Information Systems
         isDept.newCourse("Application Engineering", "INFO5100", 4);
         isDept.newCourse("Data Science Engineering Methods", "INFO6105", 4);
+        isDept.newCourse("agile Software Development", "INFO5200", 4);
+        isDept.newCourse("Business Analytics", "INFO5210", 4);
+        isDept.newCourse("Prompt Engineering with AI", "INFO6150", 4);
+        isDept.newCourse("Software QA and Management", "INFO6205", 4);
 
         // Seed sample course catalog for Computer Science
         csDept.newCourse("Object-Oriented Design", "CS5004", 4);
@@ -45,7 +49,7 @@ class ConfigureABusiness {
         // ===== CREATE PERSONA FACULTY (for CourseOffer faculty assignment) =====
         // NOTE: This is separate from Business.Person.Person used for UserAccounts.
         // FacultyDirectory expects university.Persona.Person.
-        university.Persona.PersonDirectory personaPD = new university.Persona.PersonDirectory();
+        /*university.Persona.PersonDirectory personaPD = new university.Persona.PersonDirectory();
 
         university.Persona.Person pf001 = personaPD.newPerson("John Smith");
         university.Persona.Person pf002 = personaPD.newPerson("Sarah Johnson");
@@ -64,7 +68,7 @@ class ConfigureABusiness {
         csDept.getFacultyDirectory().newFacultyProfile(pf002);
         csDept.getFacultyDirectory().newFacultyProfile(pf003);
         csDept.getFacultyDirectory().newFacultyProfile(pf004);
-        csDept.getFacultyDirectory().newFacultyProfile(pf005);
+        csDept.getFacultyDirectory().newFacultyProfile(pf005);*/
         
         // ===== CREATE 30 PERSONS =====
         PersonDirectory persondirectory = business.getPersonDirectory();
@@ -264,13 +268,21 @@ class ConfigureABusiness {
             student6, student7, student8, student9, student10
         };
 
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             university.Persona.Person uniSP = dept.getPersonDirectory().newPerson(studentNames[i]);
             university.Persona.StudentProfile uniStudent = 
                     dept.getStudentDirectory().newStudentProfile(uniSP);
             uniStudent.newCourseLoad("Fall 2025");
             bizStudents[i].linkUniversityProfile(uniStudent);
-        }
+        }*/
+        
+        for (int i = 0; i < 10; i++) {
+            String nuid = bizStudents[i].getPerson().getPersonId(); // e.g. "N00001011"
+            university.Persona.Person uniSP = new university.Persona.Person(nuid);
+            university.Persona.StudentProfile uniStudent = dept.getStudentDirectory().newStudentProfile(uniSP);
+            uniStudent.newCourseLoad("Fall 2025");
+            bizStudents[i].linkUniversityProfile(uniStudent);
+}
 
         // Enroll first 5 students in INFO5100 as sample seat assignments
         for (int i = 0; i < 5; i++) {
