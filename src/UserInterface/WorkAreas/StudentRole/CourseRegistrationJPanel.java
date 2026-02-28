@@ -435,9 +435,11 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
     
     //HL: navigate student to Tuition Payment JPanel **********not yet created*********
     private void goToTuition(){ 
+        /*
         TuitionPaymentJPanel panel = new TuitionPaymentJPanel(business, student, CardSequencePanel); 
         CardSequencePanel.add("Tuition", panel);
         ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel); //HL: added import using AltEnter 
+        */
     }
     
     //HL: return student to previous panel 

@@ -54,6 +54,18 @@ public class PersonDirectory {
             results.add(p);
         }
     }
-    return results;
-}
+        return results;
+    }
+    
+    public Person findPerson(String name) {
+        if (name == null) {
+            return null;
+        }
+        for (Person p : personlist) {   // <-- change personlist to your actual list field
+            if (p != null && p.getFullname() != null && p.getFullname().equalsIgnoreCase(name)) {
+                return p;
+            }
+        }
+        return null;
+    }
 }

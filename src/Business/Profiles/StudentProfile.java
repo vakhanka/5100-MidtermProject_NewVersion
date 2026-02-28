@@ -48,5 +48,10 @@ public class StudentProfile extends Profile {
         return universityProfile;
     }
     
+    @Override
+    public String toString() {
+        // Show student ID in dropdown
+        return getPerson().getPersonId();
+    }
 
 }
