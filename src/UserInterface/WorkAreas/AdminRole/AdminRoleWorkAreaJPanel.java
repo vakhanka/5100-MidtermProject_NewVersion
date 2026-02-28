@@ -17,6 +17,7 @@ import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.ManageUs
 //import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
 import java.awt.CardLayout;
 import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.CreateNewUserAccountJPanel;
+import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.AnalyticsJPanel;
 import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManageEmployeesJPanel;
 import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManageFacultyJPanel;
 //import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManageFacultyJPanel;
@@ -252,6 +253,9 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnAnalyticsIdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalyticsIdentifyEventsActionPerformed
         // TODO add your handling code here:
+        AnalyticsJPanel ajp = new AnalyticsJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Analytics Panel", ajp);
+        ((CardLayout)CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_btnAnalyticsIdentifyEventsActionPerformed
 
 
