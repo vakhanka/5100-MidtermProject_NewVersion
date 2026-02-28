@@ -107,11 +107,6 @@ public class StudentProfile {
     public List<TuitionRecord> getPaymentHistory(){
         return paymentHistory; 
     }
-
     
-    //HL: called from CourseRegistrationJPanel 
-    public int getBalanace() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
 }
