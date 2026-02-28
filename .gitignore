@@ -35,3 +35,6 @@ nbproject/private/config.properties
 backup_not_compiled/
 *_BACKUP.java
 *_BACKUP.form
+
+nbproject/private/private.properties
+nbproject/private/private.xml
