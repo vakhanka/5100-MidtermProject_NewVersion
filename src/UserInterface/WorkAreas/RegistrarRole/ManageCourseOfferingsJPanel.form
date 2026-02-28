@@ -26,10 +26,10 @@
                           <Component id="lblSemester" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="cmbDepartment" min="-2" pref="112" max="-2" attributes="0"/>
-                          <Component id="txtSemester" min="-2" pref="112" max="-2" attributes="0"/>
-                          <Component id="btnLoad" min="-2" pref="112" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="cmbDepartment" pref="112" max="32767" attributes="0"/>
+                          <Component id="btnLoad" pref="112" max="32767" attributes="0"/>
+                          <Component id="cmbSemester" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -89,9 +89,9 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblSemester" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtSemester" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblTime" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtTime" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmbSemester" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -130,12 +130,7 @@
     <Component class="javax.swing.JComboBox" name="cmbDepartment">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
+          <StringArray count="0"/>
         </Property>
       </Properties>
       <Events>
@@ -149,11 +144,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Semester"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtSemester">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSemesterActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnLoad">
       <Properties>
@@ -283,12 +273,7 @@
     <Component class="javax.swing.JComboBox" name="cmbCourse">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
+          <StringArray count="0"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -331,12 +316,7 @@
     <Component class="javax.swing.JComboBox" name="cmbFaculty">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
+          <StringArray count="0"/>
         </Property>
       </Properties>
       <Events>
@@ -344,6 +324,16 @@
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbSemester">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
   </SubComponents>
