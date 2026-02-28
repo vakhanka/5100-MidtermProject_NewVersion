@@ -9,8 +9,8 @@ import Business.Business;
 import Business.UserAccounts.UserAccount;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import university.CourseSchedule.CourseOffer;
 import university.CourseSchedule.CourseSchedule;
-import university.Department.Department;
 
 /**
  *h
@@ -34,6 +34,8 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
         initComponents();
         loadusersbyrole();
         loadCoursesBySemester();
+        loadStudentsPerCourse();
+        loadRevenueBySemester();
         
 
     }
@@ -181,6 +183,10 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         // TODO add your handling code here:
+        loadusersbyrole();
+        loadCoursesBySemester();
+        loadStudentsPerCourse();
+        loadRevenueBySemester();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
 
@@ -226,7 +232,7 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
     
         tblActiveUsers.setModel(model);    }
 
-    private void loadCoursesBySemester() {
+    private void loadCoursesBySemester() {  //method to populate courses by semester table
         DefaultTableModel model = new DefaultTableModel(
         new String[]{"Semester", "Courses Offered"}, 0
         );
@@ -236,6 +242,37 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
         }
 
         tblCoursesPerSemester.setModel(model);
+    }
+
+    private void loadStudentsPerCourse() { // method to populate Students enrolled in each course table
+        DefaultTableModel model = new DefaultTableModel(
+            new String[]{"Course", "Enrolled Students"}, 0
+        );
+
+        for (CourseSchedule cs : business.getDepartment().getAllSchedules()) {
+            for (CourseOffer co : cs.getSchedule()) {
+                model.addRow(new Object[]{
+                    co.getSubjectCourse().getName(), 
+                    co.getEnrolledCount()
+                });
+            }
+        }
+    tblStudentsPerCourse.setModel(model);
+    }
+
+    private void loadRevenueBySemester() { //method to populate Revenue per semester table
+        DefaultTableModel model = new DefaultTableModel(
+        new String[]{"Semester", "Revenue"}, 0
+        );
+
+        for (CourseSchedule cs : business.getDepartment().getAllSchedules()) {
+            model.addRow(new Object[]{
+                cs.getSemester(),
+                "$" + cs.calculateTotalRevenues()
+            });
+        }
+
+        tblRevenue.setModel(model);
     }
 
     
