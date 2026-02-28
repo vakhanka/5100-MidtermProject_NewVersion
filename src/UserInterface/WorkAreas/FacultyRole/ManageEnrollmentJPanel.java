@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UserInterface.WorkAreas.FacultyRole;
+import Business.Business;
 
 /**
  *
@@ -16,15 +17,25 @@ public class ManageEnrollmentJPanel extends javax.swing.JPanel {
     /**
      * Creates new form ManageEnrollmentJPanel
      */
-     public ManageEnrollmentJPanel() {
+       
+       Business business;
+       javax.swing.JPanel CardSequencePanel;
+       
+    public ManageEnrollmentJPanel(Business b, javax.swing.JPanel clp) {
+        business = b;
+        CardSequencePanel = clp;
         initComponents();
         populateCourseDropdown();
     }
+    
      private void populateCourseDropdown() {
         cmbSelectCourses.removeAllItems();
-        cmbSelectCourses.addItem("INFO 5100 - Application Engineering");
-        cmbSelectCourses.addItem("INFO 6150 - Web Design");
-        
+        java.util.ArrayList<university.CourseSchedule.CourseOffer> offers =
+            business.getDepartment().getCourseSchedule("Fall 2025").getSchedule();
+        for (university.CourseSchedule.CourseOffer co : offers) {
+            cmbSelectCourses.addItem(co.getCourseNumber() + " - " +
+                co.getSubjectCourse().getName());
+        }
         updateStatusLabel();
     }
     

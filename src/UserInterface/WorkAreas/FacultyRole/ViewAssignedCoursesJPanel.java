@@ -11,35 +11,52 @@ import university.CourseSchedule.CourseOffer;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
+
 /**
- *
- * @author emmanuelcroll
+ * ViewAssignedCoursesJPanel.java
+ * Faculty Panel 1 - View Assigned Courses
+ * @author Emmanuel Ould Tayeb
+ * INFO 5100 - Midterm Project
  */
+    
+
+
 public class ViewAssignedCoursesJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ViewAssignedCoursesJPanel
      */
-    public ViewAssignedCoursesJPanel() {
+    
+    Business business;
+    javax.swing.JPanel CardSequencePanel;
+    
+    public ViewAssignedCoursesJPanel(Business b, javax.swing.JPanel clp) {
+        business = b;
+        CardSequencePanel = clp;
         initComponents();
-        loadMockCourses();
+        loadCourses();
     }
     
-    private void loadMockCourses() {
-        String[][] mockData = {
-            {"INFO 5100", "Application Engineering and Development", "Fall 2024", "25", "18"},
-            {"INFO 6150", "Web Design and User Experience", "Fall 2024", "25", "15"}
-        };
-        
+    private void loadCourses() {
+        java.util.ArrayList<university.CourseSchedule.CourseOffer> offers =
+            business.getDepartment().getCourseSchedule("Fall 2025").getSchedule();
+
+        String[][] data = new String[offers.size()][5];
+        for (int i = 0; i < offers.size(); i++) {
+            university.CourseSchedule.CourseOffer co = offers.get(i);
+            data[i][0] = co.getCourseNumber();
+            data[i][1] = co.getSubjectCourse().getName();
+            data[i][2] = "Fall 2025";
+            data[i][3] = String.valueOf(co.getCapacity());
+            data[i][4] = String.valueOf(co.getEnrolledCount());
+        }
+
         String[] columnNames = {"Course ID", "Course Name", "Semester", "Capacity", "Enrolled"};
-        
-        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(mockData, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        
+        javax.swing.table.DefaultTableModel model =
+            new javax.swing.table.DefaultTableModel(data, columnNames) {
+                @Override
+                public boolean isCellEditable(int row, int column) { return false; }
+            };
         tblViewAssignedCourses.setModel(model);
     }
 
