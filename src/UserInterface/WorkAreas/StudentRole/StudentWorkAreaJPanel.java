@@ -186,8 +186,10 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
     private void manageProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageProfileButtonActionPerformed
         // TODO add your handling code here:
         
-        //HL: Manage Profile Button, placeholder message until profile panel is built
-        javax.swing.JOptionPane.showMessageDialog(this, "Profile management coming soon.");
+        //HL: Manage Profile Button, navigates student to My Profile (StudentProfileJPanel 
+        StudentProfileJPanel panel = new StudentProfileJPanel(business, student, CardSequencePanel);
+        CardSequencePanel.add("StudentProfile", panel);
+        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
 
 }//GEN-LAST:event_manageProfileButtonActionPerformed
