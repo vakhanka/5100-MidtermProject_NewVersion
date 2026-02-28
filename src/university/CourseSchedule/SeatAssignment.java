@@ -37,6 +37,7 @@ public class SeatAssignment {
     Seat seat;
     boolean like; //true means like and false means not like
     CourseLoad courseload;
+    private String submissionNote = ""; //HL: added to store submission note from CourseWorkJPanel for the SeatAssignment 
     
     
     public SeatAssignment(CourseLoad cl, Seat s){
@@ -100,6 +101,16 @@ public class SeatAssignment {
         return getCreditHours()*grade;
     }*/
     
+    //HL: method to save a student's assignment submission note for this specific seat assignment. Called by CourseWorkJPanel upon clicking "Submit Assignment" button
+    public void submitAssignment(String note){
+        if (note != null && !note.trim().isEmpty()){
+            this.submissionNote = note.trim(); 
+        }
+    }
     
+    //HL: returns the submission note, or empty string if not sumbitted 
+    public String getSubmissionNote(){
+        return submissionNote; 
+    }
     
 }

@@ -177,9 +177,9 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     private void courseWorkButtonIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseWorkButtonIdentifyResourceAssetsActionPerformed
 
-        //HL: Course Work button, navigates student to Course Registration panel 
-        CourseRegistrationJPanel panel = new CourseRegistrationJPanel(business, student, CardSequencePanel);
-        CardSequencePanel.add("CourseRegistration", panel);
+        //HL: Course Work button, navigates student to CourseWorkJPanel 
+        CourseWorkJPanel panel = new CourseWorkJPanel(business, student, CardSequencePanel);
+        CardSequencePanel.add("CourseWork", panel);
         ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_courseWorkButtonIdentifyResourceAssetsActionPerformed
 
