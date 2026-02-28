@@ -69,8 +69,18 @@ public class ManageProfileJPanel extends javax.swing.JPanel {
         lblRole.setText("Role");
 
         btnBack.setText("<<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -144,6 +154,31 @@ public class ManageProfileJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        // Update fullname in Person
+        registrar.getPerson().setFullname(txtFullName.getText().trim());
+
+        // Update contact info in Profile
+        registrar.setEmail(txtEmail.getText().trim());
+        registrar.setPhone(txtPhone.getText().trim());
+        registrar.setOfficeLocation(txtOfficeLocation.getText().trim());
+
+        // Update office hours in RegistrarProfile
+        registrar.setOfficeHours(txtOfficeHours.getText().trim());
+
+        // Optional: refresh created timestamp (if you want tracking)
+         registrar.getPerson().updatecreateddate();
+        
+        javax.swing.JOptionPane.showMessageDialog(this, "Profile updated successfully.");
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        CardSequencePanel.remove(this);  // remove current panel
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);  // go back
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -164,10 +199,7 @@ public class ManageProfileJPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void populateFields() {
-        System.out.println("Email=" + registrar.getEmail());
-        System.out.println("Phone=" + registrar.getPhone());
-        System.out.println("Office=" + registrar.getOfficeLocation());
-        System.out.println("Hours=" + registrar.getOfficeHours());
+       
         txtFullName.setText(registrar.getPerson().getFullname());
         txtEmail.setText(registrar.getEmail() == null ? "" : registrar.getEmail());
         txtPhone.setText(registrar.getPhone() == null ? "" : registrar.getPhone());

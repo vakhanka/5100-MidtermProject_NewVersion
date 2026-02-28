@@ -18,8 +18,9 @@ public abstract class Profile {
     private String officeLocation;
     public Profile(Person p){
         person = p;
-        this.email = email;
-        this.phone = phone;        
+        this.email = "";
+        this.phone = "";   
+        this.officeLocation = "";
     }
 
     public String getEmail() {
