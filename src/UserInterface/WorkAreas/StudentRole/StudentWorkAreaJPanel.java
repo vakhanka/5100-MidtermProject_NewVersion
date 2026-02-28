@@ -215,7 +215,7 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 }//GEN-LAST:event_registrationButtonActionPerformed
 
     private void transcriptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transcriptButtonActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here: new branch 
         
         //HL: Transcript Button - navigates student to Transcript panel 
         /*
@@ -223,6 +223,8 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
         CardSequencePanel.add("Transcript", panel);
         ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         */
+        
+        
     }//GEN-LAST:event_transcriptButtonActionPerformed
 
 
