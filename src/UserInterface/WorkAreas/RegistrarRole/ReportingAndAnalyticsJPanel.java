@@ -7,6 +7,7 @@ package UserInterface.WorkAreas.RegistrarRole;
 import Business.Business;
 import Business.Profiles.RegistrarProfile;
 import Business.Profiles.StudentProfile;
+import java.awt.CardLayout;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
@@ -106,6 +107,11 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblReport);
 
         btnBack.setText("<<< < Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -231,7 +237,77 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
 
     private void btnGpaDistributionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGpaDistributionActionPerformed
         // TODO add your handling code here:
+        String selectedSemester = (String) cmbSemester.getSelectedItem();
+        String selectedDept = (String) cmbDepartment.getSelectedItem();
+
+        if (selectedSemester == null) {
+            return;
+        }
+        if (selectedDept == null) {
+            selectedDept = "All";
+        }
+
+        setGpaTableModel();
+        DefaultTableModel model = (DefaultTableModel) tblReport.getModel();
+        model.setRowCount(0);
+
+        // Map key = program|bucket  value = count
+        Map<String, Integer> counts = new HashMap<>();
+
+        for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
+
+            university.Persona.StudentProfile up = sp.getUniversityProfile();
+            if (up == null) {
+                continue;
+            }
+
+            CourseLoad cl = up.getCourseLoadBySemester(selectedSemester);
+            if (cl == null) {
+                continue;
+            }
+
+            // If student has no courses in that semester, skip
+            if (cl.getSeatAssignments() == null || cl.getSeatAssignments().isEmpty()) {
+                continue;
+            }
+
+            // Resolve program/department
+            // If you cannot derive department from model yet, we will use selectedDept or "All"
+            String program = resolveProgramName(cl, selectedDept);
+
+            if (!"All".equals(selectedDept) && !selectedDept.equals(program)) {
+                continue;
+            }
+
+            double gpa = cl.getSemesterGPA();
+            String bucket = bucketGpa(gpa);
+
+            String key = program + "|" + bucket;
+            counts.put(key, counts.getOrDefault(key, 0) + 1);
+        }
+
+        // Render rows in a consistent order
+        String[] buckets = {"3.7 - 4.0", "3.0 - 3.69", "2.0 - 2.99", "1.0 - 1.99", "0.0 - 0.99"};
+
+        if ("All".equals(selectedDept)) {
+            // show All summary (single program)
+            for (String b : buckets) {
+                int c = counts.getOrDefault("All|" + b, 0);
+                model.addRow(new Object[]{"All", b, c});
+            }
+        } else {
+            for (String b : buckets) {
+                int c = counts.getOrDefault(selectedDept + "|" + b, 0);
+                model.addRow(new Object[]{selectedDept, b, c});
+            }
+        }
     }//GEN-LAST:event_btnGpaDistributionActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        CardSequencePanel.remove(this);
+        ((CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -292,5 +368,40 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
             return selectedDept;
         }
         return "All";
+    }
+
+    private String resolveProgramName(CourseLoad cl, String selectedDept) {
+        if (selectedDept != null && !"All".equals(selectedDept)) {
+            return selectedDept;
+        }
+        return "All";
+    }
+
+    private String bucketGpa(double gpa) {
+        if (gpa >= 3.7) {
+            return "3.7 - 4.0";
+        }
+        if (gpa >= 3.0) {
+            return "3.0 - 3.69";
+        }
+        if (gpa >= 2.0) {
+            return "2.0 - 2.99";
+        }
+        if (gpa >= 1.0) {
+            return "1.0 - 1.99";
+        }
+        return "0.0 - 0.99";
+    }
+
+    private void setGpaTableModel() {
+        DefaultTableModel model = new DefaultTableModel(
+                new Object[]{"Program", "GPA Range", "Student Count"}, 0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
+        tblReport.setModel(model);
     }
 }
