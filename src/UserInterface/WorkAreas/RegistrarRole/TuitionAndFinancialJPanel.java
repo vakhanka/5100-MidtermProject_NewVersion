@@ -7,6 +7,7 @@ package UserInterface.WorkAreas.RegistrarRole;
 import Business.Business;
 import Business.Profiles.RegistrarProfile;
 import Business.Profiles.StudentProfile;
+import java.awt.CardLayout;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import university.CourseSchedule.CourseLoad;
@@ -26,6 +27,10 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
      */
     public TuitionAndFinancialJPanel(Business business, RegistrarProfile registrar, JPanel CardSequencePanel) {
         initComponents();
+        
+        txtReportOutput.setEditable(false);
+        txtReportOutput.setLineWrap(true);
+        txtReportOutput.setWrapStyleWord(true);
         
         this.business = business;
         this.registrar = registrar;
@@ -57,6 +62,7 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
         btnUnpaidSummary = new javax.swing.JButton();
         btnDeptBreakdown = new javax.swing.JButton();
         spReportOutput = new javax.swing.JScrollPane();
+        txtReportOutput = new javax.swing.JTextArea();
         btnBack = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -64,11 +70,7 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
 
         lblDepartment.setText("Department");
 
-        cmbDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         lblSemester.setText("Semester");
-
-        cmbSemester.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnLoad.setText("Load");
         btnLoad.addActionListener(new java.awt.event.ActionListener() {
@@ -99,12 +101,36 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
         lblFinancialReport.setText("Financial Report");
 
         btnTotalCollected.setText("Total Collected");
+        btnTotalCollected.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTotalCollectedActionPerformed(evt);
+            }
+        });
 
         btnUnpaidSummary.setText("Unpaid Summary");
+        btnUnpaidSummary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUnpaidSummaryActionPerformed(evt);
+            }
+        });
 
         btnDeptBreakdown.setText("Department Breakdown");
+        btnDeptBreakdown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeptBreakdownActionPerformed(evt);
+            }
+        });
+
+        txtReportOutput.setColumns(20);
+        txtReportOutput.setRows(5);
+        spReportOutput.setViewportView(txtReportOutput);
 
         btnBack.setText("<<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -243,6 +269,115 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnLoadActionPerformed
 
+    private void btnTotalCollectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTotalCollectedActionPerformed
+        // TODO add your handling code here:
+        String selectedSemester = (String) cmbSemester.getSelectedItem();
+        double totalCollected = 0.0;
+
+        for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
+
+            university.Persona.StudentProfile up = sp.getUniversityProfile();
+            if (up == null) {
+                continue;
+            }
+
+            CourseLoad cl = up.getCourseLoadBySemester(selectedSemester);
+            if (cl == null) {
+                continue;
+            }
+
+            double due = 0.0;
+            for (SeatAssignment sa : cl.getSeatAssignments()) {
+                due += sa.getAssociatedCourse().getCoursePrice();
+            }
+
+            double balance = up.getBalance();
+            double paid = Math.max(0, due - balance);
+
+            totalCollected += paid;
+        }
+
+        txtReportOutput.setText(
+                "Total Tuition Collected for " + selectedSemester
+                + "\n\n$" + String.format("%.2f", totalCollected)
+        );
+    }//GEN-LAST:event_btnTotalCollectedActionPerformed
+
+    private void btnUnpaidSummaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnpaidSummaryActionPerformed
+        // TODO add your handling code here:
+        String selectedSemester = (String) cmbSemester.getSelectedItem();
+        double totalUnpaid = 0.0;
+        int unpaidStudents = 0;
+
+        for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
+
+            university.Persona.StudentProfile up = sp.getUniversityProfile();
+            if (up == null) {
+                continue;
+            }
+
+            CourseLoad cl = up.getCourseLoadBySemester(selectedSemester);
+            if (cl == null) {
+                continue;
+            }
+
+            double balance = up.getBalance();
+
+            if (balance > 0) {
+                totalUnpaid += balance;
+                unpaidStudents++;
+            }
+        }
+
+        txtReportOutput.setText(
+                "Unpaid Tuition Summary for " + selectedSemester
+                + "\n\nStudents with Outstanding Balance: " + unpaidStudents
+                + "\nTotal Outstanding Amount: $" + String.format("%.2f", totalUnpaid)
+        );
+    }//GEN-LAST:event_btnUnpaidSummaryActionPerformed
+
+    private void btnDeptBreakdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeptBreakdownActionPerformed
+        // TODO add your handling code here:
+        String selectedSemester = (String) cmbSemester.getSelectedItem();
+        String selectedDept = (String) cmbDepartment.getSelectedItem();
+
+        double departmentRevenue = 0.0;
+
+        for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
+
+            university.Persona.StudentProfile up = sp.getUniversityProfile();
+            if (up == null) {
+                continue;
+            }
+
+            CourseLoad cl = up.getCourseLoadBySemester(selectedSemester);
+            if (cl == null) {
+                continue;
+            }
+
+            for (SeatAssignment sa : cl.getSeatAssignments()) {
+
+                if (!"All".equals(selectedDept)) {
+                    // If your Course has department info, filter here
+                    // Otherwise skip filtering for now
+                }
+
+                departmentRevenue += sa.getAssociatedCourse().getCoursePrice();
+            }
+        }
+
+        txtReportOutput.setText(
+                "Department Revenue Breakdown (" + selectedDept + ")"
+                + "\n\nTotal Revenue: $" + String.format("%.2f", departmentRevenue)
+        );
+    }//GEN-LAST:event_btnDeptBreakdownActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        CardSequencePanel.remove(this);
+        ((CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -259,6 +394,7 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblTitle;
     private javax.swing.JScrollPane spReportOutput;
     private javax.swing.JTable tblTuitionAndFinancial;
+    private javax.swing.JTextArea txtReportOutput;
     // End of variables declaration//GEN-END:variables
 
     private void populateDepartments() {

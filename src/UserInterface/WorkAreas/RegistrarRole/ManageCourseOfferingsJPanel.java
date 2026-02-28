@@ -37,6 +37,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         // Configure spinner for realistic class sizes
         spnCapacity.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
         populateDepartments();
+        populateSemesters();
         
 
         // Capacity controls disabled until a row is selected
@@ -56,7 +57,6 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         lblDepartment = new javax.swing.JLabel();
         cmbDepartment = new javax.swing.JComboBox<>();
         lblSemester = new javax.swing.JLabel();
-        txtSemester = new javax.swing.JTextField();
         btnLoad = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCourseOfferings = new javax.swing.JTable();
@@ -74,10 +74,10 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         btnSaveSchedule = new javax.swing.JButton();
         lblFaculty = new javax.swing.JLabel();
         cmbFaculty = new javax.swing.JComboBox();
+        cmbSemester = new javax.swing.JComboBox<>();
 
         lblDepartment.setText("Department");
 
-        cmbDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbDepartment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbDepartmentActionPerformed(evt);
@@ -85,12 +85,6 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         });
 
         lblSemester.setText("Semester");
-
-        txtSemester.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSemesterActionPerformed(evt);
-            }
-        });
 
         btnLoad.setText("Load");
         btnLoad.addActionListener(new java.awt.event.ActionListener() {
@@ -147,8 +141,6 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
         lblSelectedOffering.setText("Selected Offering");
 
-        cmbCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         lblRoom.setText("Room");
 
         txtRoom.addActionListener(new java.awt.event.ActionListener() {
@@ -174,7 +166,6 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
         lblFaculty.setText("Faculty");
 
-        cmbFaculty.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbFaculty.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbFacultyActionPerformed(evt);
@@ -194,10 +185,10 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
                             .addComponent(lblDepartment)
                             .addComponent(lblSemester))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmbDepartment, 0, 112, Short.MAX_VALUE)
+                            .addComponent(btnLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                            .addComponent(cmbSemester, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -242,9 +233,9 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSemester)
-                    .addComponent(txtSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTime)
-                    .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLoad)
@@ -268,10 +259,6 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
                 .addGap(51, 51, 51))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtSemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSemesterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSemesterActionPerformed
 
     private void tblCourseOfferingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseOfferingsMouseClicked
         // TODO add your handling code here:
@@ -302,7 +289,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
     private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
         // TODO add your handling code here:
         String deptName = (String) cmbDepartment.getSelectedItem();
-        String semester = txtSemester.getText().trim();
+        String semester = (String) cmbSemester.getSelectedItem();
 
         // Basic validation
         if (deptName == null || deptName.isBlank()) {
@@ -361,7 +348,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
         // Validate department + semester context
         String deptName = (String) cmbDepartment.getSelectedItem();
-        String semester = txtSemester.getText().trim();
+        String semester = (String) cmbSemester.getSelectedItem();
 
         if (deptName == null || deptName.isBlank()) {
             JOptionPane.showMessageDialog(this, "Please select a Department.");
@@ -453,7 +440,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         }
 
         // Retrieve current semester and department context
-        String semester = txtSemester.getText().trim();
+        String semester = (String) cmbSemester.getSelectedItem();
         String deptName = (String) cmbDepartment.getSelectedItem();
 
         if (deptName == null || semester.isEmpty()) {
@@ -544,7 +531,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         }
 
         // Retrieve current semester and department context
-        String semester = txtSemester.getText().trim();
+        String semester = (String) cmbSemester.getSelectedItem();
         String deptName = (String) cmbDepartment.getSelectedItem();
 
         if (deptName == null || deptName.isBlank() || semester.isEmpty()) {
@@ -638,6 +625,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cmbCourse;
     private javax.swing.JComboBox<String> cmbDepartment;
     private javax.swing.JComboBox cmbFaculty;
+    private javax.swing.JComboBox<String> cmbSemester;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCapacity;
     private javax.swing.JLabel lblDepartment;
@@ -649,7 +637,6 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
     private javax.swing.JSpinner spnCapacity;
     private javax.swing.JTable tblCourseOfferings;
     private javax.swing.JTextField txtRoom;
-    private javax.swing.JTextField txtSemester;
     private javax.swing.JTextField txtTime;
     // End of variables declaration//GEN-END:variables
 
@@ -702,5 +689,11 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         if (model.getSize() > 0) {
             cmbFaculty.setSelectedIndex(0); // comment: keep a visible selection
         }
+    }
+    
+    private void populateSemesters() {
+        cmbSemester.addItem("Fall 2026");
+        cmbSemester.addItem("Spring 2027");
+        cmbSemester.addItem("Summer 2027");
     }
 }

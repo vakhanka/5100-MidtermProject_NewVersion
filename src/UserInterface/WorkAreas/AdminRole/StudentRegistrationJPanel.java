@@ -35,7 +35,8 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
 
         populateDepartments(); // load departments into dropdown
         populateStudents();    // load students into dropdown
-  
+        populateSemesters();
+        cmbSemester.setSelectedIndex(0);
  
     }
 
@@ -53,7 +54,6 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         lblDepartment = new javax.swing.JLabel();
         cmbDepartment = new javax.swing.JComboBox<>();
         lblSemester = new javax.swing.JLabel();
-        txtSemester = new javax.swing.JTextField();
         btnLoad = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblOfferings = new javax.swing.JTable();
@@ -62,6 +62,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         btnBack = new javax.swing.JButton();
         btnEnroll = new javax.swing.JButton();
         btnDrop = new javax.swing.JButton();
+        cmbSemester = new javax.swing.JComboBox<>();
 
         lblStudent.setText("Student");
 
@@ -153,10 +154,10 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
                             .addComponent(lblSemester))
                         .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnLoad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                             .addComponent(cmbStudent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmbDepartment, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbSemester, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(236, 236, 236))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 577, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -183,7 +184,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSemester)
-                    .addComponent(txtSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnLoad)
                 .addGap(18, 18, 18)
@@ -212,7 +213,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         }
 
         // 2) Read semester from text field
-        String semester = txtSemester.getText().trim();
+        String semester = (String) cmbSemester.getSelectedItem();
         if (semester.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Enter a semester (e.g., Fall 2025).");
             return;
@@ -242,8 +243,8 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
     private void cmbStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStudentActionPerformed
         // TODO add your handling code here:
         // Refresh student schedule only if semester is set and schedule is loaded
-        String semester = txtSemester.getText().trim();
-        if (semester.isEmpty()) {
+        String semester = (String) cmbSemester.getSelectedItem();
+        if (semester == null) {
             return;
         }
         if (currentSchedule == null) {
@@ -266,7 +267,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         }
 
         // 2) Get semester
-        String semester = txtSemester.getText().trim();
+        String semester = (String) cmbSemester.getSelectedItem();
         if (semester.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Enter semester first.");
             return;
@@ -314,7 +315,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         }
 
         // 2) Get semester
-        String semester = txtSemester.getText().trim();
+        String semester = (String) cmbSemester.getSelectedItem();
         if (semester.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Enter semester first.");
             return;
@@ -352,6 +353,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnEnroll;
     private javax.swing.JButton btnLoad;
     private javax.swing.JComboBox<Department> cmbDepartment;
+    private javax.swing.JComboBox<String> cmbSemester;
     private javax.swing.JComboBox<StudentProfile> cmbStudent;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -360,7 +362,6 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblStudent;
     private javax.swing.JTable tblOfferings;
     private javax.swing.JTable tblStudentSchedule;
-    private javax.swing.JTextField txtSemester;
     // End of variables declaration//GEN-END:variables
 
     private void populateDepartments() {
@@ -448,5 +449,11 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         }
 
         return cl;
+    }
+    
+    private void populateSemesters() {
+        cmbSemester.addItem("Fall 2026");
+        cmbSemester.addItem("Spring 2027");
+        cmbSemester.addItem("Summer 2027");
     }
 }
