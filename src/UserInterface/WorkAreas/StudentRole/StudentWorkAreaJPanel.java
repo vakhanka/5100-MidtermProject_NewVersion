@@ -177,9 +177,9 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     private void courseWorkButtonIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseWorkButtonIdentifyResourceAssetsActionPerformed
 
-        //HL: Course Work button, navigates student to Course Registration panel 
-        CourseRegistrationJPanel panel = new CourseRegistrationJPanel(business, student, CardSequencePanel);
-        CardSequencePanel.add("CourseRegistration", panel);
+        //HL: Course Work button, navigates student to CourseWorkJPanel
+        CourseWorkJPanel panel = new CourseWorkJPanel(business, student, CardSequencePanel);
+        CardSequencePanel.add("CourseWork", panel);
         ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_courseWorkButtonIdentifyResourceAssetsActionPerformed
 
@@ -187,7 +187,14 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         
         //HL: Manage Profile Button, placeholder message until profile panel is built
-        javax.swing.JOptionPane.showMessageDialog(this, "Profile management coming soon.");
+        //javax.swing.JOptionPane.showMessageDialog(this, "Profile management coming soon.");
+        
+        //HL: navigate student to StudentProfileJPanel 
+        /*
+        StudentProfileJPanel panel = new StudentProfileJPanel(business, student, CardSequencePanel);
+        CardSequencePanel.add("StudentProfile", panel);
+        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel)
+        */
 
 
 }//GEN-LAST:event_manageProfileButtonActionPerformed
@@ -196,11 +203,11 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         
         //HL: Graduation Audit Button, navigates student to Graduation Audit panel
-        /*
+        
         GraduationAuditJPanel panel = new GraduationAuditJPanel(business, student, CardSequencePanel);
         CardSequencePanel.add("GraduationAudit", panel);
         ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel); // HL: added import using AltEnter 
-        */
+        
     }//GEN-LAST:event_graduationAuditButtonActionPerformed
 
     private void registrationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrationButtonActionPerformed
@@ -215,14 +222,16 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 }//GEN-LAST:event_registrationButtonActionPerformed
 
     private void transcriptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transcriptButtonActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here: new branch 
         
         //HL: Transcript Button - navigates student to Transcript panel 
-        /*
+        
         TranscriptJPanel panel = new TranscriptJPanel(business, student, CardSequencePanel);
         CardSequencePanel.add("Transcript", panel);
         ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-        */
+        
+        
+        
     }//GEN-LAST:event_transcriptButtonActionPerformed
 
 
