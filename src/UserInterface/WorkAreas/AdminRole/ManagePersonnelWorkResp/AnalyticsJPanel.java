@@ -5,8 +5,10 @@
  */
 package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
+import Business.Business;
 import Business.UserAccounts.UserAccount;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *h
@@ -19,14 +21,16 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
      * Creates new form ManageSuppliersJPanel
      */
     JPanel CardSequencePanel;
+    Business business;
 
     UserAccount selecteduseraccount;
 
-    public AnalyticsJPanel(UserAccount sua, JPanel jp) {
+    public AnalyticsJPanel(Business bz, JPanel jp) {
 
         CardSequencePanel = jp;
-        selecteduseraccount= sua;
+        this.business = bz;
         initComponents();
+        loadusersbyrole();
         //display user details here
 
     }
@@ -114,7 +118,7 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
                 {null, null}
             },
             new String [] {
-                "Student", "Tuition Paid"
+                "Semester", "Revenue"
             }
         ));
         jScrollPane3.setViewportView(tblRevenue);
@@ -155,6 +159,11 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
         lblRevenue.setBounds(330, 240, 190, 16);
 
         btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
         add(btnRefresh);
         btnRefresh.setBounds(530, 410, 72, 23);
     }// </editor-fold>//GEN-END:initComponents
@@ -166,6 +175,10 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -186,6 +199,29 @@ public class AnalyticsJPanel extends javax.swing.JPanel {
     private javax.swing.JTable tblRevenue;
     private javax.swing.JTable tblStudentsPerCourse;
     // End of variables declaration//GEN-END:variables
+
+    private void loadusersbyrole() {   //Method to populate active users table
+        
+        DefaultTableModel model = new DefaultTableModel(
+            new String[]{"Role", "Active Users"}, 0
+        );
+    
+        int adminCount = 0, facultyCount = 0, studentCount = 0, registrarCount = 0;
+    
+        for (UserAccount ua : business.getUserAccountDirectory().getUserAccountList()) {
+            String role = ua.getRole();
+            if (role.equals("Admin")) adminCount++;
+            else if (role.equals("Faculty")) facultyCount++;
+            else if (role.equals("Student")) studentCount++;
+            else if (role.equals("Registrar")) registrarCount++;
+        }
+    
+        model.addRow(new Object[]{"Admin", adminCount});
+        model.addRow(new Object[]{"Faculty", facultyCount});
+        model.addRow(new Object[]{"Student", studentCount});
+        model.addRow(new Object[]{"Registrar", registrarCount});
+    
+        tblActiveUsers.setModel(model);    }
 
     
 
