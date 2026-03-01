@@ -295,8 +295,9 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         String teacher = (co.getFacultyProfile() != null) ? co.getFacultyProfile().getPerson().getPersonId() : "TBA"; 
         int credits = co.getCreditHours(); 
         
-        //HL: TO DO "See Registrat" needs to be replaced once Lanre mreges getEnrolledCount() to CourseOffer so available seats can be calculated
-        String seats = "See registrar"; 
+        //HL: calculate available seats for a CourseOffer using getCapacity() and getEnrolledCount()from CourseOffer.java
+        int available = co.getCapacity() - co.getEnrolledCount(); 
+        String seats = available > 0 ? available + " available" : "Full"; 
         model.addRow(new Object[]{courseId, courseName, teacher, credits, seats}); 
         
     }
@@ -362,11 +363,11 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         if (co == null) return;
         
         //HL: To-Do********************
-        //HL: remove comments once Lanre merges isAtCapacity() to CourseOffer.java 
-        /*if (co.isAtCapacity()){
+        //HL: checks CourseOffer availability using getCapacity() and getEnrolledCount()
+        if (co.getCapacity() > 0 && co.getEnrolledCount() >= co.getCapacity()){
             JOptionPane.showMessageDialog(this, "Course is full.");
             return; 
-        }*/
+        }
         
         //HL: gets existing or creates new course load for semester 
         CourseLoad cl = uniStudentProfile.getCurrentCourseLoad(); //HL: added import using AltEnter 
