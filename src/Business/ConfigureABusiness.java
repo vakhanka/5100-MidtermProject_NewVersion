@@ -31,18 +31,27 @@ class ConfigureABusiness {
     static Business initialize() {
         Business business = new Business("Northeastern University");
         
-        Department isDept = business.getDepartment();
+        // ===== DEPARTMENTS =====
+        Department isDept = business.newDepartment("Information Systems");
         Department csDept = business.newDepartment("Computer Science");
         
         // Seed sample course catalog for Information Systems
-        isDept.newCourse("Application Engineering", "INFO5100", 4);
+        /*isDept.newCourse("Application Engineering", "INFO5100", 4);
         isDept.newCourse("Data Science Engineering Methods", "INFO6105", 4);
         isDept.newCourse("agile Software Development", "INFO5200", 4);
         isDept.newCourse("Business Analytics", "INFO5210", 4);
         isDept.newCourse("Prompt Engineering with AI", "INFO6150", 4);
-        isDept.newCourse("Software QA and Management", "INFO6205", 4);
+        isDept.newCourse("Software QA and Management", "INFO6205", 4);*/
+        
+        // ===== IS COURSE CATALOG =====
+        university.CourseCatalog.Course info5100 = isDept.newCourse("Application Engineering", "INFO5100", 4);
+        university.CourseCatalog.Course info6105 = isDept.newCourse("Data Science Engineering Methods", "INFO6105", 4);
+        university.CourseCatalog.Course info5200 = isDept.newCourse("Agile Software Development", "INFO5200", 4);
+        university.CourseCatalog.Course info5210 = isDept.newCourse("Business Analytics", "INFO5210", 4);
+        university.CourseCatalog.Course info6150 = isDept.newCourse("Prompt Engineering with AI", "INFO6150", 4);
+        university.CourseCatalog.Course info6205 = isDept.newCourse("Software QA and Management", "INFO6205", 4);
 
-        // Seed sample course catalog for Computer Science
+        // ===== CS COURSE CATALOG =====
         csDept.newCourse("Object-Oriented Design", "CS5004", 4);
         csDept.newCourse("Algorithms", "CS5800", 4);
 
@@ -183,21 +192,23 @@ class ConfigureABusiness {
         //bridge to University Package
         
         // ===== UNIVERSITY SIDE SETUP =====
-        university.Department.Department dept = business.getDepartment();
+        
+        /*university.Department.Department dept = business.getDepartment();
 
         // Create university-side courses
-        university.CourseCatalog.Course info5100 = dept.newCourse("Application Engineering", "INFO5100", 4);
-        university.CourseCatalog.Course info5200 = dept.newCourse("Data Management", "INFO5200", 4);
-        university.CourseCatalog.Course info5210 = dept.newCourse("Database Design", "INFO5210", 4);
-        university.CourseCatalog.Course info6150 = dept.newCourse("Web Development", "INFO6150", 4);
-        university.CourseCatalog.Course info6205 = dept.newCourse("Program Structures", "INFO6205", 4);
+        university.CourseCatalog.Course info5100 = isDept.newCourse("Application Engineering", "INFO5100", 4);
+        university.CourseCatalog.Course info5200 = isDept.newCourse("Data Management", "INFO5200", 4);
+        university.CourseCatalog.Course info5210 = isDept.newCourse("Database Design", "INFO5210", 4);
+        university.CourseCatalog.Course info6150 = isDept.newCourse("Web Development", "INFO6150", 4);
+        university.CourseCatalog.Course info6205 = isDept.newCourse("Program Structures", "INFO6205", 4);*/
 
         // Mark INFO5100 as core requirement
-        dept.addCoreCourse(info5100);
+        isDept.addCoreCourse(info5100);
 
-        // Create semester schedule with 5 course offers
-        university.CourseSchedule.CourseSchedule fall2025 = dept.newCourseSchedule("Fall 2025");
-        university.CourseSchedule.CourseSchedule spring2025 = dept.newCourseSchedule("Spring 2025");
+        // ===== IS COURSE SCHEDULE — FALL 2025 =====
+        university.CourseSchedule.CourseSchedule fall2025 = isDept.newCourseSchedule("Fall 2025");
+        university.CourseSchedule.CourseSchedule spring2025 = isDept.newCourseSchedule("Spring 2025");
+        
         university.CourseSchedule.CourseOffer co1 = fall2025.newCourseOffer("INFO5100");
         co1.generatSeats(30);
         university.CourseSchedule.CourseOffer co2 = fall2025.newCourseOffer("INFO5200");
@@ -210,76 +221,82 @@ class ConfigureABusiness {
         co5.generatSeats(30);
 
         // ===== CREATE UNIVERSITY-SIDE FACULTY AND LINK TO BUSINESS PROFILES =====
-        university.Persona.Faculty.FacultyDirectory facultyDir = dept.getFacultyDirectory();
+        university.Persona.Faculty.FacultyDirectory facultyDir = isDept.getFacultyDirectory();
 
-        university.Persona.Person uniFP1 = dept.getPersonDirectory().newPerson("John Smith");
+        //university.Persona.Person uniFP1 = dept.getPersonDirectory().newPerson("John Smith");
+        university.Persona.Person uniFP1 = new university.Persona.Person(faculty1.getPerson().getPersonId());
         university.Persona.Faculty.FacultyProfile uniF1 = facultyDir.newFacultyProfile(uniFP1);
         co1.AssignAsTeacher(uniF1);
         faculty1.linkUniversityProfile(uniF1);
 
-        university.Persona.Person uniFP2 = dept.getPersonDirectory().newPerson("Sarah Johnson");
+        //university.Persona.Person uniFP2 = dept.getPersonDirectory().newPerson("Sarah Johnson");
+        university.Persona.Person uniFP2 = new university.Persona.Person(faculty2.getPerson().getPersonId());
         university.Persona.Faculty.FacultyProfile uniF2 = facultyDir.newFacultyProfile(uniFP2);
         co2.AssignAsTeacher(uniF2);
         faculty2.linkUniversityProfile(uniF2);
 
-        university.Persona.Person uniFP3 = dept.getPersonDirectory().newPerson("Michael Chen");
+        university.Persona.Person uniFP3 = new university.Persona.Person(faculty3.getPerson().getPersonId());
         university.Persona.Faculty.FacultyProfile uniF3 = facultyDir.newFacultyProfile(uniFP3);
         co3.AssignAsTeacher(uniF3);
         faculty3.linkUniversityProfile(uniF3);
 
-        university.Persona.Person uniFP4 = dept.getPersonDirectory().newPerson("Emily Davis");
+        university.Persona.Person uniFP4 = new university.Persona.Person(faculty4.getPerson().getPersonId());
         university.Persona.Faculty.FacultyProfile uniF4 = facultyDir.newFacultyProfile(uniFP4);
         co4.AssignAsTeacher(uniF4);
         faculty4.linkUniversityProfile(uniF4);
 
-        university.Persona.Person uniFP5 = dept.getPersonDirectory().newPerson("David Wilson");
+        university.Persona.Person uniFP5 = new university.Persona.Person(faculty5.getPerson().getPersonId());
         university.Persona.Faculty.FacultyProfile uniF5 = facultyDir.newFacultyProfile(uniFP5);
         co5.AssignAsTeacher(uniF5);
         faculty5.linkUniversityProfile(uniF5);
 
         // Remaining faculty get university profiles without course assignments for now
-        university.Persona.Person uniFP6 = dept.getPersonDirectory().newPerson("Jennifer Martinez");
+        university.Persona.Person uniFP6 = new university.Persona.Person(faculty6.getPerson().getPersonId());
         university.Persona.Faculty.FacultyProfile uniF6 = facultyDir.newFacultyProfile(uniFP6);
         faculty6.linkUniversityProfile(uniF6);
 
-        university.Persona.Person uniFP7 = dept.getPersonDirectory().newPerson("Robert Anderson");
+        university.Persona.Person uniFP7 = new university.Persona.Person(faculty7.getPerson().getPersonId());
         university.Persona.Faculty.FacultyProfile uniF7 = facultyDir.newFacultyProfile(uniFP7);
         faculty7.linkUniversityProfile(uniF7);
 
-        university.Persona.Person uniFP8 = dept.getPersonDirectory().newPerson("Lisa Taylor");
+        university.Persona.Person uniFP8 = new university.Persona.Person(faculty8.getPerson().getPersonId());
         university.Persona.Faculty.FacultyProfile uniF8 = facultyDir.newFacultyProfile(uniFP8);
         faculty8.linkUniversityProfile(uniF8);
 
-        university.Persona.Person uniFP9 = dept.getPersonDirectory().newPerson("James Brown");
+        university.Persona.Person uniFP9 = new university.Persona.Person(faculty9.getPerson().getPersonId());
         university.Persona.Faculty.FacultyProfile uniF9 = facultyDir.newFacultyProfile(uniFP9);
         faculty9.linkUniversityProfile(uniF9);
 
-        university.Persona.Person uniFP10 = dept.getPersonDirectory().newPerson("Maria Garcia");
+        university.Persona.Person uniFP10 = new university.Persona.Person(faculty10.getPerson().getPersonId());
         university.Persona.Faculty.FacultyProfile uniF10 = facultyDir.newFacultyProfile(uniFP10);
         faculty10.linkUniversityProfile(uniF10);
 
         // CREATE UNIVERSITY-SIDE STUDENTS AND LINK TO BUSINESS PROFILES 
-        String[] studentNames = {
+        /*String[] studentNames = {
             "Alex Thompson", "Emma Williams", "Noah Lee", "Olivia Harris", "Liam Clark",
             "Sophia Lewis", "Mason Walker", "Ava Hall", "Lucas Young", "Isabella King"
         };
-        StudentProfile[] bizStudents = {
-            student1, student2, student3, student4, student5,
-            student6, student7, student8, student9, student10
-        };
 
-        /*for (int i = 0; i < 10; i++) {
+
+        for (int i = 0; i < 10; i++) {
             university.Persona.Person uniSP = dept.getPersonDirectory().newPerson(studentNames[i]);
             university.Persona.StudentProfile uniStudent = 
                     dept.getStudentDirectory().newStudentProfile(uniSP);
             uniStudent.newCourseLoad("Fall 2025");
             bizStudents[i].linkUniversityProfile(uniStudent);
         }*/
+        // Each student gets a university-side profile keyed by their Business NUID.
+        // Students 1-10 all go to IS department. Split into CS when csDept is fully operational.
+        
+        StudentProfile[] bizStudents = {
+            student1, student2, student3, student4, student5,
+            student6, student7, student8, student9, student10
+        };
         
         for (int i = 0; i < 10; i++) {
             String nuid = bizStudents[i].getPerson().getPersonId(); // e.g. "N00001011"
             university.Persona.Person uniSP = new university.Persona.Person(nuid);
-            university.Persona.StudentProfile uniStudent = dept.getStudentDirectory().newStudentProfile(uniSP);
+            university.Persona.StudentProfile uniStudent = isDept.getStudentDirectory().newStudentProfile(uniSP);
             uniStudent.newCourseLoad("Fall 2025");
             bizStudents[i].linkUniversityProfile(uniStudent);
 }
