@@ -86,6 +86,13 @@ public class Business {
         return department;
     }
     
+    public Department getDepartmentByName(String name) {
+    for (Department d : departments) {
+        if (d.toString().equals(name)) return d;
+    }
+    return departments.isEmpty() ? null : departments.get(0);
+}
+    
     
 
 }
