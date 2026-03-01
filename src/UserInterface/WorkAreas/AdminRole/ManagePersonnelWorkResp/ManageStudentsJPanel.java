@@ -265,13 +265,16 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
             UserAccount ua = users.findUserAccount(sp.getPerson().getPersonId());
             addrowtotable(model, sp, ua);
         }
-    }else if(searchtype.equals("By Department")){
-        //TO DO Need to discuss populating multiple departments
-        
-        populatetable();
+    }else if (searchtype.equals("By Department")) {
+        for (UserAccount ua : users.getUserAccountList()) {
+            if (!(ua.getAssociatedPersonProfile() instanceof StudentProfile)) continue;
+            StudentProfile sp = (StudentProfile) ua.getAssociatedPersonProfile();
+            if (sp.getDepartmentName().toLowerCase().contains(searchterm.toLowerCase())) {
+                addrowtotable(model, sp, ua);
+            }
+        }
     }
-    
-    }
+}
     
     
     
