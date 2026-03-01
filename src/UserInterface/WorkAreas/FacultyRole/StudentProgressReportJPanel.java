@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UserInterface.WorkAreas.FacultyRole; 
+import Business.Business;
+import Business.Profiles.StudentProfile;
 
 /**
  *
@@ -13,59 +15,53 @@ public class StudentProgressReportJPanel extends javax.swing.JPanel {
     /**
      * Creates new form StudentProgressReportJPanel
      */
-    public StudentProgressReportJPanel() {
+    Business business;
+    javax.swing.JPanel CardSequencePanel;
+    
+    public StudentProgressReportJPanel(Business b, javax.swing.JPanel clp) {
+        business = b;
+        CardSequencePanel = clp;
         initComponents();
         populateStudentDropdown();
     }
+
     
     
     private void populateStudentDropdown() {
-    cmbSelectStudents.removeAllItems();
-    cmbSelectStudents.addItem("Alex Thompson (S001)");
-    cmbSelectStudents.addItem("Emma Williams (S002)");
-    cmbSelectStudents.addItem("Noah Lee (S003)");
-    cmbSelectStudents.addItem("Olivia Harris (S004)");
-    
-}
+        cmbSelectStudents.removeAllItems();
+        for (StudentProfile sp :
+                business.getStudentDirectory().getStudentlist()) {
+            cmbSelectStudents.addItem(sp.getPerson().getFullname() +
+                " (" + sp.getPerson().getPersonId() + ")");
+        }
+        loadStudentProgress();
+    }
 
 private void loadStudentProgress() {
-    String selected = (String) cmbSelectStudents.getSelectedItem();
+        String selected = (String) cmbSelectStudents.getSelectedItem();
+        if (selected == null) return;
+        String id = selected.replaceAll(".*\\((.*)\\)", "$1").trim();
+        StudentProfile bsp =
+            business.getStudentDirectory().findStudentbyID(id);
+        if (bsp == null) return;
+        university.Persona.StudentProfile usp = bsp.getUniversityProfile();
+        if (usp == null) return;
+
+        lblNameValue.setText(bsp.getPerson().getFullname());
+        lblStudentIDValue.setText(bsp.getPerson().getPersonId());
+        lblEmailValue.setText(bsp.getPerson().getPersonId() + "@northeastern.edu");
+
+        java.util.ArrayList<university.CourseSchedule.SeatAssignment> courses =
+            usp.getCourseList();
+        lblCourseValue.setText(courses.isEmpty() ? "None" :
+            courses.get(0).getCourseOffer().getCourseNumber());
+
+        double gpa = usp.getTranscript().getOverallGPA();
+        lblCurrentGradeValue.setText(String.format("%.2f GPA", gpa));
+        lblAssignmentsValue.setText(courses.size() + " courses enrolled");
+        lblAttendanceValue.setText(usp.getTranscript().getAcademicStanding("Fall 2025"));
     
-    if (selected == null) return;
-    
-    if (selected.contains("Alex Thompson")) {
-        lblNameValue.setText("Alex Thompson");
-        lblStudentIDValue.setText("S001");
-        lblEmailValue.setText("alex.thompson@northeastern.edu");
-        lblCourseValue.setText("INFO 5100 - Application Engineering");
-        lblCurrentGradeValue.setText("A (95.5%)");
-        lblAssignmentsValue.setText("9/10 completed");
-        lblAttendanceValue.setText("100%");
-    } else if (selected.contains("Emma Williams")) {
-        lblNameValue.setText("Emma Williams");
-        lblStudentIDValue.setText("S002");
-        lblEmailValue.setText("emma.williams@northeastern.edu");
-        lblCourseValue.setText("INFO 5100 - Application Engineering");
-        lblCurrentGradeValue.setText("B+ (89.2%)");
-        lblAssignmentsValue.setText("8/10 completed");
-        lblAttendanceValue.setText("95%");
-    } else if (selected.contains("Noah Lee")) {
-        lblNameValue.setText("Noah Lee");
-        lblStudentIDValue.setText("S003");
-        lblEmailValue.setText("noah.lee@northeastern.edu");
-        lblCourseValue.setText("INFO 5100 - Application Engineering");
-        lblCurrentGradeValue.setText("A- (91.8%)");
-        lblAssignmentsValue.setText("10/10 completed");
-        lblAttendanceValue.setText("98%");
-    } else {
-        lblNameValue.setText("Olivia Harris");
-        lblStudentIDValue.setText("S004");
-        lblEmailValue.setText("olivia.harris@northeastern.edu");
-        lblCourseValue.setText("INFO 5100 - Application Engineering");
-        lblCurrentGradeValue.setText("B (85.3%)");
-        lblAssignmentsValue.setText("7/10 completed");
-        lblAttendanceValue.setText("92%");
-    }
+
 }
 
     /**
