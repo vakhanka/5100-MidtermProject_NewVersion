@@ -15,16 +15,28 @@ public class EmployeeProfile extends Profile {
     
     private String role;
     
+    
     //bridge to Persona Profile
     private university.Persona.Faculty.FacultyProfile universityProfile;
-
+    private String departmentName = "";
 
 
     public EmployeeProfile(Person p, String role) {
 
         super(p);
         this.role = role;
+        
     }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+    
+    
 
     public void setRole(String role) {
         this.role = role;
