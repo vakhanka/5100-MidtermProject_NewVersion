@@ -292,7 +292,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
         String name     = ep.getPerson().getFullname();
         String nuid     = ep.getPerson().getPersonId();
         String email    = ep.getEmail() != null ? ep.getEmail() : "";
-        String dept     = "Information Systems";
+        String dept     = ep.getDepartmentName();
         String cellno   = ep.getPhone() != null ? ep.getPhone() : "";
         String officehrs = "";                            
         
