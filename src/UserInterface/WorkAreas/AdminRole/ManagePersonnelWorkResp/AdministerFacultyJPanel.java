@@ -294,10 +294,7 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
         // Pre-select the faculty member's current department
         EmployeeProfile ep = (EmployeeProfile) selecteduseraccount.getAssociatedPersonProfile();
         cmbDepartment.setSelectedItem(ep.getDepartmentName());
-        
-        // Populate Registrar-specific field
-       // FacultyProfile rp = (FacultyProfile) selecteduseraccount.getAssociatedPersonProfile();
-      //  txtOfficeHours.setText(rp.getOfficeHours() != null ? rp.getOfficeHours() : "");
+        txtOfficeHours.setText(ep.getOfficeHours());
     }
         
     private void setviewmode() {
@@ -308,7 +305,7 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
         txtEmail.setEnabled(false);
         txtPhone.setEnabled(false);
         txtRole.setEnabled(false);
-       // txtOfficeHours.setEnabled(false);
+        txtOfficeHours.setEnabled(false);
         cmbDepartment.setEnabled(false);
     }
 
@@ -345,13 +342,11 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
         selecteduseraccount.getAssociatedPersonProfile().setEmail(email);
         selecteduseraccount.getAssociatedPersonProfile().setPhone(phone);
 
-        // Save Faculty-specific field(s) 
-      //  FacultyProfile rp = (FacultyProfile) selecteduseraccount.getAssociatedPersonProfile();
-     //   rp.setOfficeHours(officeHours);
-        // Save department assignment
+        // Save Faculty-specific fields
+        EmployeeProfile ep = (EmployeeProfile) selecteduseraccount.getAssociatedPersonProfile();
+        ep.setOfficeHours(txtOfficeHours.getText().trim());
         String selectedDept = (String) cmbDepartment.getSelectedItem();
         if (selectedDept != null) {
-            EmployeeProfile ep = (EmployeeProfile) selecteduseraccount.getAssociatedPersonProfile();
             ep.setDepartmentName(selectedDept);
         }
 
