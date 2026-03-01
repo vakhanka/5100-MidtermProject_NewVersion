@@ -296,7 +296,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         String name     = bizStudent.getPerson().getFullname();
         String nuid     = bizStudent.getPerson().getPersonId();
         String email    = bizStudent.getEmail() != null ? bizStudent.getEmail() : "";
-        String dept     = "Information Systems";
+        String dept     = bizStudent.getDepartmentName();
         String standing = "";
         String cellno   = bizStudent.getPhone() != null ? bizStudent.getPhone() : "";
         
