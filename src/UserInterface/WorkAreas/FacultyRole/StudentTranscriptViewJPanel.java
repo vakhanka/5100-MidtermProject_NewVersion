@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UserInterface.WorkAreas.FacultyRole;
+import Business.Business;
+import Business.Profiles.StudentProfile;
 
 /**
  *
@@ -13,70 +15,56 @@ public class StudentTranscriptViewJPanel extends javax.swing.JPanel {
     /**
      * Creates new form StudentTranscriptViewJPanel
      */
-    public StudentTranscriptViewJPanel() {
+    
+    Business business;
+    javax.swing.JPanel CardSequencePanel;
+    
+    public StudentTranscriptViewJPanel(Business b, javax.swing.JPanel clp) {
+        business = b;
+        CardSequencePanel = clp;
         initComponents();
         populateStudentDropdown();
     }
     
     private void populateStudentDropdown() {
         cmbSelectStudents.removeAllItems();
-        cmbSelectStudents.addItem("Alex Thompson (S001)");
-        cmbSelectStudents.addItem("Emma Williams (S002)");
-        cmbSelectStudents.addItem("Noah Lee (S003)");
-        
-        cmbSelectStudents.addActionListener(e -> loadTranscript());
+        for (StudentProfile sp :
+                business.getStudentDirectory().getStudentList()) {
+            cmbSelectStudents.addItem(sp.getPerson().getFullname() +
+                " (" + sp.getPerson().getPersonId() + ")");
+        }
         loadTranscript();
     }
     
     private void loadTranscript() {
         String selected = (String) cmbSelectStudents.getSelectedItem();
-        
         if (selected == null) return;
-        
-        String[][] transcriptData;
-        String gpa;
-        
-        if (selected.contains("Alex")) {
-            lblStudentsValue.setText("Alex Thompson (S001)");
-            gpa = "3.85";
-            transcriptData = new String[][] {
-                {"Fall 2023", "INFO 5001", "Data Structures", "A", "4"},
-                {"Fall 2023", "INFO 6205", "Program Structure", "A-", "4"},
-                {"Spring 2024", "INFO 6150", "Web Design", "A", "4"},
-                {"Spring 2024", "INFO 6250", "Web Development", "B+", "4"},
-                {"Fall 2024", "INFO 5100", "Application Engineering", "A", "4"}
-            };
-        } else if (selected.contains("Emma")) {
-            lblStudentsValue.setText("Emma Williams (S002)");
-            gpa = "3.45";
-            transcriptData = new String[][] {
-                {"Fall 2023", "INFO 5001", "Data Structures", "B+", "4"},
-                {"Fall 2023", "INFO 6205", "Program Structure", "B", "4"},
-                {"Spring 2024", "INFO 6150", "Web Design", "A-", "4"},
-                {"Fall 2024", "INFO 5100", "Application Engineering", "B+", "4"}
-            };
-        } else {
-            lblStudentsValue.setText("Noah Lee (S003)");
-            gpa = "3.67";
-            transcriptData = new String[][] {
-                {"Fall 2023", "INFO 5001", "Data Structures", "A", "4"},
-                {"Spring 2024", "INFO 6205", "Program Structure", "A-", "4"},
-                {"Spring 2024", "INFO 6250", "Web Development", "B+", "4"},
-                {"Fall 2024", "INFO 5100", "Application Engineering", "A-", "4"}
-            };
+        String id = selected.replaceAll(".*\\((.*)\\)", "$1").trim();
+        StudentProfile bsp =
+            business.getStudentDirectory().findStudentbyID(id);
+        if (bsp == null || bsp.getUniversityProfile() == null) return;
+        university.Persona.StudentProfile usp = bsp.getUniversityProfile();
+        university.Persona.Transcript t = usp.getTranscript();
+
+        java.util.ArrayList<university.CourseSchedule.SeatAssignment> courses =
+            usp.getCourseList();
+        String[][] data = new String[courses.size()][6];
+        for (int i = 0; i < courses.size(); i++) {
+            university.CourseSchedule.SeatAssignment sa = courses.get(i);
+            String sem = "Fall 2025";
+            data[i][0] = sem;
+            data[i][1] = sa.getCourseOffer().getCourseNumber();
+            data[i][2] = sa.getCourseOffer().getSubjectCourse().getName();
+            data[i][3] = sa.getGrade();
+            data[i][4] = String.format("%.2f", t.getSemesterGPA(sem));
+            data[i][5] = String.format("%.2f", t.getOverallGPA());
         }
-        
-        lblGPAValue.setText("GPA: " + gpa);
-        
-        String[] columnNames = {"Term", "Course ID", "Course Name", "Grade", "Credits"};
-        
-        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(transcriptData, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        
+        String[] cols = {"Term", "Course ID", "Course Name", "Grade", "Term GPA", "Overall GPA"};
+        javax.swing.table.DefaultTableModel model =
+            new javax.swing.table.DefaultTableModel(data, cols) {
+                @Override
+                public boolean isCellEditable(int r, int c) { return false; }
+            };
         tblTranscript.setModel(model);
     }
 
