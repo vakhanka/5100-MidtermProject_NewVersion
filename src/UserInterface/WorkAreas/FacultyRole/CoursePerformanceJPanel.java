@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UserInterface.WorkAreas.FacultyRole;
+import Business.Business;
+import Business.Profiles.StudentProfile;
 
 /**
  *
@@ -13,49 +15,80 @@ public class CoursePerformanceJPanel extends javax.swing.JPanel {
     /**
      * Creates new form CoursePerformanceJPanel
      */
-     public CoursePerformanceJPanel() {
+    
+    Business business;
+    javax.swing.JPanel CardSequencePanel;
+    
+    
+     public CoursePerformanceJPanel(Business b, javax.swing.JPanel clp) {
+        business = b;
+        CardSequencePanel = clp;
         initComponents();
         populateDropdowns();
     }
+     
       private void populateDropdowns() {
         cmbSelectCourse.removeAllItems();
-        cmbSelectCourse.addItem("INFO 5100 - Application Engineering");
-        cmbSelectCourse.addItem("INFO 6150 - Web Design");
-        
+        // ⚠️ HANK'S REVIEW: null check required here
+        university.CourseSchedule.CourseSchedule cs =
+            business.getDepartment().getCourseSchedule("Fall 2025");
+        if (cs != null) {
+            for (university.CourseSchedule.CourseOffer co : cs.getSchedule()) {
+                cmbSelectCourse.addItem(co.getCourseNumber() + " - " +
+                    co.getSubjectCourse().getName());
+            }
+        }
         cmbSemester.removeAllItems();
-        cmbSemester.addItem("Fall 2024");
-        cmbSemester.addItem("Spring 2024");
-        cmbSemester.addItem("Fall 2023");
-        
+        cmbSemester.addItem("Fall 2025");
+
         cmbSelectCourse.addActionListener(e -> loadPerformanceData());
         cmbSemester.addActionListener(e -> loadPerformanceData());
-        
         loadPerformanceData();
     }
     
     private void loadPerformanceData() {
-        lblAverageGradeValue.setText("3.45");
-        lblEnrollmentValue.setText("18 students");
-        lblClassGPAValue.setText("B+");
-        
-        String[][] distributionData = {
-            {"A", "5", "28%"},
-            {"A-", "2", "11%"},
-            {"B+", "4", "22%"},
-            {"B", "5", "28%"},
-            {"B-", "1", "6%"},
-            {"C+", "1", "6%"}
-        };
-        
-        String[] columnNames = {"Grade", "Count", "Percentage"};
-        
-        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(distributionData, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
+        String selected = (String) cmbSelectCourse.getSelectedItem();
+        if (selected == null) return;
+        String courseNum = selected.split(" - ")[0].trim();
+
+        java.util.HashMap<String, Integer> gradeCounts = new java.util.HashMap<>();
+        int enrolled = 0;
+        double totalPoints = 0;
+
+        for (StudentProfile bsp : business.getStudentDirectory().getStudentList()) {
+            university.Persona.StudentProfile usp = bsp.getUniversityProfile();
+            if (usp == null) continue;
+            for (university.CourseSchedule.SeatAssignment sa : usp.getCourseList()) {
+                if (sa.getCourseOffer().getCourseNumber().equals(courseNum)) {
+                    String grade = sa.getGrade();
+                    gradeCounts.put(grade, gradeCounts.getOrDefault(grade, 0) + 1);
+                    totalPoints += sa.getGradePoints();
+                    enrolled++;
+                }
             }
-        };
-        
+        }
+
+        lblEnrollmentValue.setText(String.valueOf(enrolled));
+        if (enrolled > 0) {
+            double avg = totalPoints / enrolled;
+            lblAverageGradeValue.setText(String.format("%.2f", avg));
+            lblClassGPAValue.setText(String.format("%.2f", avg));
+        }
+
+        String[][] data = new String[gradeCounts.size()][3];
+        int i = 0;
+        for (java.util.Map.Entry<String, Integer> e : gradeCounts.entrySet()) {
+            data[i][0] = e.getKey();
+            data[i][1] = String.valueOf(e.getValue());
+            data[i][2] = String.format("%.0f%%", e.getValue() * 100.0 / Math.max(enrolled, 1));
+            i++;
+        }
+        String[] cols = {"Grade", "Count", "Percentage"};
+        javax.swing.table.DefaultTableModel model =
+            new javax.swing.table.DefaultTableModel(data, cols) {
+                @Override
+                public boolean isCellEditable(int r, int c) { return false; }
+            };
         tblGradeDistribution.setModel(model);
     }
      

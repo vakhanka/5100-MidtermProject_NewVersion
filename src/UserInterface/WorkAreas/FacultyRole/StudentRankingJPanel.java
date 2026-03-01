@@ -3,26 +3,42 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UserInterface.WorkAreas.FacultyRole;
+import Business.Business;
+import Business.Profiles.StudentProfile;
 
 /**
  *
  * @author emmanuelcroll
  */
+
 public class StudentRankingJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form StudentRankingJPanel
      */
-      public StudentRankingJPanel() {
+    
+    Business business;
+    javax.swing.JPanel CardSequencePanel;
+    
+    
+      public StudentRankingJPanel(Business b, javax.swing.JPanel clp) {
+        business = b;
+        CardSequencePanel = clp;
         initComponents();
         populateCourseDropdown();
     }
       
       private void populateCourseDropdown() {
         cmbSelectStudents.removeAllItems();
-        cmbSelectStudents.addItem("INFO 5100 - Application Engineering");
-        cmbSelectStudents.addItem("INFO 6150 - Web Design");
-        
+        // ⚠️ HANK'S REVIEW: null check required here
+        university.CourseSchedule.CourseSchedule cs =
+            business.getDepartment().getCourseSchedule("Fall 2025");
+        if (cs != null) {
+            for (university.CourseSchedule.CourseOffer co : cs.getSchedule()) {
+                cmbSelectStudents.addItem(co.getCourseNumber() + " - " +
+                    co.getSubjectCourse().getName());
+            }
+        }
         cmbSelectStudents.addActionListener(e -> loadRankings());
         loadRankings();
     }

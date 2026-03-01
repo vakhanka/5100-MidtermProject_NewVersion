@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UserInterface.WorkAreas.FacultyRole;
+import Business.Business;
+import Business.Profiles.StudentProfile;
 
 /**
  *
@@ -13,58 +15,69 @@ public class TuitionInsightJPanel extends javax.swing.JPanel {
     /**
      * Creates new form TuitionInsightJPanel
      */
-    public TuitionInsightJPanel() {
+    Business business;
+    javax.swing.JPanel CardSequencePanel;
+
+    public TuitionInsightJPanel(Business b, javax.swing.JPanel clp) {
+        business = b;
+        CardSequencePanel = clp;
         initComponents();
         populateCourseDropdown();
     }
     
      private void populateCourseDropdown() {
         cmbSelectCourse.removeAllItems();
-        cmbSelectCourse.addItem("INFO 5100 - Application Engineering");
-        cmbSelectCourse.addItem("INFO 6150 - Web Design");
-        
+        // ⚠️ HANK'S REVIEW: null check required here
+        university.CourseSchedule.CourseSchedule cs =
+            business.getDepartment().getCourseSchedule("Fall 2025");
+        if (cs != null) {
+            for (university.CourseSchedule.CourseOffer co : cs.getSchedule()) {
+                cmbSelectCourse.addItem(co.getCourseNumber() + " - " +
+                    co.getSubjectCourse().getName());
+            }
+        }
         cmbSelectCourse.addActionListener(e -> loadTuitionData());
         loadTuitionData();
     }
     
     private void loadTuitionData() {
         String selected = (String) cmbSelectCourse.getSelectedItem();
-        
-        int enrolledCount;
-        String[][] tuitionData;
-        
-        if (selected != null && selected.contains("5100")) {
-            enrolledCount = 18;
-            tuitionData = new String[][] {
-                {"Alex Thompson", "4", "$6,000", "Paid"},
-                {"Emma Williams", "4", "$6,000", "Paid"},
-                {"Noah Lee", "4", "$6,000", "Paid"},
-                {"Olivia Harris", "4", "$6,000", "Pending"},
-                {"Liam Clark", "4", "$6,000", "Paid"}
-            };
-        } else {
-            enrolledCount = 15;
-            tuitionData = new String[][] {
-                {"Sophia Lewis", "4", "$6,000", "Paid"},
-                {"Mason Walker", "4", "$6,000", "Paid"},
-                {"Ava Hall", "4", "$6,000", "Pending"}
-            };
-        }
-        
-        lblTuitionPerStudentValue.setText("$6,000");
-        lblEnrollmentValue.setText(String.valueOf(enrolledCount));
-        int totalRevenue = enrolledCount * 6000;
-        lblTotalRevenueValue.setText("$" + String.format("%,d", totalRevenue));
-        
-        String[] columnNames = {"Student Name", "Credits", "Tuition", "Status"};
-        
-        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(tuitionData, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
+        if (selected == null) return;
+        String courseNum = selected.split(" - ")[0].trim();
+
+        java.util.ArrayList<String[]> rows = new java.util.ArrayList<>();
+        int enrolled = 0;
+        int pricePerStudent = 0;
+
+        for (StudentProfile bsp : business.getStudentDirectory().getStudentList()) {
+            university.Persona.StudentProfile usp = bsp.getUniversityProfile();
+            if (usp == null) continue;
+            for (university.CourseSchedule.SeatAssignment sa : usp.getCourseList()) {
+                if (sa.getCourseOffer().getCourseNumber().equals(courseNum)) {
+                    pricePerStudent = sa.getAssociatedCourse().getCoursePrice();
+                    String status = usp.isTuitionPaid() ? "Paid" : "Pending";
+                    rows.add(new String[]{
+                        bsp.getPerson().getFullname(),
+                        String.valueOf(sa.getCreditHours()),
+                        "$" + pricePerStudent,
+                        status
+                    });
+                    enrolled++;
+                }
             }
-        };
-        
+        }
+
+        lblEnrollmentValue.setText(String.valueOf(enrolled));
+        lblTuitionPerStudentValue.setText("$" + pricePerStudent);
+        lblTotalRevenueValue.setText("$" + String.format("%,d", enrolled * pricePerStudent));
+
+        String[][] data = rows.toArray(new String[0][]);
+        String[] cols = {"Student Name", "Credits", "Tuition", "Status"};
+        javax.swing.table.DefaultTableModel model =
+            new javax.swing.table.DefaultTableModel(data, cols) {
+                @Override
+                public boolean isCellEditable(int r, int c) { return false; }
+            };
         tblTuitionBreakdown.setModel(model);
     }
 
