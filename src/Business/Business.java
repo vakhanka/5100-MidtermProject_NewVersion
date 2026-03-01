@@ -80,6 +80,9 @@ public class Business {
         return departments;
     }
     public university.Department.Department getDepartment(){
+        if (!departments.isEmpty()) {
+            return departments.get(0);
+        }
         return department;
     }
     
