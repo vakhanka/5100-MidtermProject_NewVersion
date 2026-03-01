@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UserInterface.WorkAreas.FacultyRole;
+import Business.Business;
 
 /**
  *
@@ -13,7 +14,13 @@ public class ViewEditProfileJPanel extends javax.swing.JPanel {
     /**
      * Creates new form ViewEditProfileJPanel
      */
-     public ViewEditProfileJPanel() {
+    
+    Business business;
+    javax.swing.JPanel CardSequencePanel;
+    
+     public ViewEditProfileJPanel(Business b, javax.swing.JPanel clp) {
+        business = b;
+        CardSequencePanel = clp;
         initComponents();
         loadProfileData();
     }
