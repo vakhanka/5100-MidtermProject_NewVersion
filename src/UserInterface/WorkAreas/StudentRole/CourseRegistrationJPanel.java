@@ -305,6 +305,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
     private void performSearch(){
         String query = fieldSearch.getText().trim().toLowerCase();
         String searchType = (String) comboSearch.getSelectedItem();
+        searchType = (searchType != null) ? searchType.trim() : ""; //HL: added to fix issue with an extra space in the combo box model in initComponents()
         
         //HL: if search box is empty, table reverts to show all courses 
         if (query.isEmpty()){
