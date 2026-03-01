@@ -4,17 +4,33 @@
  */
 package UserInterface.WorkAreas.StudentRole;
 
+import Business.Business;
+import Business.Profiles.StudentProfile;
+import java.awt.CardLayout;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Hank_Local
  */
 public class StudentProfileJPanel extends javax.swing.JPanel {
+    
+    //HL: business references 
+    private Business business; //HL: added import using AltEnter
+    private StudentProfile student; //HL: added import using AltEnter
+    private JPanel CardSequencePanel; //HL: added import using AltEnter 
 
     /**
      * Creates new form StudentProfileJPanel
      */
-    public StudentProfileJPanel() {
+    public StudentProfileJPanel(Business b, StudentProfile spp, JPanel clp) {
         initComponents();
+        business = b;
+        student = spp;
+        CardSequencePanel = clp;
+
+        loadProfile(); //HL: created method using AltEnter
     }
 
     /**
@@ -26,21 +42,189 @@ public class StudentProfileJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTitle = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
+        fieldName = new javax.swing.JTextField();
+        lblStudentID = new javax.swing.JLabel();
+        fieldStudentID = new javax.swing.JTextField();
+        lblEmail = new javax.swing.JLabel();
+        fieldEmail = new javax.swing.JTextField();
+        lblPhone = new javax.swing.JLabel();
+        fieldPhone = new javax.swing.JTextField();
+        lblStatus = new javax.swing.JLabel();
+        btnSave = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+
         setBackground(new java.awt.Color(255, 255, 255));
+
+        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTitle.setText("My Student Profile");
+
+        lblName.setText("Name:");
+
+        lblStudentID.setText("Student ID:");
+
+        fieldStudentID.setEditable(false);
+
+        lblEmail.setText("Email:");
+
+        lblPhone.setText("Phone:");
+
+        lblStatus.setForeground(new java.awt.Color(255, 0, 0));
+        lblStatus.setText(" ");
+
+        btnSave.setText("Save Changes");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(286, 286, 286)
+                        .addComponent(lblTitle))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(188, 188, 188)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblStudentID)
+                            .addComponent(lblName)
+                            .addComponent(lblEmail)
+                            .addComponent(lblPhone))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fieldName)
+                            .addComponent(fieldStudentID)
+                            .addComponent(fieldEmail)
+                            .addComponent(fieldPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(307, 307, 307)
+                        .addComponent(btnSave))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(68, 68, 68)
+                        .addComponent(btnBack)))
+                .addContainerGap(246, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(lblTitle)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblName)
+                    .addComponent(fieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblStudentID)
+                    .addComponent(fieldStudentID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEmail)
+                    .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPhone)
+                    .addComponent(fieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblStatus)
+                .addGap(18, 18, 18)
+                .addComponent(btnSave)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 180, Short.MAX_VALUE)
+                .addComponent(btnBack)
+                .addGap(71, 71, 71))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        //HL: added button by double-clicking save button in form editor
+        saveProfile();
+        
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        //HL: added button by double-clicking save button in form editor
+        CardSequencePanel.remove(this);
+        ((CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel); //HL: added import using AltEnter
+        
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JTextField fieldEmail;
+    private javax.swing.JTextField fieldName;
+    private javax.swing.JTextField fieldPhone;
+    private javax.swing.JTextField fieldStudentID;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblPhone;
+    private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblStudentID;
+    private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
+
+    //HL: method that populates seeded student profile data into fields
+    //HL: Student Name & Student ID come from Business.Person.Person
+    //HL: Email & Phone Number from from Business.Profiles.Profile
+    private void loadProfile() {
+        if (student == null){
+            lblStatus.setForeground(java.awt.Color.RED);
+            lblStatus.setText("Error: profile not found");
+            return;
+        }
+        
+        //HL: Name & Student ID from Business.Person.Person 
+        fieldName.setText(student.getPerson().getFullname() != null ? student.getPerson().getFullname() : "");
+        fieldStudentID.setText(student.getPerson().getPersonId() != null ? student.getPerson().getPersonId() : "");
+        
+        //HL: Email & Phone from Business.Profiles.Profile
+        fieldEmail.setText(student.getEmail() != null ? student.getEmail() : "");
+        fieldPhone.setText(student.getPhone() != null ? student.getPhone() : "");
+        
+    }
+    
+    //HL: method that saves info back to student object when a student updates & saves their profile information (name, email, and phone only - ID not editable) 
+    //HL: null check so name is not empty 
+    private void saveProfile(){
+        if (student == null) return;
+
+        String name  = fieldName.getText().trim();
+        String email = fieldEmail.getText().trim();
+        String phone = fieldPhone.getText().trim();
+        
+        //HL: null check, ensures name is a required field 
+        if (name.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Name is required.", "Validation Error", JOptionPane.ERROR_MESSAGE); //HL: added import using AltEnter 
+            return; 
+        }
+        
+        //HL: save updated student name to Business.Person.Person 
+        student.getPerson().setFullname(name);
+        
+        //HL: save updated student email & phone to Business.Profiles.Profile
+        student.setEmail(email);
+        student.setPhone(phone);
+        
+        lblStatus.setForeground(new java.awt.Color(0, 128, 0));
+        lblStatus.setText("Profile successfully updated.");
+        
+    }
+    
 }
