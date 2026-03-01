@@ -66,8 +66,6 @@ public class AdminMyProfile extends javax.swing.JPanel {
         lblConfirmPassword = new javax.swing.JLabel();
         pwConfirmPassword = new javax.swing.JPasswordField();
         btnEdit = new javax.swing.JButton();
-        txtCreated = new javax.swing.JTextField();
-        lblCreated = new javax.swing.JLabel();
         btnSavePw = new javax.swing.JButton();
         btnResetPw = new javax.swing.JButton();
 
@@ -141,12 +139,6 @@ public class AdminMyProfile extends javax.swing.JPanel {
         });
         add(btnEdit);
         btnEdit.setBounds(210, 300, 72, 23);
-        add(txtCreated);
-        txtCreated.setBounds(210, 240, 200, 30);
-
-        lblCreated.setText("Created Date");
-        add(lblCreated);
-        lblCreated.setBounds(40, 250, 80, 16);
 
         btnSavePw.setText("Save password");
         btnSavePw.addActionListener(new java.awt.event.ActionListener() {
@@ -203,7 +195,6 @@ public class AdminMyProfile extends javax.swing.JPanel {
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSavePw;
     private javax.swing.JLabel lblConfirmPassword;
-    private javax.swing.JLabel lblCreated;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPageTitle;
@@ -212,7 +203,6 @@ public class AdminMyProfile extends javax.swing.JPanel {
     private javax.swing.JLabel lblUsername;
     private javax.swing.JPasswordField pwConfirmPassword;
     private javax.swing.JPasswordField pwPassword;
-    private javax.swing.JTextField txtCreated;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhone;
@@ -284,7 +274,7 @@ public class AdminMyProfile extends javax.swing.JPanel {
     private void seteditmode() {
         txtName.setEnabled(true);
         txtUsername.setEnabled(true);
-        txtCreated.setEnabled(false);
+       // txtCreated.setEnabled(false);
         txtEmail.setEnabled(true);
         txtPhone.setEnabled(true);
          
@@ -295,7 +285,7 @@ public class AdminMyProfile extends javax.swing.JPanel {
         String username = txtUsername.getText().trim();
         String email = txtEmail.getText().trim();
         String phone = txtPhone.getText().trim();
-        String created = txtCreated.getText().trim();
+     // String created = txtCreated.getText().trim();
 
         // Validate required fields
         if (name.isBlank() || username.isBlank() || email.isBlank()) {
