@@ -19,6 +19,8 @@ public class EmployeeProfile extends Profile {
     //bridge to Persona Profile
     private university.Persona.Faculty.FacultyProfile universityProfile;
     private String departmentName = "";
+    private String officeHours = "";
+    
         public String getDepartmentName() {
         return departmentName;
     }
@@ -27,7 +29,14 @@ public class EmployeeProfile extends Profile {
         this.departmentName = departmentName;
     }
 
+    public String getOfficeHours() {
+        return officeHours;
+    }
 
+    public void setOfficeHours(String officeHours) {
+        this.officeHours = officeHours;
+    }
+    
     public EmployeeProfile(Person p, String role) {
 
         super(p);
