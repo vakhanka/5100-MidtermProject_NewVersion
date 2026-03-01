@@ -292,7 +292,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
         String name     = ep.getPerson().getFullname();
         String nuid     = ep.getPerson().getPersonId();
         String email    = ep.getEmail() != null ? ep.getEmail() : "";
-        String dept     = "Information Systems";
+        String dept     = ep.getDepartmentName();
         String cellno   = ep.getPhone() != null ? ep.getPhone() : "";
         String officehrs = "";                            
         
@@ -348,12 +348,16 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
                     UserAccount ua = users.findUserAccount(ep.getPerson().getPersonId());
                     addrowtotable(model,ep);
                 }
-            }else if(searchtype.equals("By Department")){     //TO DO Need to discuss populating multiple departments
-        
-
-        populatetable();
-    
-        }
+            } else if (searchtype.equals("By Department")) {
+                for (UserAccount ua : users.getUserAccountList()) {
+                    if (!(ua.getAssociatedPersonProfile() instanceof EmployeeProfile)) continue;
+                    EmployeeProfile ep = (EmployeeProfile) ua.getAssociatedPersonProfile();
+                    if (!ep.getRole().equals("Faculty")) continue;
+                    if (ep.getDepartmentName().toLowerCase().contains(searchterm.toLowerCase())) {
+                        addrowtotable(model, ep);
+                    }
+                }
+            }    
     }
     
     

@@ -452,8 +452,11 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
     }
     
     private void populateSemesters() {
+        cmbSemester.addItem("Fall 2025");
+        cmbSemester.addItem("Spring 2025");
         cmbSemester.addItem("Fall 2026");
         cmbSemester.addItem("Spring 2027");
         cmbSemester.addItem("Summer 2027");
+        
     }
 }

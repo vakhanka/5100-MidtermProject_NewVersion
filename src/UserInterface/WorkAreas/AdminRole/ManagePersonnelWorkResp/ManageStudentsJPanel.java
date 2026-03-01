@@ -265,13 +265,16 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
             UserAccount ua = users.findUserAccount(sp.getPerson().getPersonId());
             addrowtotable(model, sp, ua);
         }
-    }else if(searchtype.equals("By Department")){
-        //TO DO Need to discuss populating multiple departments
-        
-        populatetable();
+    }else if (searchtype.equals("By Department")) {
+        for (UserAccount ua : users.getUserAccountList()) {
+            if (!(ua.getAssociatedPersonProfile() instanceof StudentProfile)) continue;
+            StudentProfile sp = (StudentProfile) ua.getAssociatedPersonProfile();
+            if (sp.getDepartmentName().toLowerCase().contains(searchterm.toLowerCase())) {
+                addrowtotable(model, sp, ua);
+            }
+        }
     }
-    
-    }
+}
     
     
     
@@ -296,7 +299,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         String name     = bizStudent.getPerson().getFullname();
         String nuid     = bizStudent.getPerson().getPersonId();
         String email    = bizStudent.getEmail() != null ? bizStudent.getEmail() : "";
-        String dept     = "Information Systems";
+        String dept     = bizStudent.getDepartmentName();
         String standing = "";
         String cellno   = bizStudent.getPhone() != null ? bizStudent.getPhone() : "";
         

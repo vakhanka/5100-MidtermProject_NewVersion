@@ -11,7 +11,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import university.CourseSchedule.SeatAssignment;
-import university.Department.Department;
+//import university.Department.Department; 
 
 /**
  *
@@ -41,11 +41,14 @@ public class GraduationAuditJPanel extends javax.swing.JPanel {
         student = spp;
         CardSequencePanel = clp;
         
+        /* replacing this code to achieve muti-department functionality (Polina)
         //HL: get university student profile
         Department dept = business.getDepartment(); //HL: added import using AltEnter
         if (dept != null){
             uniStudentProfile = dept.getStudentDirectory().findStudent(student.getPerson().getPersonId()); 
-        }
+        }*/
+        
+        uniStudentProfile = student.getUniversityProfile(); //replacement code from Polina
         
         runAudit(); //HL: created method using AltEnter
         

@@ -21,7 +21,7 @@ public class Business {
 
     String name;
     PersonDirectory persondirectory; //all people profiles regardless of the role
-    private Department department;
+    private Department department; 
     EmployeeDirectory employeedirectory;
     UserAccountDirectory useraccountdirectory;
     StudentDirectory studentdirectory;
@@ -36,7 +36,7 @@ public class Business {
         employeedirectory = new EmployeeDirectory(this);
         useraccountdirectory = new UserAccountDirectory();
         
-        department = new Department("Information Systems"); //bridge to the university package
+        department = new Department("Information Systems"); //bridge to the university package 
 
         studentdirectory = new StudentDirectory();
         
@@ -79,12 +79,21 @@ public class Business {
     public ArrayList<Department> getDepartments() {
         return departments;
     }
+    
+   
     public university.Department.Department getDepartment(){
         if (!departments.isEmpty()) {
             return departments.get(0);
         }
         return department;
     }
+    
+    public Department getDepartmentByName(String name) {
+    for (Department d : departments) {
+        if (d.toString().equals(name)) return d;
+    }
+    return departments.isEmpty() ? null : departments.get(0);
+}
     
     
 

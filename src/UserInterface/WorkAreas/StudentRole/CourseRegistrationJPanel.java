@@ -15,7 +15,7 @@ import university.CourseSchedule.CourseLoad;
 import university.CourseSchedule.CourseOffer;
 import university.CourseSchedule.CourseSchedule;
 import university.CourseSchedule.SeatAssignment;
-import university.Department.Department;
+//import university.Department.Department;
 
 
 
@@ -47,12 +47,24 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         student = spp;
         CardSequencePanel = clp;
         
-        //HL: get university student profile & course schedule 
+        // From Polina - replaceing this code to do the fix for me to be able to get the department info
+        /*//HL: get university student profile & course schedule 
         //HL: To-Do: confirm getDepartment() getter existes on Business.java with Polina ****************************
         Department dept = business.getDepartment(); //HL: added import using AltEnter  
         if (dept != null){
             uniStudentProfile = dept.getStudentDirectory().findStudent(student.getPerson().getPersonId()); 
             currentSchedule = dept.getCourseSchedule(CURRENT_SEMESTER); 
+        }*/
+        
+        //replacement code from Polina
+        // Get university student profile directly from bridge
+        uniStudentProfile = student.getUniversityProfile();
+        
+        // Get course schedule from student's department
+        String deptName = student.getDepartmentName();
+        university.Department.Department dept = business.getDepartmentByName(deptName);
+        if (dept != null) {
+            currentSchedule = dept.getCourseSchedule(CURRENT_SEMESTER);
         }
         
         //HL: Table - non-editable and select a single row 
