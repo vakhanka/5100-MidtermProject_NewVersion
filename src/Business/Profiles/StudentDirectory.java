@@ -54,7 +54,7 @@ public class StudentDirectory {
 }
     
     // Returns all students - used by faculty panels to iterate through enrolled students
-    public ArrayList<StudentProfile> getStudentlist() {
+    public ArrayList<StudentProfile> getStudentList() {
         return studentlist;
     }
     
