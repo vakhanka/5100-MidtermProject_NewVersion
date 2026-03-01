@@ -220,7 +220,7 @@ public class ManageEmployeesJPanel extends javax.swing.JPanel {
         String name     = bizEmployee.getPerson().getFullname();
         String nuid     = bizEmployee.getPerson().getPersonId();
         String email    = bizEmployee.getEmail() != null ? bizEmployee.getEmail() : "";
-        String dept     = "Information Systems";
+        String dept     = "Administration";
         String cellno   = bizEmployee.getPhone() != null ? bizEmployee.getPhone() : "";
         String officehrs = bizEmployee.getOfficeHours();                            
         
