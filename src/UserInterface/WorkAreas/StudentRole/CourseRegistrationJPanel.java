@@ -378,7 +378,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         }
         
         //HL: on successful enrollment, add course price to student's tuition balance 
-        uniStudentProfile.setBalance(uniStudentProfile.getBalanace() + co.getSubjectCourse().getCoursePrice()); //HL: added getBalance() to StudentProfile.java 
+        uniStudentProfile.setBalance(uniStudentProfile.getBalance() + co.getSubjectCourse().getCoursePrice()); //HL: added getBalance() to StudentProfile.java 
         lblStatus.setForeground(new java.awt.Color(0, 128, 0));
         lblStatus.setText("Successfully enrolled in " + courseId); 
         loadAllCourses(); //HL: refreshes table 
