@@ -133,6 +133,20 @@ class ConfigureABusiness {
         EmployeeProfile faculty8 = employeedirectory.newEmployeeProfile(person008, "Faculty");
         EmployeeProfile faculty9 = employeedirectory.newEmployeeProfile(person009, "Faculty");
         EmployeeProfile faculty10 = employeedirectory.newEmployeeProfile(person010, "Faculty");
+        
+        // ===== SET DEPARTMENT ASSIGNMENTS =====
+        faculty1.setDepartmentName("Information Systems");
+        faculty2.setDepartmentName("Information Systems");
+        faculty3.setDepartmentName("Information Systems");
+        faculty4.setDepartmentName("Information Systems");
+        faculty5.setDepartmentName("Information Systems");
+        faculty6.setDepartmentName("Computer Science");
+        faculty7.setDepartmentName("Computer Science");
+        faculty8.setDepartmentName("Computer Science");
+        faculty9.setDepartmentName("Computer Science");
+        faculty10.setDepartmentName("Computer Science");
+
+
 
         // ===== CREATE 10 STUDENT PROFILES =====
         StudentDirectory studentdirectory = business.getStudentDirectory();
@@ -147,6 +161,18 @@ class ConfigureABusiness {
         StudentProfile student8 = studentdirectory.newStudentProfile(person018);
         StudentProfile student9 = studentdirectory.newStudentProfile(person019);
         StudentProfile student10 = studentdirectory.newStudentProfile(person020);
+        
+        // ===== SET DEPARTMENT ASSIGNMENTS =====
+        student1.setDepartmentName("Information Systems");
+        student2.setDepartmentName("Information Systems");
+        student3.setDepartmentName("Information Systems");
+        student4.setDepartmentName("Information Systems");
+        student5.setDepartmentName("Information Systems");
+        student6.setDepartmentName("Information Systems");
+        student7.setDepartmentName("Information Systems");
+        student8.setDepartmentName("Computer Science");
+        student9.setDepartmentName("Computer Science");
+        student10.setDepartmentName("Computer Science");
 
         // ===== CREATE ADMIN & REGISTRAR =====
         // comment: create admin employee using updated method signature from main
