@@ -8,6 +8,7 @@ package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 import Business.Business;
 import Business.Person.Person;
 import Business.UserAccounts.UserAccount;
+import Business.Profiles.EmployeeProfile;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -74,6 +75,8 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
         txtOfficeHours = new javax.swing.JTextField();
         lblOfficeHours = new javax.swing.JLabel();
         txtRole = new javax.swing.JTextField();
+        cmbDepartment = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -92,7 +95,7 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
         add(lblTitle);
         lblTitle.setBounds(30, 20, 550, 28);
         add(txtUsername);
-        txtUsername.setBounds(140, 140, 140, 30);
+        txtUsername.setBounds(140, 110, 140, 30);
 
         btnSave.setText("Save");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -101,15 +104,15 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
             }
         });
         add(btnSave);
-        btnSave.setBounds(520, 300, 72, 23);
+        btnSave.setBounds(500, 330, 72, 23);
 
         lblName.setText("Name");
         add(lblName);
-        lblName.setBounds(90, 200, 50, 20);
+        lblName.setBounds(90, 170, 50, 20);
 
         lblUsername.setText("Username");
         add(lblUsername);
-        lblUsername.setBounds(70, 150, 70, 20);
+        lblUsername.setBounds(70, 120, 70, 20);
         add(pwPassword);
         pwPassword.setBounds(300, 370, 140, 30);
 
@@ -123,7 +126,7 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
         add(pwConfirmPassword);
         pwConfirmPassword.setBounds(300, 420, 140, 30);
         add(txtName);
-        txtName.setBounds(140, 190, 140, 30);
+        txtName.setBounds(140, 160, 140, 30);
 
         btnEdit.setText("Edit");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -132,23 +135,23 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
             }
         });
         add(btnEdit);
-        btnEdit.setBounds(210, 300, 72, 23);
+        btnEdit.setBounds(190, 330, 72, 23);
 
         lblProfileType.setText("Profile Type");
         add(lblProfileType);
-        lblProfileType.setBounds(60, 100, 80, 20);
+        lblProfileType.setBounds(60, 70, 80, 20);
         add(txtCreated);
-        txtCreated.setBounds(140, 240, 140, 30);
+        txtCreated.setBounds(140, 210, 140, 30);
         add(txtNUID);
-        txtNUID.setBounds(450, 90, 140, 30);
+        txtNUID.setBounds(450, 60, 140, 30);
 
         lblCreated.setText("Created Date");
         add(lblCreated);
-        lblCreated.setBounds(60, 250, 80, 16);
+        lblCreated.setBounds(60, 220, 80, 16);
 
         lblNUID.setText("NUID");
         add(lblNUID);
-        lblNUID.setBounds(370, 100, 80, 16);
+        lblNUID.setBounds(370, 70, 80, 16);
 
         btnSavePw.setText("Save password");
         btnSavePw.addActionListener(new java.awt.event.ActionListener() {
@@ -166,29 +169,37 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
             }
         });
         add(btnResetPw);
-        btnResetPw.setBounds(340, 300, 120, 23);
+        btnResetPw.setBounds(320, 330, 120, 23);
         add(txtEmail);
-        txtEmail.setBounds(450, 140, 140, 30);
+        txtEmail.setBounds(450, 110, 140, 30);
         add(txtPhone);
-        txtPhone.setBounds(450, 190, 140, 30);
+        txtPhone.setBounds(450, 160, 140, 30);
 
         lblEmail.setText("Email");
         add(lblEmail);
-        lblEmail.setBounds(370, 150, 80, 16);
+        lblEmail.setBounds(370, 120, 80, 16);
 
         lblPhone.setText("Phone");
         add(lblPhone);
-        lblPhone.setBounds(370, 200, 80, 16);
+        lblPhone.setBounds(370, 170, 80, 16);
         add(txtOfficeHours);
-        txtOfficeHours.setBounds(450, 240, 140, 30);
+        txtOfficeHours.setBounds(450, 210, 140, 30);
 
         lblOfficeHours.setText("Office Hours");
         add(lblOfficeHours);
-        lblOfficeHours.setBounds(370, 250, 80, 20);
+        lblOfficeHours.setBounds(370, 220, 80, 20);
 
         txtRole.setText("Faculty");
         add(txtRole);
-        txtRole.setBounds(140, 92, 140, 30);
+        txtRole.setBounds(140, 60, 140, 30);
+
+        cmbDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        add(cmbDepartment);
+        cmbDepartment.setBounds(140, 260, 140, 30);
+
+        jLabel1.setText("Department");
+        add(jLabel1);
+        jLabel1.setBounds(70, 270, 70, 16);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -230,6 +241,8 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnResetPw;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSavePw;
+    private javax.swing.JComboBox<String> cmbDepartment;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblConfirmPassword;
     private javax.swing.JLabel lblCreated;
     private javax.swing.JLabel lblEmail;
@@ -273,6 +286,15 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
         lblConfirmPassword.setVisible(false);
         btnSavePw.setVisible(false);
         
+        // Populate department dropdown dynamically from business
+        cmbDepartment.removeAllItems();
+        for (university.Department.Department d : business.getDepartments()) {
+            cmbDepartment.addItem(d.toString());
+        }
+        // Pre-select the faculty member's current department
+        EmployeeProfile ep = (EmployeeProfile) selecteduseraccount.getAssociatedPersonProfile();
+        cmbDepartment.setSelectedItem(ep.getDepartmentName());
+        
         // Populate Registrar-specific field
        // FacultyProfile rp = (FacultyProfile) selecteduseraccount.getAssociatedPersonProfile();
       //  txtOfficeHours.setText(rp.getOfficeHours() != null ? rp.getOfficeHours() : "");
@@ -287,6 +309,7 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
         txtPhone.setEnabled(false);
         txtRole.setEnabled(false);
        // txtOfficeHours.setEnabled(false);
+        cmbDepartment.setEnabled(false);
     }
 
     private void updateuserinfo() {
@@ -325,6 +348,12 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
         // Save Faculty-specific field(s) 
       //  FacultyProfile rp = (FacultyProfile) selecteduseraccount.getAssociatedPersonProfile();
      //   rp.setOfficeHours(officeHours);
+        // Save department assignment
+        String selectedDept = (String) cmbDepartment.getSelectedItem();
+        if (selectedDept != null) {
+            EmployeeProfile ep = (EmployeeProfile) selecteduseraccount.getAssociatedPersonProfile();
+            ep.setDepartmentName(selectedDept);
+        }
 
         // Update timestamp
         selecteduseraccount.updatelastupdate();
@@ -342,7 +371,8 @@ public class AdministerFacultyJPanel extends javax.swing.JPanel {
         txtCreated.setEnabled(false);
         txtEmail.setEnabled(true);
         txtPhone.setEnabled(true);
-        txtOfficeHours.setEnabled(true);   
+        txtOfficeHours.setEnabled(true); 
+        cmbDepartment.setEnabled(true);
     }
 
     private void resetpassword() {
