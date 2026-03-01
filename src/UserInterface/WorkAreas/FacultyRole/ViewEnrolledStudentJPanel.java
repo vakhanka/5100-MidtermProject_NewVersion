@@ -28,16 +28,18 @@ public class ViewEnrolledStudentJPanel extends javax.swing.JPanel {
     }
     
      private void populateCourseDropdown() {
-        cmbSelectCourse.removeAllItems();
-        java.util.ArrayList<university.CourseSchedule.CourseOffer> offers =
-            business.getDepartment().getCourseSchedule("Fall 2025").getSchedule();
-        for (university.CourseSchedule.CourseOffer co : offers) {
+    cmbSelectCourse.removeAllItems();
+    university.CourseSchedule.CourseSchedule cs =
+        business.getDepartment().getCourseSchedule("Fall 2025");
+    if (cs != null) {
+        for (university.CourseSchedule.CourseOffer co : cs.getSchedule()) {
             cmbSelectCourse.addItem(co.getCourseNumber() + " - " +
                 co.getSubjectCourse().getName());
         }
-        cmbSelectCourse.addActionListener(e -> loadEnrolledStudents());
-        loadEnrolledStudents();
     }
+    cmbSelectCourse.addActionListener(e -> loadEnrolledStudents());
+    loadEnrolledStudents();
+}
     
     private void loadEnrolledStudents() {
         String selected = (String) cmbSelectCourse.getSelectedItem();
@@ -46,7 +48,7 @@ public class ViewEnrolledStudentJPanel extends javax.swing.JPanel {
 
         // Get all students and check if enrolled in this course
         java.util.ArrayList<StudentProfile> allStudents =
-            business.getStudentDirectory().getStudentlist();
+            business.getStudentDirectory().getStudentList();
 
         java.util.ArrayList<String[]> rows = new java.util.ArrayList<>();
         for (StudentProfile bsp : allStudents) {

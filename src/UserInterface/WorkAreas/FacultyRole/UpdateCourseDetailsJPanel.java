@@ -20,17 +20,22 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
     Business business;
     javax.swing.JPanel CardSequencePanel;
 
-     public UpdateCourseDetailsJPanel() {
+     public UpdateCourseDetailsJPanel(Business b, javax.swing.JPanel clp) {
+        business = b;
+        CardSequencePanel = clp;
         initComponents();
         populateCourseDropdown();
     }
      private void populateCourseDropdown() {
         cmbSelectCourses.removeAllItems();
-        java.util.ArrayList<university.CourseSchedule.CourseOffer> offers =
-            business.getDepartment().getCourseSchedule("Fall 2025").getSchedule();
-        for (university.CourseSchedule.CourseOffer co : offers) {
-            cmbSelectCourses.addItem(co.getCourseNumber() + " - " +
-                co.getSubjectCourse().getName());
+        // ⚠️ HANK'S REVIEW: null check required here
+        university.CourseSchedule.CourseSchedule cs =
+            business.getDepartment().getCourseSchedule("Fall 2025");
+        if (cs != null) {
+            for (university.CourseSchedule.CourseOffer co : cs.getSchedule()) {
+                cmbSelectCourses.addItem(co.getCourseNumber() + " - " +
+                    co.getSubjectCourse().getName());
+            }
         }
         if (cmbSelectCourses.getItemCount() > 0) loadCourseDetails();
     }
@@ -48,11 +53,7 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
         fieldCapacity.setText(String.valueOf(co.getCapacity()));
         fieldSchedule.setText(co.getScheduleDisplay().isEmpty() ? "TBD" : co.getScheduleDisplay());
         fieldDescription.setText("Course: " + co.getCourseNumber());
-    }
-    
-   
-   
-    
+    }   
 
     /**
      * This method is called from within the constructor to initialize the form.

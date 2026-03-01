@@ -29,7 +29,7 @@ public class StudentTranscriptViewJPanel extends javax.swing.JPanel {
     private void populateStudentDropdown() {
         cmbSelectStudents.removeAllItems();
         for (StudentProfile sp :
-                business.getStudentDirectory().getStudentlist()) {
+                business.getStudentDirectory().getStudentList()) {
             cmbSelectStudents.addItem(sp.getPerson().getFullname() +
                 " (" + sp.getPerson().getPersonId() + ")");
         }

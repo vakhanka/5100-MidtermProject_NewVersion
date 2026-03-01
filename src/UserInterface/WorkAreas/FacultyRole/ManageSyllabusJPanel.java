@@ -29,15 +29,17 @@ public class ManageSyllabusJPanel extends javax.swing.JPanel {
 
     
      private void populateCourseDropdown() {
-        cmbSelectCourses.removeAllItems();
-        java.util.ArrayList<university.CourseSchedule.CourseOffer> offers =
-            business.getDepartment().getCourseSchedule("Fall 2025").getSchedule();
-        for (university.CourseSchedule.CourseOffer co : offers) {
+    cmbSelectCourses.removeAllItems();
+    university.CourseSchedule.CourseSchedule cs =
+        business.getDepartment().getCourseSchedule("Fall 2025");
+    if (cs != null) {
+        for (university.CourseSchedule.CourseOffer co : cs.getSchedule()) {
             cmbSelectCourses.addItem(co.getCourseNumber() + " - " +
                 co.getSubjectCourse().getName());
         }
-        lblCurrentSyllabusStatus.setText("No syllabus uploaded");
     }
+    lblCurrentSyllabusStatus.setText("No syllabus uploaded");
+}
      
 
     /**
