@@ -14,7 +14,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import university.CourseSchedule.CourseLoad;
 import university.CourseSchedule.SeatAssignment;
-import university.Department.Department;
+//import university.Department.Department; removing to achieve multi-department functionality
 
 /**
  *
@@ -42,11 +42,19 @@ public class CourseWorkJPanel extends javax.swing.JPanel {
         student = spp;
         CardSequencePanel = clp;
         
+        /* replacing with new code from Polina for activating multi-department functionality
         //HL: getter for StudentProfile (university)
         Department dept = business.getDepartment(); //HL: added import using AltEnter
         if (dept != null){
             uniStudentProfile = dept.getStudentDirectory().findStudent(student.getPerson().getPersonId()); 
-        }
+        }*/
+        
+        
+        // Get university student profile directly from bridge      //replacement code from Polina
+        uniStudentProfile = student.getUniversityProfile();         //replacement code from Polina
+        
+
+        
         
         //HL: JTable non-editable 
         tblCourseWork.setDefaultEditor(Object.class, null);

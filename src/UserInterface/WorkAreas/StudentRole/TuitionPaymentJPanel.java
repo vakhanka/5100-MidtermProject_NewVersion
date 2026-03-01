@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-import university.Department.Department;
+//import university.Department.Department;
 import university.Persona.TuitionRecord;
 
 /**
@@ -37,11 +37,14 @@ public class TuitionPaymentJPanel extends javax.swing.JPanel {
         student = spp;
         CardSequencePanel = clp;
         
+        /* replacing this code to achieve muti-department functionality (Polina)
         //HL: get university student profile 
         Department dept = business.getDepartment(); //HL: added import using AltEnter
         if (dept != null){
             uniStudentProfile = dept.getStudentDirectory().findStudent(student.getPerson().getPersonId()); 
-        }
+        }*/
+        
+        uniStudentProfile = student.getUniversityProfile(); //replacement code from Polina
         
         //HL: ensure payment history is not-editable in JTable 
         tblPaymentHistory.setDefaultEditor(Object.class, null);

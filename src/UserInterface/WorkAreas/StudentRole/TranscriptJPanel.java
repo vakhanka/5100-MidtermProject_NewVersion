@@ -35,10 +35,15 @@ public class TranscriptJPanel extends javax.swing.JPanel {
         business = b;
         student = spp;
         CardSequencePanel = clp;
+        
+        /* replacing this code to achieve muti-department functionality (Polina)
         university.Department.Department dept = business.getDepartment();
         if (dept != null){
             uniStudentProfile = dept.getStudentDirectory().findStudent(student.getPerson().getPersonId()); //HL: gets university student profile 
-        }
+        }*/
+        
+        uniStudentProfile = student.getUniversityProfile(); //replacement code from Polina
+
         
         //HL: ensures table is not editable 
         tblTranscript.setDefaultEditor(Object.class, null);
