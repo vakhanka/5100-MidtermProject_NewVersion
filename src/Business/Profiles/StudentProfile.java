@@ -19,6 +19,13 @@ public class StudentProfile extends Profile {
     
     //bridge to Person in University Package
     private university.Persona.StudentProfile universityProfile;
+    
+    private String departmentName = "";
+
+    public String getDepartmentName() { 
+        return departmentName; }
+    public void setDepartmentName(String departmentName) { 
+        this.departmentName = departmentName; }
 
     public StudentProfile(Person p) {
         super(p);
