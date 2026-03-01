@@ -104,7 +104,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
 
         lblSearch.setText("Search By: ");
 
-        comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Course ID ", "Teacher Name ", "Course Name" }));
+        comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Course ID ", "Teacher ID ", "Course Name" }));
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -325,8 +325,8 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
             if (searchType.equals("Course ID")){
                 match = co.getCourseNumber().toLowerCase().contains(query);
             }
-            //HL: combo box selection - search by Teacher name 
-            else if (searchType.equals("Teacher Name")){
+            //HL: combo box selection - search by Teacher ID
+            else if (searchType.equals("Teacher ID")){ //HL: changed from name to ID 
                 if (co.getFacultyProfile() != null){
                     String name = co.getFacultyProfile().getPerson().getPersonId().toLowerCase();
                     match = name.contains(query); 
