@@ -18,6 +18,7 @@ import UserInterface.WorkAreas.FacultyRole.ViewAssignedCoursesJPanel;
 import UserInterface.WorkAreas.FacultyRole.ViewEnrolledStudentJPanel;
 import UserInterface.WorkAreas.FacultyRole.ViewEditProfileJPanel;
 import UserInterface.WorkAreas.FacultyRole.CoursePerformanceJPanel;
+import Business.Profiles.EmployeeProfile;
 
 
 /**
@@ -32,14 +33,17 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
     /**
      * Creates new form UnitRiskWorkArea
      */
+    
+    EmployeeProfile facultyProfile;
 
-    public FacultyWorkAreaJPanel(Business b, JPanel clp) {
 
+    public FacultyWorkAreaJPanel(Business b, EmployeeProfile ep, JPanel clp) {
         business = b;
+        facultyProfile = ep;
         this.CardSequencePanel = clp;
         initComponents();
+}
 
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -174,7 +178,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
     private void btnMyProfileIdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyProfileIdentifyEventsActionPerformed
         // TODO add your handling code here:
         CardSequencePanel.removeAll();
-        ViewEditProfileJPanel panel = new ViewEditProfileJPanel(business, CardSequencePanel);
+        ViewEditProfileJPanel panel = new ViewEditProfileJPanel(business, facultyProfile, CardSequencePanel);
         CardSequencePanel.add("My Profile", panel);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 }//GEN-LAST:event_btnMyProfileIdentifyEventsActionPerformed

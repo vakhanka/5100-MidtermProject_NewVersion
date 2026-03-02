@@ -4,6 +4,8 @@
  */
 package UserInterface.WorkAreas.FacultyRole;
 import Business.Business;
+import Business.Profiles.EmployeeProfile;
+
 
 /**
  *
@@ -17,21 +19,27 @@ public class ViewEditProfileJPanel extends javax.swing.JPanel {
     
     Business business;
     javax.swing.JPanel CardSequencePanel;
+    private EmployeeProfile facultyProfile;
+
     
-     public ViewEditProfileJPanel(Business b, javax.swing.JPanel clp) {
+    
+     public ViewEditProfileJPanel(Business b, EmployeeProfile ep, javax.swing.JPanel clp) {
         business = b;
         CardSequencePanel = clp;
+        facultyProfile = ep;
         initComponents();
-        loadProfileData();
-    }
+        loadProfileData(ep);
+}
+
+
      
-      private void loadProfileData() {
-        fieldName.setText("John Smith");
-        fieldEmail.setText("john.smith@northeastern.edu");
+      private void loadProfileData(EmployeeProfile ep) {
+        fieldName.setText(ep.getPerson().getFullname());
+        fieldEmail.setText(ep.getPerson().getPersonId() + "@northeastern.edu");
         fieldDepartment.setText("Information Systems");
-        fieldPhone.setText("617-555-1234");
-        fieldOfficeHours.setText("Monday/Wednesday 2:00-4:00 PM");
-    }
+        fieldPhone.setText("");
+        fieldOfficeHours.setText("");
+}
      
      
 
@@ -187,7 +195,7 @@ public class ViewEditProfileJPanel extends javax.swing.JPanel {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
-        loadProfileData(); // Reset to original values
+        loadProfileData(facultyProfile);
     
     }//GEN-LAST:event_btnCancelActionPerformed
 
