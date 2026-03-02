@@ -335,9 +335,8 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
 
     private void populateSemesters() {
         cmbSemester.removeAllItems();
-        cmbSemester.addItem("Fall 2026");
-        cmbSemester.addItem("Spring 2027");
-        cmbSemester.addItem("Summer 2027");
+        cmbSemester.addItem("Fall 2025");
+        cmbSemester.addItem("Spring 2025");
     }
 
     private void setEnrollmentTableModel() {

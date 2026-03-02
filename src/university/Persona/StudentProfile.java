@@ -108,5 +108,8 @@ public class StudentProfile {
         return paymentHistory; 
     }
     
-    
+    // Registrar role: to populate combo box for Student names
+    public university.Persona.Person getPerson() {
+        return person;
+    }
 }

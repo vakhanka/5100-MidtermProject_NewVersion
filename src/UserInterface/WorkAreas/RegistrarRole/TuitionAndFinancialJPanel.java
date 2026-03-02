@@ -408,9 +408,8 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
 
     private void populateSemesters() {
         cmbSemester.removeAllItems();
-        cmbSemester.addItem("Fall 2026");
-        cmbSemester.addItem("Spring 2027");
-        cmbSemester.addItem("Fall 2027");
+        cmbSemester.addItem("Fall 2025");
+        cmbSemester.addItem("Spring 2025");
     }
     
     private String getStatus(double due, double balance) {

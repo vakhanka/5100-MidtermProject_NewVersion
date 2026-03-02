@@ -5,10 +5,10 @@
 package UserInterface.WorkAreas.AdminRole;
 
 import Business.Business;
+import Business.Person.Person;
 import javax.swing.JPanel;
 import university.CourseSchedule.CourseSchedule;
 import university.Department.Department;
-import Business.Profiles.StudentProfile;
 
 
 /**
@@ -34,6 +34,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
         btnLoad.setPreferredSize(new java.awt.Dimension(120, 30));
 
         populateDepartments(); // load departments into dropdown
+        configureStudentComboRenderer();
         populateStudents();    // load students into dropdown
         populateSemesters();
         cmbSemester.setSelectedIndex(0);
@@ -205,7 +206,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
     private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
         // TODO add your handling code here:
         // 1) Read selected department from dropdown
-        //System.out.println("LOAD CLICKED");
+
         Department d = (Department) cmbDepartment.getSelectedItem();
         if (d == null) {
             javax.swing.JOptionPane.showMessageDialog(this, "Select a department.");
@@ -225,12 +226,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
             // create an empty schedule if it doesn't exist yet
             currentSchedule = d.newCourseSchedule(semester);
         }
-
-        //System.out.println("Dept=" + d + ", semester=" + semester);
-        
-        //System.out.println("Schedule is null? " + (currentSchedule == null));
-        //System.out.println("Offerings count = " + currentSchedule.getSchedule().size());
-        
+      
         // 4) Populate the offerings table
         populateOfferingsTable(currentSchedule);
 
@@ -354,7 +350,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnLoad;
     private javax.swing.JComboBox<Department> cmbDepartment;
     private javax.swing.JComboBox<String> cmbSemester;
-    private javax.swing.JComboBox<StudentProfile> cmbStudent;
+    private javax.swing.JComboBox<university.Persona.StudentProfile> cmbStudent;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDepartment;
@@ -373,8 +369,18 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
     
     private void populateStudents() {
         cmbStudent.removeAllItems();
-        for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
-            cmbStudent.addItem(sp);
+
+        for (Department d : business.getDepartments()) {
+
+            for (university.Persona.StudentProfile usp
+                    : d.getStudentDirectory().getStudentList()) {
+
+                cmbStudent.addItem(usp);
+            }
+        }
+
+        if (cmbStudent.getItemCount() > 0) {
+            cmbStudent.setSelectedIndex(0);
         }
     }
 
@@ -392,9 +398,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
             String courseName = co.getSubjectCourse().getName();
 
             // show instructor if assigned, otherwise TBA
-            String faculty = (co.getFacultyProfile() != null)
-                    ? co.getFacultyProfile().getPerson().getPersonId()
-                    : "TBA";
+            String faculty = getFacultyDisplayName(co);
 
             // credits shown in table
             int credits = co.getCreditHours();
@@ -419,9 +423,7 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
             String courseId = co.getCourseNumber();                 // used for drop
             String courseName = co.getSubjectCourse().getName();    // display name
 
-            String faculty = (co.getFacultyProfile() != null)
-                    ? co.getFacultyProfile().getPerson().getPersonId()
-                    : "TBA";
+            String faculty = getFacultyDisplayName(co);
 
             int credits = sa.getCreditHours();                      // course credits
 
@@ -430,20 +432,16 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
     }
     
     private university.CourseSchedule.CourseLoad getSelectedStudentCourseLoad(String semester) {
-        // Get selected Business student profile
-        StudentProfile sp = (StudentProfile) cmbStudent.getSelectedItem();
-        if (sp == null) {
-            return null;
-        }
 
-        // Bridge to university student profile (where transcript/courseload lives)
-        university.Persona.StudentProfile usp = sp.getUniversityProfile();
+        university.Persona.StudentProfile usp
+                = (university.Persona.StudentProfile) cmbStudent.getSelectedItem();
+
         if (usp == null) {
             return null;
         }
 
-        // Get or create courseload for this semester
         university.CourseSchedule.CourseLoad cl = usp.getCourseLoadBySemester(semester);
+
         if (cl == null) {
             cl = usp.newCourseLoad(semester);
         }
@@ -452,8 +450,70 @@ public class StudentRegistrationJPanel extends javax.swing.JPanel {
     }
     
     private void populateSemesters() {
-        cmbSemester.addItem("Fall 2026");
-        cmbSemester.addItem("Spring 2027");
-        cmbSemester.addItem("Summer 2027");
+        cmbSemester.removeAllItems();
+        cmbSemester.addItem("Fall 2025");
+        cmbSemester.addItem("Spring 2025");
+    }
+
+    private void configureStudentComboRenderer() {
+        cmbStudent.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+
+                super.getListCellRendererComponent(
+                        list, value, index, isSelected, cellHasFocus);
+
+                if (value == null) {
+                    setText("");
+                    return this;
+                }
+
+                try {
+                    university.Persona.StudentProfile usp
+                            = (university.Persona.StudentProfile) value;
+
+                    String id = usp.getPerson().getPersonId();
+
+                    // Fully qualified to avoid conflicts
+                    Object bpObj = business.getPersonDirectory().findPersonById(id);
+                    if (bpObj != null) {
+                        try {
+                            String fullName = (String) bpObj.getClass().getMethod("getFullname").invoke(bpObj);
+                            setText(fullName != null ? fullName : id);
+                        } catch (Exception ex) {
+                            setText(id);
+                        }
+                    } else {
+                        setText(id);
+                    }
+
+                } catch (Exception e) {
+                    setText(value.toString());
+                }
+
+                return this;
+            }
+        });
+    }
+    
+    private String getFacultyDisplayName(university.CourseSchedule.CourseOffer co) {
+        if (co == null || co.getFacultyProfile() == null || co.getFacultyProfile().getPerson() == null) {
+            return "TBA";
+        }
+
+        String facultyId = co.getFacultyProfile().getPerson().getPersonId();
+
+        // ID -> Full name (display only)
+        Person bp = business.getPersonDirectory().findPersonById(facultyId);
+        if (bp != null) {
+            String name = bp.getFullname();
+            if (name != null && !name.trim().isEmpty()) {
+                return name;
+            }
+        }
+
+        return facultyId;
     }
 }
