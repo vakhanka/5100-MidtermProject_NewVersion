@@ -61,7 +61,6 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
 
         btnRegTuitionAndFinancialRecon = new javax.swing.JButton();
         btnRegReportingAnalytics = new javax.swing.JButton();
-        btnRegStudentRegistration = new javax.swing.JButton();
         lblRegistrarTitle = new javax.swing.JLabel();
         btnRegManageProfile = new javax.swing.JButton();
         btnRegCourseOfferingMgmt = new javax.swing.JButton();
@@ -89,19 +88,6 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
         btnRegReportingAnalytics.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegReportingAnalyticsActionPerformed(evt);
-            }
-        });
-
-        btnRegStudentRegistration.setBackground(new java.awt.Color(102, 153, 255));
-        btnRegStudentRegistration.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegStudentRegistration.setText("Student Registration");
-        btnRegStudentRegistration.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnRegStudentRegistration.setMaximumSize(new java.awt.Dimension(200, 40));
-        btnRegStudentRegistration.setMinimumSize(new java.awt.Dimension(20, 20));
-        btnRegStudentRegistration.setPreferredSize(new java.awt.Dimension(240, 25));
-        btnRegStudentRegistration.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegStudentRegistrationActionPerformed(evt);
             }
         });
 
@@ -144,31 +130,28 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
                     .addComponent(lblRegistrarTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnRegManageProfile, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(btnRegCourseOfferingMgmt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                             .addComponent(btnRegTuitionAndFinancialRecon, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                        .addGap(75, 75, 75)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnRegStudentRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRegReportingAnalytics, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(73, Short.MAX_VALUE))
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnRegManageProfile, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                            .addComponent(btnRegReportingAnalytics, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(51, 51, 51)
                 .addComponent(lblRegistrarTitle)
-                .addGap(35, 35, 35)
+                .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegCourseOfferingMgmt, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRegStudentRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRegManageProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegReportingAnalytics, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegTuitionAndFinancialRecon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
-                .addComponent(btnRegManageProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -185,11 +168,6 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
         CardSequencePanel.add("ReportingAndAnalytics", panel);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_btnRegReportingAnalyticsActionPerformed
-
-    private void btnRegStudentRegistrationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegStudentRegistrationActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_btnRegStudentRegistrationActionPerformed
 
     private void btnRegManageProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegManageProfileActionPerformed
         // TODO add your handling code here:
@@ -210,7 +188,6 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnRegCourseOfferingMgmt;
     private javax.swing.JButton btnRegManageProfile;
     private javax.swing.JButton btnRegReportingAnalytics;
-    private javax.swing.JButton btnRegStudentRegistration;
     private javax.swing.JButton btnRegTuitionAndFinancialRecon;
     private javax.swing.JLabel lblRegistrarTitle;
     // End of variables declaration//GEN-END:variables
