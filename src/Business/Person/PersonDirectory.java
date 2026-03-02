@@ -46,7 +46,7 @@ public class PersonDirectory {
             return null; //not found after going through the whole list
          }
     
-    //Method for searching by partial name
+    // Method for searching by partial name
     public ArrayList<Person> searchByName(String name) {
     ArrayList<Person> results = new ArrayList<>();
     for (Person p : personlist) {
@@ -68,4 +68,18 @@ public class PersonDirectory {
         }
         return null;
     }
+    
+    // Registrar role: populate combo box with names of Faculty members
+    public Business.Person.Person findPersonById(String id) {
+        if (id == null) {
+            return null;
+        }
+        for (Business.Person.Person p : personlist) {
+            if (p != null && id.equals(p.getPersonId())) {
+                return p;
+            }
+        }
+        return null;
+    }
+
 }

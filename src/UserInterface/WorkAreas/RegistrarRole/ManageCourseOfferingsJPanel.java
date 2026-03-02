@@ -5,6 +5,7 @@
 package UserInterface.WorkAreas.RegistrarRole;
 
 import Business.Business;
+import Business.Person.Person;
 import Business.Profiles.RegistrarProfile;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,6 +39,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         spnCapacity.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
         populateDepartments();
         populateSemesters();
+        configureFacultyComboRenderer();
         
 
         // Capacity controls disabled until a row is selected
@@ -179,7 +181,6 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnSaveSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDepartment)
@@ -190,19 +191,21 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
                             .addComponent(btnLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
                             .addComponent(cmbSemester, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(lblRoom)
-                                .addGap(45, 45, 45)
-                                .addComponent(txtRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblFaculty)
-                                    .addComponent(lblTime))
-                                .addGap(45, 45, 45)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtTime, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                                    .addComponent(cmbFaculty, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnSaveSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(lblRoom)
+                                    .addGap(45, 45, 45)
+                                    .addComponent(txtRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblFaculty)
+                                        .addComponent(lblTime))
+                                    .addGap(45, 45, 45)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtTime, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                        .addComponent(cmbFaculty, 0, 112, Short.MAX_VALUE))))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -578,7 +581,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
         if (selectedFaculty == null) {
             JOptionPane.showMessageDialog(this, "Please select a Faculty member.");
-            return; // comment: prevent saving without selecting faculty
+            return; // prevent saving without selecting faculty
         }
         
         // assign faculty to the selected course offering
@@ -662,10 +665,10 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
 
             // Retrieve faculty safely to avoid NullPointerException
             if (co.getFacultyProfile() != null) {
-                row[3] = co.getFacultyProfile().toString();
-                // show faculty using FacultyProfile toString()
+                String fid = co.getFacultyProfile().getPerson().getPersonId();
+                row[3] = getPersonNameById(fid);   // <-- name lookup
             } else {
-                row[3] = "Unassigned"; // show status clearly if no faculty assigned
+                row[3] = "Unassigned";
             }
 
             row[4] = co.getCapacity();
@@ -679,21 +682,61 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
     }  
     
     private void populateFacultyDropdown(Department selectedDept) {
-        // comment: always repopulate faculty list from the department directory
+        // always repopulate faculty list from the department directory
         javax.swing.DefaultComboBoxModel model = new javax.swing.DefaultComboBoxModel();
         for (FacultyProfile fp : selectedDept.getFacultyDirectory().getTeacherlist()) {
-            model.addElement(fp); // comment: store FacultyProfile objects (not strings)
+            model.addElement(fp); // store FacultyProfile objects (not strings)
         }
-        cmbFaculty.setModel(model); // comment: replace model to avoid "mystery clears"
+        cmbFaculty.setModel(model); // replace model to avoid "mystery clears"
 
         if (model.getSize() > 0) {
-            cmbFaculty.setSelectedIndex(0); // comment: keep a visible selection
+            cmbFaculty.setSelectedIndex(0); // keep a visible selection
         }
     }
     
     private void populateSemesters() {
-        cmbSemester.addItem("Fall 2026");
-        cmbSemester.addItem("Spring 2027");
-        cmbSemester.addItem("Summer 2027");
+        cmbSemester.removeAllItems();
+        cmbSemester.addItem("Fall 2025");
+        cmbSemester.addItem("Spring 2025");
+    }
+
+    private void configureFacultyComboRenderer() {
+        cmbFaculty.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value,
+                    int index, boolean isSelected, boolean cellHasFocus) {
+
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (value == null) {
+                    setText("");
+                    return this;
+                }
+
+                try {
+                    FacultyProfile fp = (FacultyProfile) value; 
+                    String id = fp.getPerson().getPersonId();
+
+                    Person bp = business.getPersonDirectory().findPersonById(id);
+                    String name = (bp != null) ? bp.getFullname() : null;
+
+                    setText((name != null && !name.isBlank()) ? name : id);
+
+                } catch (Exception e) {
+                    setText(value.toString());
+                }
+
+                return this;
+            }
+        });
+    }
+    
+    private String getPersonNameById(String id) {
+        if (id == null) {
+            return "";
+        }
+        Person bp = business.getPersonDirectory().findPersonById(id);
+        return (bp != null && bp.getFullname() != null) ? bp.getFullname() : id;
     }
 }
