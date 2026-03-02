@@ -104,7 +104,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
 
         lblSearch.setText("Search By: ");
 
-        comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Course ID ", "Teacher Name ", "Course Name" }));
+        comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Course ID ", "Teacher ID ", "Course Name" }));
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -295,8 +295,9 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         String teacher = (co.getFacultyProfile() != null) ? co.getFacultyProfile().getPerson().getPersonId() : "TBA"; 
         int credits = co.getCreditHours(); 
         
-        //HL: TO DO "See Registrat" needs to be replaced once Lanre mreges getEnrolledCount() to CourseOffer so available seats can be calculated
-        String seats = "See registrar"; 
+        //HL: calculate available seats for a CourseOffer using getCapacity() and getEnrolledCount()from CourseOffer.java
+        int available = co.getCapacity() - co.getEnrolledCount(); 
+        String seats = available > 0 ? available + " available" : "Full"; 
         model.addRow(new Object[]{courseId, courseName, teacher, credits, seats}); 
         
     }
@@ -305,6 +306,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
     private void performSearch(){
         String query = fieldSearch.getText().trim().toLowerCase();
         String searchType = (String) comboSearch.getSelectedItem();
+        searchType = (searchType != null) ? searchType.trim() : ""; //HL: added to fix issue with an extra space in the combo box model in initComponents()
         
         //HL: if search box is empty, table reverts to show all courses 
         if (query.isEmpty()){
@@ -324,8 +326,8 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
             if (searchType.equals("Course ID")){
                 match = co.getCourseNumber().toLowerCase().contains(query);
             }
-            //HL: combo box selection - search by Teacher name 
-            else if (searchType.equals("Teacher Name")){
+            //HL: combo box selection - search by Teacher ID
+            else if (searchType.equals("Teacher ID")){ //HL: changed from name to ID 
                 if (co.getFacultyProfile() != null){
                     String name = co.getFacultyProfile().getPerson().getPersonId().toLowerCase();
                     match = name.contains(query); 
@@ -361,11 +363,11 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         if (co == null) return;
         
         //HL: To-Do********************
-        //HL: remove comments once Lanre merges isAtCapacity() to CourseOffer.java 
-        /*if (co.isAtCapacity()){
+        //HL: checks CourseOffer availability using getCapacity() and getEnrolledCount()
+        if (co.getCapacity() > 0 && co.getEnrolledCount() >= co.getCapacity()){
             JOptionPane.showMessageDialog(this, "Course is full.");
             return; 
-        }*/
+        }
         
         //HL: gets existing or creates new course load for semester 
         CourseLoad cl = uniStudentProfile.getCurrentCourseLoad(); //HL: added import using AltEnter 
