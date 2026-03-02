@@ -190,12 +190,11 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
         //javax.swing.JOptionPane.showMessageDialog(this, "Profile management coming soon.");
         
         //HL: navigate student to StudentProfileJPanel 
-        /*
+        
         StudentProfileJPanel panel = new StudentProfileJPanel(business, student, CardSequencePanel);
         CardSequencePanel.add("StudentProfile", panel);
-        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel)
-        */
-
+        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        
 
 }//GEN-LAST:event_manageProfileButtonActionPerformed
 
