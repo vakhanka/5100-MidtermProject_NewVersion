@@ -93,6 +93,22 @@ public class Transcript {
         return totalQualityPoints / totalCredits; 
     }
     
+    //HL: Method to check if a student has received any grades yet across all semesters
+    //HL: used by getAcademicStanding() method below to identify new students. new students won't have any grades and should not be in Academic Probation because they have no grades and GPA is 0.0
+    //HL: differentiates students who are new and students who received F (0.0) grades
+    private boolean hasNoGrades(){
+        for (CourseLoad cl: courseloadlist.values()){
+            for (SeatAssignment sa : cl.getSeatAssignments()){
+                //HL: getGrade() returns N/A if null
+                String grade = sa.getGrade();
+                if (grade != null && !grade.equals("N/A"))
+                    return false; 
+            }
+        }
+        return true; // HL: no grades found across any semester
+    }
+    
+    
     //HL: method to determine a student's Academic Standing for a semester
     //HL: RULE 1: Overall GPA less than 3.0 = Academic Probation 
     //HL: RULE 2: Term GPA less than 3.0 = Academic Warning (even if overall GPA is greater than or equal to 3.0) 
@@ -101,6 +117,7 @@ public class Transcript {
         double overallGPA = getOverallGPA();
         double termGPA = getSemesterGPA(semester);
         
+        if (hasNoGrades()) return "New Student";
         if (overallGPA < 3.0) return "Academic Probation";
         if (termGPA < 3.0) return "Academic Warning";
         return "Good Standing"; 
