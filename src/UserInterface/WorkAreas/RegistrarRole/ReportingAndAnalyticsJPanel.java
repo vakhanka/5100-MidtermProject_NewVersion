@@ -207,7 +207,7 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
                 String courseName = safe(sa.getAssociatedCourse().getName());
 
                 // Department name:
-                // If you can’t get it from the course/offering, we still respect the selected filter.
+                // If we can’t get it from the course/offering, we still respect the selected filter.
                 String deptName = resolveDepartmentName(sa, selectedDept);
 
                 // If user selected a department and we resolved a different one, skip
@@ -272,7 +272,7 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
             }
 
             // Resolve program/department
-            // If you cannot derive department from model yet, we will use selectedDept or "All"
+            // If we cannot derive department from model yet, we will use selectedDept or "All"
             String program = resolveProgramName(cl, selectedDept);
 
             if (!"All".equals(selectedDept) && !selectedDept.equals(program)) {
@@ -327,7 +327,6 @@ public class ReportingAndAnalyticsJPanel extends javax.swing.JPanel {
         cmbDepartment.removeAllItems();
         cmbDepartment.addItem("All");
 
-        // If you have business.getDepartments() already (you do)
         for (Department d : business.getDepartments()) {
             cmbDepartment.addItem(d.toString());
         }

@@ -267,7 +267,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         int row = tblCourseOfferings.getSelectedRow();
         if (row < 0) {
-            return; // comment: no selection
+            return; // no selection
         }
 
         spnCapacity.setEnabled(true);
@@ -300,7 +300,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
             return;
         }
         if (semester.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a Semester (e.g., Fall 2026).");
+            JOptionPane.showMessageDialog(this, "Please enter a Semester (e.g., Fall 2025).");
             return;
         }
 
@@ -317,10 +317,6 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Selected department not found.");
             return;
         }
-        
-        // comment: debug faculty list size per department
-        System.out.println("Dept=" + selectedDept + ", facultyCount="
-                + selectedDept.getFacultyDirectory().getTeacherlist().size());
         
         // Get or create the semester schedule
         CourseSchedule cs = selectedDept.getCourseSchedule(semester);
@@ -358,7 +354,7 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
             return; // cannot create offering without department
         }
         if (semester.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a Semester (e.g., Fall 2026).");
+            JOptionPane.showMessageDialog(this, "Please enter a Semester (e.g., Fall 2025).");
             return; // cannot create offering without semester
         }
 
@@ -410,10 +406,6 @@ public class ManageCourseOfferingsJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Course not found in catalog. Click Load and select a valid course.");
             return; // prevents silent failure if dropdown has invalid values
         }
-
-        // set a default capacity so it shows as non-zero immediately
-        // newOffer.generatSeats // default seat capacity for new offerings (optional)
-        // Refresh the table to show the new offering
 
         populateOfferingsTable(cs); // table should now include the newly created offering
         populateFacultyDropdown(selectedDept);

@@ -204,31 +204,36 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
-        // TODO add your handling code here:       
+        // TODO add your handling code here: 
+        // Get selected semester and department from dropdowns
         String selectedSemester = (String) cmbSemester.getSelectedItem();      
         String selectedDept = (String) cmbDepartment.getSelectedItem();
 
+        // Clear existing table rows before repopulating
         DefaultTableModel model = (DefaultTableModel) tblTuitionAndFinancial.getModel();
         model.setRowCount(0); // clear table
 
         double totalCollected = 0.0;
         double totalUnpaid = 0.0;
 
+        // Loop through all students in the business directory
         for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
 
+            // Get linked university profile for academic data
             university.Persona.StudentProfile up = sp.getUniversityProfile();
            
             if (up == null) {
-                continue;
+                continue; // Skip if no academic profile
             }
 
+            // Get course load for the selected semester
             CourseLoad cl = up.getCourseLoadBySemester(selectedSemester);
             if (cl == null) {
-                continue;
+                continue; // Skip if student not enrolled this semester
             }
                     
             double due = 0.0;
-
+            // Calculate total tuition due based on enrolled courses
             for (SeatAssignment sa : cl.getSeatAssignments()) {
                 if (sa == null || sa.getAssociatedCourse() == null) {
                     continue;
@@ -237,12 +242,14 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
             }
 
             if (due <= 0) {
-                continue;
+                continue; // Skip students with no tuition due
             }
 
+            // Calculate payment breakdown
             double balance = up.getBalance();
             double paid = due - balance;
 
+            // Ensure paid amount stays within valid bounds
             if (paid < 0) {
                 paid = 0;
             }
@@ -250,13 +257,14 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
                 paid = due;
             }
 
+            // Determine payment status (Paid, Partial, Unpaid)
             String status = getStatus(due, balance);
-
+            // Accumulate financial summary totals
             totalCollected += paid;
             if (balance > 0) {
                 totalUnpaid += balance;
             }
-
+            // Add computed financial data to table
             model.addRow(new Object[]{
                 sp.getPerson().getPersonId(),
                 sp.getPerson().getFullname(),
@@ -271,22 +279,25 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
 
     private void btnTotalCollectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTotalCollectedActionPerformed
         // TODO add your handling code here:
+        // Get selected semester
         String selectedSemester = (String) cmbSemester.getSelectedItem();
         double totalCollected = 0.0;
 
+        // Iterate through all students
         for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
 
             university.Persona.StudentProfile up = sp.getUniversityProfile();
             if (up == null) {
-                continue;
+                continue; // Skip if no academic profile
             }
 
             CourseLoad cl = up.getCourseLoadBySemester(selectedSemester);
             if (cl == null) {
-                continue;
+                continue; // Skip if not enrolled this semester
             }
 
             double due = 0.0;
+            // Calculate total tuition due
             for (SeatAssignment sa : cl.getSeatAssignments()) {
                 due += sa.getAssociatedCourse().getCoursePrice();
             }
@@ -297,6 +308,7 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
             totalCollected += paid;
         }
 
+        // Display total collected amount
         txtReportOutput.setText(
                 "Total Tuition Collected for " + selectedSemester
                 + "\n\n$" + String.format("%.2f", totalCollected)
@@ -305,22 +317,26 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
 
     private void btnUnpaidSummaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnpaidSummaryActionPerformed
         // TODO add your handling code here:
+        // Get selected semester for report calculation
         String selectedSemester = (String) cmbSemester.getSelectedItem();
         double totalUnpaid = 0.0;
         int unpaidStudents = 0;
-
+        
+        // Iterate through all students in the business directory
         for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
-
+            // Access linked university academic profile
             university.Persona.StudentProfile up = sp.getUniversityProfile();
             if (up == null) {
                 continue;
             }
 
+            // Retrieve course load for selected semester
             CourseLoad cl = up.getCourseLoadBySemester(selectedSemester);
             if (cl == null) {
-                continue;
+                continue; // Skip if student not enrolled this semeste
             }
 
+            // Determine amount actually paid (prevent negative values)
             double balance = up.getBalance();
 
             if (balance > 0) {
@@ -329,6 +345,7 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
             }
         }
 
+        // Display formatted total tuition collected for the semester
         txtReportOutput.setText(
                 "Unpaid Tuition Summary for " + selectedSemester
                 + "\n\nStudents with Outstanding Balance: " + unpaidStudents
@@ -338,34 +355,37 @@ public class TuitionAndFinancialJPanel extends javax.swing.JPanel {
 
     private void btnDeptBreakdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeptBreakdownActionPerformed
         // TODO add your handling code here:
+        // Get selected semester and department
         String selectedSemester = (String) cmbSemester.getSelectedItem();
         String selectedDept = (String) cmbDepartment.getSelectedItem();
 
         double departmentRevenue = 0.0;
 
+        // Loop through all students
         for (StudentProfile sp : business.getStudentDirectory().getStudentList()) {
 
             university.Persona.StudentProfile up = sp.getUniversityProfile();
             if (up == null) {
-                continue;
+                continue; // Skip if no academic profile
             }
 
             CourseLoad cl = up.getCourseLoadBySemester(selectedSemester);
             if (cl == null) {
-                continue;
+                continue; // Skip if not enrolled this semester
             }
 
+            // Sum tuition for enrolled courses
             for (SeatAssignment sa : cl.getSeatAssignments()) {
 
                 if (!"All".equals(selectedDept)) {
-                    // If your Course has department info, filter here
-                    // Otherwise skip filtering for now
+                    // Department filtering can be applied here if needed
                 }
 
                 departmentRevenue += sa.getAssociatedCourse().getCoursePrice();
             }
         }
 
+        // Display total department revenue
         txtReportOutput.setText(
                 "Department Revenue Breakdown (" + selectedDept + ")"
                 + "\n\nTotal Revenue: $" + String.format("%.2f", departmentRevenue)
