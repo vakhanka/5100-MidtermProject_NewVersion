@@ -95,7 +95,7 @@ public class StudentProfile {
     public void refund(double amt, String courseName){
         balance += amt;
         String date = LocalDate.now().toString();
-        paymentHistory.add(new TuitionRecord(date, -amt, "Redund: " + courseName));
+        paymentHistory.add(new TuitionRecord(date, -amt, "Refund: " + courseName));
     }
     
     //HL: boolean - returns true if balance is paid - used to lock & unlock transcript in TranscriptJPanel 
