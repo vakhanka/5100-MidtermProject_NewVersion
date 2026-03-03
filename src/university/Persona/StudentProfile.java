@@ -98,9 +98,11 @@ public class StudentProfile {
         paymentHistory.add(new TuitionRecord(date, -amt, "Refund: " + courseName));
     }
     
-    //HL: boolean - returns true if balance is paid - used to lock & unlock transcript in TranscriptJPanel 
+    //HL: boolean - used to unlock Transcript for student
+    //HL: Transcript only vieweable if student has made at least 1 payment and their current balance is 0 or negative 
     public boolean isTuitionPaid(){
-        return balance <= 0; 
+        if (paymentHistory.isEmpty()) return false; //HL: means student never made a payment
+        return balance <= 0; //HL: means student HAS a payment history and balance no balance 
     }
     
     //HL: payment history list - populates list in TuitionPaymentJPanel 
