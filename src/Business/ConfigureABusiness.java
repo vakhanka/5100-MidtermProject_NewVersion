@@ -206,6 +206,37 @@ class ConfigureABusiness {
         UserAccount faculty9Account = uadirectory.newUserAccount(faculty9, "faculty9", "password");
         UserAccount faculty10Account = uadirectory.newUserAccount(faculty10, "faculty10", "password");
         
+        // Seed faculty email and phone
+        faculty1.setEmail("john.smith@northeastern.edu");
+        faculty1.setPhone("617-555-0001");
+
+        faculty2.setEmail("sarah.johnson@northeastern.edu");
+        faculty2.setPhone("617-555-0002");
+
+        faculty3.setEmail("michael.chen@northeastern.edu");
+        faculty3.setPhone("617-555-0003");
+
+        faculty4.setEmail("emily.davis@northeastern.edu");
+        faculty4.setPhone("617-555-0004");
+
+        faculty5.setEmail("david.wilson@northeastern.edu");
+        faculty5.setPhone("617-555-0005");
+
+        faculty6.setEmail("jennifer.martinez@northeastern.edu");
+        faculty6.setPhone("617-555-0006");
+
+        faculty7.setEmail("robert.anderson@northeastern.edu");
+        faculty7.setPhone("617-555-0007");
+
+        faculty8.setEmail("lisa.taylor@northeastern.edu");
+        faculty8.setPhone("617-555-0008");
+
+        faculty9.setEmail("james.brown@northeastern.edu");
+        faculty9.setPhone("617-555-0009");
+
+        faculty10.setEmail("maria.garcia@northeastern.edu");
+        faculty10.setPhone("617-555-0010");
+        
         // Student accounts
         UserAccount student1Account = uadirectory.newUserAccount(student1, "student1", "password");
         UserAccount student2Account = uadirectory.newUserAccount(student2, "student2", "password");
