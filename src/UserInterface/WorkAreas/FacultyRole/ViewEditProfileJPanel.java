@@ -35,10 +35,11 @@ public class ViewEditProfileJPanel extends javax.swing.JPanel {
      
       private void loadProfileData(EmployeeProfile ep) {
         fieldName.setText(ep.getPerson().getFullname());
-        fieldEmail.setText(ep.getPerson().getPersonId() + "@northeastern.edu");
-        fieldDepartment.setText("Information Systems");
-        fieldPhone.setText("");
-        fieldOfficeHours.setText("");
+        fieldEmail.setText(ep.getEmail() != null ? ep.getEmail() : "");
+        fieldPhone.setText(ep.getPhone() != null ? ep.getPhone() : "");
+        fieldOfficeHours.setText(ep.getOfficeLocation() != null ? ep.getOfficeLocation() : "");
+        fieldDepartment.setText("Information Systems"); // hardcoded for now - needs bridge
+        fieldDepartment.setEnabled(false);
 }
      
      
