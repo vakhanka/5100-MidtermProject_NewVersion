@@ -268,7 +268,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         pwConfirmPassword.setVisible(false);
         lblPassword.setVisible(false);
         lblConfirmPassword.setVisible(false);
-       // txtCreated.setText(formatTimestamp(person.getCreatedtimestamp()));
+        txtCreated.setText(formatTimestamp(person.getCreatedtimestamp()));
         //txtLastUpdate.setText(formatTimestamp(selecteduseraccount.getLastupdatetimestamp()));
         cbxRole.setSelectedItem(selecteduseraccount.getProfile().getRole()); 
         btnSavePw.setVisible(false);
@@ -323,6 +323,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     //  String nuid = txtNUID.getText().trim();
         String email = txtEmail.getText().trim();
         String phone = txtPhone.getText().trim();
+        String created = txtCreated.getText().trim();
     
     // Validate fields 
         if (role==null){
