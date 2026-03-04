@@ -198,14 +198,26 @@ public class TuitionPaymentJPanel extends javax.swing.JPanel {
     
     //HL: method to create the initial balance based on tuition owed for a student profile 
     //HL: prevents accidentally resetting a student's tuition balance back to the full amount every time they open the panel after paying 
+    //HL: revision: only sets balance if student has no payment history & no current balance (re-initialization preventtion after payments/refunds have been processed)
+    //HL: revision: recalculate balalnce after a refund 
     private void initializeBalance() {
         if (uniStudentProfile == null) return; 
         double currentBalance = uniStudentProfile.getBalance();
+        boolean hasHistory = !uniStudentProfile.getPaymentHistory().isEmpty();
         
-        //HL: if not initialized, calculate & set balance 
-        if (currentBalance == 0.0){
+        //HL: only initialize if balance = 0 and student has no payment history, prevents balance reset 
+        if (currentBalance == 0.0 && !hasHistory){
             double totalOwed = uniStudentProfile.getTotalTuitionOwed();
             uniStudentProfile.setBalance(totalOwed);
+            return; 
+        }
+        
+        //HL: if a student has payment history and balance > 0, recalculate what they still owe based on current enrollents less what they have already paid 
+        if (hasHistory && currentBalance > 0){
+            double totalPaid = uniStudentProfile.getPaymentHistory().stream().mapToDouble(r -> r.getAmount()).sum(); 
+            double totalOwed = uniStudentProfile.getTotalTuitionOwed();
+            double actualOwed = Math.max(0, totalOwed - totalPaid);
+            uniStudentProfile.setBalance(actualOwed);
         }
         
     }
