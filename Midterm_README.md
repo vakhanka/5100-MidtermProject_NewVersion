@@ -65,7 +65,7 @@ Login is handled by `UserAccountDirectory.authenticateUser(username, password)`.
 - View all accounts in searchable JTable (`ManageUserAccountsJPanel`)
 - Create accounts with role assignment and auto-generated NUID (`CreateNewUserAccountJPanel`)
 - Edit username, email, phone (`AdministerPersonJPanel`); reset passwords; delete accounts
-- View metadata: created date, last login, last updated
+- View metadata: created date
 
 **Personnel Management**
 - Manage student records — search by name, NUID, or department (`ManageStudentsJPanel`)
