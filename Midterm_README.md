@@ -8,7 +8,7 @@
 |------|------|------|--------------|
 | Polina Starobinets | 002434317 | Administrator | Admin panels, bridge architecture |
 | Emmanuel Ouldtayeb | XXXXXXXX | Faculty | Faculty panels, grading |
-| Henry (Hank) | XXXXXXXX | Student | Student panels, GPA logic |
+| Henry (Hank) | 003187730 | Student | Student panels, GPA logic |
 | Lanre | XXXXXXXX | Registrar | Registrar panels, reports |
 
 ---
@@ -105,22 +105,43 @@ Login is handled by `UserAccountDirectory.authenticateUser(username, password)`.
 
 ### Student (Hank)
 
-**Course Registration** — Browse all available offerings in JTable. Three search methods via dropdown: Course ID, Teacher Name, Course Name.
+**Course Registration** — Students can search for and browse for course offers in a defined semester in a table. Search methods are by Course ID, Teacher Name, and Course name. 
 
-**Enrollment & Drop with Credit Cap** — Enroll/drop courses; enrollment blocked if exceeding 8-credit-hour-per-semester limit.
+**Enrollment & Drop with Credit Cap** — After selecting a course in the table, the student can either enroll in that course or drop it if already enrolled. Enrollment has a restriction if the student already has 8-credits in the defined semester because the university is enforcing that credit limit per semester. Success/Fail notifications are present. 
 
-**Tuition Management** — Enrollment auto-adds course price to balance. Pay via Tuition Payment panel. If balance is $0 or negative: dialog shown, no action, no history entry. Dropping after payment triggers automatic refund. Full payment history maintained.
+**Tuition Management** — 
+When a student enrolls in a course, the price of the course is added to the student profile’s tuition balance. In order to pay their balance, the student must first navigate to the Tuition Payment screen. When clicking pay tuition the student gets a yes/no confirmation request, and the student’s balance is updated accordingly. 
+Student’s can also drop courses from the Course Registration screen by selecting their enrolled course and clicking the drop button which automatically issues a refund if tuition has already been paid. Null checks are in place in the event a student tries to drop a course they are not enrolled in. 
+Success messages are in place upon successful payment and successful refunds. 
+All transaction history is stored in the table on Tuition Payment panel 
 
-**Transcript** (locked until tuition paid) — Filterable by semester dropdown. Columns: Term, Standing, Course ID, Name, Grade, Term GPA, Overall GPA.
+
+**Transcript** (locked until tuition paid) — Student’s will find they are unable to review their transcript if they have an outstanding tuition balance per university policy 
+Once Student’s balance is fully paid & up to date, only then can they open their transcript (filterable by all semesters or one semester) 
+Contents: Term, Academic Standing, Course ID, Course Name, Grade, Term GPA, Overall GPA 
+
 
 **Academic Standing:**
-- Good Standing: Term GPA ≥ 3.0 and Overall GPA ≥ 3.0
-- Academic Warning: Term GPA < 3.0
-- Academic Probation: Overall GPA < 3.0
+There are 3 criteria for a student’s academic standing: Good Standing, Academic Warning, or Academic Probation
+Good Standing: Term & Overall GPA both >=  3.0
+Academic Warning: Term GPA < 3.0
+Academic Probation: Overall GPA < 3.0 
+New Student: GPA = 0.0 (no grades yet) 
 
-**GPA Calculation** — Standard scale (A=4.0, A−=3.7, B+=3.3 … F=0.0); quality points = grade points × credit hours.
 
-**Graduation Audit** — Auto-checks: 32 total credit hours + INFO 5100 core course; displays readiness.
+**GPA Calculation** — GPA for a term (semester) and overall (all semesters) are calculated using a grade point scale (HashMap) multiplied by credit hours to produce quality points. Scale (from student’s SeatAssignments): 
+1.	A = 4.0
+2.	A- = 3.7
+3.	B+ = 3.3
+4.	B = 3.0
+5.	B- = 2.7
+6.	C+ = 2.3
+7.	C = 2.0
+8.	C- = 1.7
+9.	F = 0.0
+
+
+**Graduation Audit** — 	This panel automatically checks students credits versus the graduation credit requirement of 32. Ready for graduation/not ready is displayed
 
 **Infrastructure Contributions (university package):**
 - `SeatAssignment.java` — grade field, static `GRADE_MAP`, `getGradePoints()`
