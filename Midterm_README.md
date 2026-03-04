@@ -7,7 +7,7 @@
 | Name | NUID | Role | Branch Owner |
 |------|------|------|--------------|
 | Polina Starobinets | 002434317 | Administrator | Admin panels, bridge architecture |
-| Emmanuel Ould Tayeb | XXXXXXXX | Faculty | Faculty panels, grading |
+| Emmanuel Ould Tayeb | 003185058 | Faculty | Faculty panels, grading |
 | Henry (Hank) | 003187730 | Student | Student panels, GPA logic |
 | Lanre | 002541742 | Registrar | Registrar panels, reports |
 
@@ -85,21 +85,30 @@ Login is handled by `UserAccountDirectory.authenticateUser(username, password)`.
 
 ### Faculty (Emmanuel)
 
-**My Profile** (`ViewEditProfileJPanel`) — View and edit: name, email, department, phone, office hours
+**My Profile** (`ViewEditProfileJPanel`) — Loads logged-in faculty's real name, email, phone and office location from `EmployeeProfile`. Department field is read-only (faculty cannot change their own department). Save and Cancel buttons with input validation.
 
-**Manage Courses** (`ViewAssignedCoursesJPanel`) — View all Fall 2025 offerings in JTable (Course ID, Name, Semester, Capacity, Enrolled). Data pulled live from `department.getCourseSchedule()`.
+**Manage Courses** (`ViewAssignedCoursesJPanel`) — View all Fall 2025 course offerings in JTable (Course ID, Name, Semester, Capacity, Enrolled). Data pulled live from `business.getDepartment().getCourseSchedule("Fall 2025")` with null check.
 
-**View Enrolled Students** (`ViewEnrolledStudentJPanel`) — Select course from dropdown → see enrolled students with name, NUID, current grade. Data pulled live via bridge from `StudentProfile.getUniversityProfile()`.
+**Update Course Details** (`UpdateCourseDetailsJPanel`) — Select course from dropdown → view and edit title, capacity, schedule, description. Real course data pulled from `CourseOffer`.
 
-**Update Course Details** (`UpdateCourseDetailsJPanel`) — Select course → view/edit title, capacity, schedule, description.
+**Manage Syllabus** (`ManageSyllabusJPanel`) — Select course from dropdown → upload syllabus via URL field. Input validation: URL field cannot be empty before uploading.
 
-**Manage Syllabus** (`ManageSyllabusJPanel`) — Select course from dropdown → upload syllabus via URL field.
+**Manage Enrollment** (`ManageEnrollmentJPanel`) — Select course → open or close enrollment. Status label updates dynamically (green = OPEN, red = CLOSED).
 
-**Grade Assignments** (`GradeAssignmentsJPanel`) — Select course and student → assign letter grade (A through F).
-> ⚠️ Student list uses mock data; grade persistence not yet wired to model.
+**View Enrolled Students** (`ViewEnrolledStudentJPanel`) — Select course from dropdown → see all enrolled students with NUID, name, and current grade. Data pulled via `StudentDirectory.getStudentList()` + `SeatAssignment` bridge to university package.
 
-**Course Performance** (`CoursePerformanceJPanel`) — View grade distribution table and summary stats (avg GPA, enrollment, class grade).
-> ⚠️ Uses mock/hardcoded data; not yet wired to live SeatAssignment grades.
+**Student Progress Report** (`StudentProgressReportJPanel`) — Select student → view name, ID, email, current course, GPA, enrollment count, academic standing. GPA and standing pulled from `Transcript.getOverallGPA()` and `Transcript.getAcademicStanding()`.
+
+**Student Transcript View** (`StudentTranscriptViewJPanel`) — Select student → view full transcript table (Term, Course ID, Course Name, Grade, Credits). GPA displayed via `Transcript.getOverallGPA()`.
+
+**Grade Assignments** (`GradeAssignmentsJPanel`) — Select course → table populates with enrolled students and current grades. Select student row → assign letter grade (A through F). Grade saved to `SeatAssignment.setGrade()` using `GRADE_MAP`. Validation: must select a student row before assigning.
+
+**Student Rankings** (`StudentRankingJPanel`) — Select course → view ranked student table (Rank, Name, Grade %, Letter Grade). Class GPA calculated from average overall GPA of enrolled students.
+
+**Course Performance Report** (`CoursePerformanceJPanel`) — Select course and semester → view grade distribution table (Grade, Count, Percentage). Summary stats: average grade points, enrollment count, class GPA. Data pulled from `SeatAssignment.getGrade()` and `getGradePoints()`.
+
+**Tuition Insight** (`TuitionInsightJPanel`) — Select course → view per-student tuition breakdown (Name, Credits, Tuition, Paid/Pending). Summary: enrollment count, tuition per student, total revenue. Payment status from `StudentProfile.isTuitionPaid()`.
+
 
 ---
 
@@ -242,7 +251,12 @@ New Student: GPA = 0.0 (no grades yet)
 - **Login routing:** All EmployeeProfile users routed to Admin. Fixed by adding role field and checking it in `ProfileWorkAreaMainFrame`.
 
 ### Emmanuel (Faculty)
-> *To be completed by Emmanuel.*
+- **Navigation wiring:** `FacultyWorkAreaJPanel` buttons were pointing to wrong panels (Admin panels). Fixed by updating all 4 button handlers to load the correct faculty panels and pass `Business` + `CardSequencePanel` objects.
+- **Logged-in faculty context:** Faculty panels had no way of knowing who was logged in. Fixed by passing `EmployeeProfile` through the constructor chain: `ProfileWorkAreaMainFrame` → `FacultyWorkAreaJPanel` → `ViewEditProfileJPanel`.
+- **Real data integration:** All 12 panels were initially using hardcoded mock data. Replaced with live data calls using `StudentDirectory.getStudentList()`, `getCourseSchedule()`, and `SeatAssignment` bridge to university package.
+- **Variable name inconsistencies:** NetBeans-generated variable names (e.g. `cmbSelectStudents` used as a course dropdown) caused confusion when wiring real data. Resolved by checking Navigator panel before implementing each handler.
+- **Null safety:** `getCourseSchedule("Fall 2025")` could return null if semester not seeded. Added null checks across all `populateCourseDropdown()` methods to prevent `NullPointerException`.
+- **Profile data gap:** Email, phone and office location were not being seeded for faculty. Fixed by adding seed data for all 10 faculty in `ConfigureABusiness.java` and pulling fields from `Profile.java` via `EmployeeProfile`.
 
 ### Hank (Student)
 - **Data type mismatch:** Teammate updates to shared class field types broke compile without Git conflict flags. Required re-reading updated files and adjusting method calls.
