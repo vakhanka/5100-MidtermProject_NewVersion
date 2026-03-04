@@ -7,9 +7,9 @@
 | Name | NUID | Role | Branch Owner |
 |------|------|------|--------------|
 | Polina Starobinets | 002434317 | Administrator | Admin panels, bridge architecture |
-| Emmanuel Ouldtayeb | XXXXXXXX | Faculty | Faculty panels, grading |
+| Emmanuel Ould Tayeb | XXXXXXXX | Faculty | Faculty panels, grading |
 | Henry (Hank) | 003187730 | Student | Student panels, GPA logic |
-| Lanre | XXXXXXXX | Registrar | Registrar panels, reports |
+| Lanre | 002541742 | Registrar | Registrar panels, reports |
 
 ---
 
