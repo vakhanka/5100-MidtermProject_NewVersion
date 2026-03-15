@@ -85,6 +85,7 @@ public class StudentTranscriptViewJPanel extends javax.swing.JPanel {
         lblGPAValue = new javax.swing.JLabel();
         transcriptScrollPane = new javax.swing.JScrollPane();
         tblTranscript = new javax.swing.JTable();
+        btnBack = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         lblTitle.setText("View Student Transcript");
@@ -125,6 +126,13 @@ public class StudentTranscriptViewJPanel extends javax.swing.JPanel {
         });
         transcriptScrollPane.setViewportView(tblTranscript);
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,7 +140,9 @@ public class StudentTranscriptViewJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(285, 285, 285)
+                        .addGap(16, 16, 16)
+                        .addComponent(btnBack)
+                        .addGap(197, 197, 197)
                         .addComponent(lblTitle))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(144, 144, 144)
@@ -157,7 +167,9 @@ public class StudentTranscriptViewJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(lblTitle)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTitle)
+                    .addComponent(btnBack))
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSelectStudents)
@@ -178,8 +190,17 @@ public class StudentTranscriptViewJPanel extends javax.swing.JPanel {
         loadTranscript();
     }//GEN-LAST:event_cmbSelectStudentsActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        CardSequencePanel.removeAll();
+        FacultyStudentsSubMenuJPanel panel = new FacultyStudentsSubMenuJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Students", panel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JComboBox<String> cmbSelectStudents;
     private javax.swing.JLabel lblGPAValue;
     private javax.swing.JLabel lblSelectStudents;

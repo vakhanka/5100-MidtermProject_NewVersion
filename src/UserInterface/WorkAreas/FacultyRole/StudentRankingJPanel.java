@@ -82,6 +82,7 @@ public class StudentRankingJPanel extends javax.swing.JPanel {
         lblSelectCourse = new javax.swing.JLabel();
         lblClassGPA = new javax.swing.JLabel();
         lblClassGPAValue = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
 
         cmbSelectStudents.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbSelectStudents.addActionListener(new java.awt.event.ActionListener() {
@@ -120,6 +121,13 @@ public class StudentRankingJPanel extends javax.swing.JPanel {
 
         lblClassGPAValue.setText("jLabel1");
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,7 +141,10 @@ public class StudentRankingJPanel extends javax.swing.JPanel {
                         .addComponent(lblClassGPAValue))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(52, 52, 52)
-                        .addComponent(studentsRankingScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 672, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(studentsRankingScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 672, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(btnBack)))
                 .addContainerGap(117, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -151,7 +162,9 @@ public class StudentRankingJPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(110, Short.MAX_VALUE)
+                .addGap(22, 22, 22)
+                .addComponent(btnBack)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblClassGPA)
                     .addComponent(lblClassGPAValue))
@@ -175,8 +188,17 @@ public class StudentRankingJPanel extends javax.swing.JPanel {
         loadRankings();
     }//GEN-LAST:event_cmbSelectStudentsActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        CardSequencePanel.removeAll();
+        FacultyStudentsSubMenuJPanel panel = new FacultyStudentsSubMenuJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Students", panel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JComboBox<String> cmbSelectStudents;
     private javax.swing.JLabel lblClassGPA;
     private javax.swing.JLabel lblClassGPAValue;

@@ -102,6 +102,7 @@ public class GradeAssignmentsJPanel extends javax.swing.JPanel {
         lblAssignGrade = new javax.swing.JLabel();
         cmbAssignGrade = new javax.swing.JComboBox<>();
         btnAssignToSelected = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         tblStudentsGrade.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -147,6 +148,13 @@ public class GradeAssignmentsJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -154,7 +162,9 @@ public class GradeAssignmentsJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(285, 285, 285)
+                        .addGap(22, 22, 22)
+                        .addComponent(btnBack)
+                        .addGap(191, 191, 191)
                         .addComponent(lblTitle))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(144, 144, 144)
@@ -177,7 +187,9 @@ public class GradeAssignmentsJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(lblTitle)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTitle)
+                    .addComponent(btnBack))
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSelectCourse)
@@ -227,9 +239,18 @@ public class GradeAssignmentsJPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_cmbSelectCourseActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        CardSequencePanel.removeAll();
+        FacultyStudentsSubMenuJPanel panel = new FacultyStudentsSubMenuJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Students", panel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAssignToSelected;
+    private javax.swing.JButton btnBack;
     private javax.swing.JComboBox<String> cmbAssignGrade;
     private javax.swing.JComboBox<String> cmbSelectCourse;
     private javax.swing.JLabel lblAssignGrade;

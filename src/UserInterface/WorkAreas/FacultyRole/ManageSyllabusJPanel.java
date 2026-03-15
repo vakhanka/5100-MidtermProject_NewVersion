@@ -59,6 +59,7 @@ public class ManageSyllabusJPanel extends javax.swing.JPanel {
         lblCurrentSyllabus = new javax.swing.JLabel();
         lblSyllabusURL = new javax.swing.JLabel();
         lblCurrentSyllabusStatus = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
 
         btnUploadSyllabus.setText("Upload Syllabus");
         btnUploadSyllabus.addActionListener(new java.awt.event.ActionListener() {
@@ -85,6 +86,13 @@ public class ManageSyllabusJPanel extends javax.swing.JPanel {
 
         lblCurrentSyllabusStatus.setText("No Syllabus Uploaded");
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -108,13 +116,18 @@ public class ManageSyllabusJPanel extends javax.swing.JPanel {
                             .addComponent(lblCurrentSyllabusStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(249, 249, 249)
-                        .addComponent(btnUploadSyllabus)))
+                        .addComponent(btnUploadSyllabus))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(btnBack)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(16, 16, 16)
+                .addComponent(btnBack)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTitle)
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -160,8 +173,17 @@ public class ManageSyllabusJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbSelectCoursesActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        CardSequencePanel.removeAll();
+        FacultyCoursesSubMenuJPanel panel = new FacultyCoursesSubMenuJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Courses", panel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnUploadSyllabus;
     private javax.swing.JComboBox<String> cmbSelectCourses;
     private javax.swing.JTextField fieldSyllabusURL;

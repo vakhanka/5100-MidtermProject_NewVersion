@@ -77,6 +77,7 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
         fieldDescription = new javax.swing.JTextField();
         fieldSchedule = new javax.swing.JTextField();
         fieldCapacity = new javax.swing.JTextField();
+        btnBack = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         lblTitle.setText("Update Course Details");
@@ -118,12 +119,21 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(111, 111, 111)
+                .addGap(20, 20, 20)
+                .addComponent(btnBack)
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(77, 77, 77)
@@ -152,8 +162,10 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(lblTitle)
-                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitle)
+                    .addComponent(btnBack))
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSelectCourses)
                     .addComponent(cmbSelectCourses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -205,8 +217,17 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_cmbSelectCoursesActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        CardSequencePanel.removeAll();
+        FacultyCoursesSubMenuJPanel panel = new FacultyCoursesSubMenuJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Courses", panel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSaveChanges;
     private javax.swing.JComboBox<String> cmbSelectCourses;

@@ -67,6 +67,7 @@ public class ManageEnrollmentJPanel extends javax.swing.JPanel {
         cmbSelectCourses = new javax.swing.JComboBox<>();
         lblCurrentSyllabusStatus = new javax.swing.JLabel();
         btnCloseEnrollment = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         lblTitle.setText("Manage Course Enrollment ");
@@ -93,12 +94,21 @@ public class ManageEnrollmentJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(174, 174, 174)
+                .addGap(26, 26, 26)
+                .addComponent(btnBack)
+                .addGap(70, 70, 70)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -115,13 +125,18 @@ public class ManageEnrollmentJPanel extends javax.swing.JPanel {
                         .addComponent(btnOpenEnrollment)
                         .addGap(18, 18, 18)
                         .addComponent(btnCloseEnrollment)))
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addContainerGap(207, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(lblTitle)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(lblTitle))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(btnBack)))
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSelectCourses)
@@ -158,8 +173,18 @@ public class ManageEnrollmentJPanel extends javax.swing.JPanel {
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnCloseEnrollmentActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        
+        CardSequencePanel.removeAll();
+        FacultyCoursesSubMenuJPanel panel = new FacultyCoursesSubMenuJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Courses", panel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnCloseEnrollment;
     private javax.swing.JButton btnOpenEnrollment;
     private javax.swing.JComboBox<String> cmbSelectCourses;
