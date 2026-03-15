@@ -362,17 +362,25 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         CourseOffer co = currentSchedule.getCourseOfferByNumber(courseId);
         if (co == null) return;
         
+        //HL: gets existing or creates new course load for semester 
+        CourseLoad cl = uniStudentProfile.getCurrentCourseLoad(); //HL: added import using AltEnter 
+        if (cl == null){
+            cl = uniStudentProfile.newCourseLoad(CURRENT_SEMESTER);
+        }
+        
+        // HL: duplicate enrollment check
+        for (SeatAssignment sa : cl.getSeatAssignments()) {
+            if (sa.getAssociatedCourse().getCOurseNumber().equals(courseId)) {
+            JOptionPane.showMessageDialog(this, "You are already enrolled in " + courseId + ".", "Enrollment Error", JOptionPane.WARNING_MESSAGE);
+            return;
+            }
+        }
+        
         //HL: To-Do********************
         //HL: checks CourseOffer availability using getCapacity() and getEnrolledCount()
         if (co.getCapacity() > 0 && co.getEnrolledCount() >= co.getCapacity()){
             JOptionPane.showMessageDialog(this, "Course is full.");
             return; 
-        }
-        
-        //HL: gets existing or creates new course load for semester 
-        CourseLoad cl = uniStudentProfile.getCurrentCourseLoad(); //HL: added import using AltEnter 
-        if (cl == null){
-            cl = uniStudentProfile.newCourseLoad(CURRENT_SEMESTER);
         }
         
         //HL: caps student @ 8-credits per semester per assignment instructions 
