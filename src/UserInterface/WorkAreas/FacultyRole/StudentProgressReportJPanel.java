@@ -90,6 +90,7 @@ private void loadStudentProgress() {
         lblCurrentGradeValue = new javax.swing.JLabel();
         lblAssignmentsValue = new javax.swing.JLabel();
         lblAttendanceValue = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         lblTitle.setText("Student Progress Report");
@@ -117,6 +118,13 @@ private void loadStudentProgress() {
 
         lblAttendanceLabel.setText("Attendance");
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -124,7 +132,9 @@ private void loadStudentProgress() {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(300, 300, 300)
+                        .addGap(19, 19, 19)
+                        .addComponent(btnBack)
+                        .addGap(209, 209, 209)
                         .addComponent(lblTitle))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(153, 153, 153)
@@ -157,7 +167,9 @@ private void loadStudentProgress() {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(lblTitle)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTitle)
+                    .addComponent(btnBack))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -203,8 +215,17 @@ private void loadStudentProgress() {
         
     }//GEN-LAST:event_cmbSelectStudentsActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        CardSequencePanel.removeAll();
+        FacultyStudentsSubMenuJPanel panel = new FacultyStudentsSubMenuJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Students", panel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JComboBox<String> cmbSelectStudents;
     private javax.swing.JLabel lblAssignmentsLabel;
     private javax.swing.JLabel lblAssignmentsValue;

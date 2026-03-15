@@ -101,6 +101,7 @@ public class TuitionInsightJPanel extends javax.swing.JPanel {
         lblTotalRevenue = new javax.swing.JLabel();
         cmbSelectCourse = new javax.swing.JComboBox<>();
         lblTuitionPerStudentValue = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
 
         lblEnrollment.setText("Enrolled Students:");
 
@@ -147,21 +148,33 @@ public class TuitionInsightJPanel extends javax.swing.JPanel {
 
         lblTuitionPerStudentValue.setText("jLabel6");
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(82, 82, 82)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTotalRevenue)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblTotalRevenueValue))
+                        .addGap(82, 82, 82)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblTotalRevenue)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblTotalRevenueValue))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblEnrollment)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblEnrollmentValue))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblEnrollment)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblEnrollmentValue)))
+                        .addGap(20, 20, 20)
+                        .addComponent(btnBack)))
                 .addContainerGap(430, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -186,7 +199,9 @@ public class TuitionInsightJPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(176, 176, 176)
+                .addGap(25, 25, 25)
+                .addComponent(btnBack)
+                .addGap(128, 128, 128)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEnrollment)
                     .addComponent(lblEnrollmentValue))
@@ -218,8 +233,17 @@ public class TuitionInsightJPanel extends javax.swing.JPanel {
                 loadTuitionData();     
     }//GEN-LAST:event_cmbSelectCourseActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        CardSequencePanel.removeAll();
+        FacultyPerformanceSubMenuJPanel panel = new FacultyPerformanceSubMenuJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Performance Reports", panel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JComboBox<String> cmbSelectCourse;
     private javax.swing.JLabel lblEnrollment;
     private javax.swing.JLabel lblEnrollmentValue;

@@ -160,16 +160,17 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
     private void btnManageCoursesIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageCoursesIdentifyResourceAssetsActionPerformed
         // TODO add your handling code here:
         CardSequencePanel.removeAll();
-    ViewAssignedCoursesJPanel panel = new ViewAssignedCoursesJPanel(business, CardSequencePanel);
-    CardSequencePanel.add("View Courses", panel);
-    ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        FacultyCoursesSubMenuJPanel panel = new FacultyCoursesSubMenuJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Courses", panel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+
     }//GEN-LAST:event_btnManageCoursesIdentifyResourceAssetsActionPerformed
 
     private void btnManageStudentsProfilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageStudentsProfilesActionPerformed
         // TODO add your handling code here:
         CardSequencePanel.removeAll();
-        ViewEnrolledStudentJPanel panel = new ViewEnrolledStudentJPanel(business, CardSequencePanel);
-        CardSequencePanel.add("View Students", panel);
+        FacultyStudentsSubMenuJPanel panel = new FacultyStudentsSubMenuJPanel(business, CardSequencePanel);
+        CardSequencePanel.add("Manage Students", panel);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
   
@@ -186,7 +187,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
     private void btnPerformanceReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerformanceReportsActionPerformed
         // TODO add your handling code here:
         CardSequencePanel.removeAll();
-        CoursePerformanceJPanel panel = new CoursePerformanceJPanel(business, CardSequencePanel);
+        FacultyPerformanceSubMenuJPanel panel = new FacultyPerformanceSubMenuJPanel(business, CardSequencePanel);
         CardSequencePanel.add("Performance Reports", panel);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
