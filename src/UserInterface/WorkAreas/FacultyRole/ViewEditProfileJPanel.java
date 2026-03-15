@@ -179,19 +179,21 @@ public class ViewEditProfileJPanel extends javax.swing.JPanel {
 
     private void btnSaveChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangesActionPerformed
         // TODO add your handling code here:
-        if (fieldName.getText().trim().isEmpty() || 
-            fieldEmail.getText().trim().isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Name and Email are required fields",
-                "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
+    if (fieldName.getText().trim().isEmpty() ||
+        fieldEmail.getText().trim().isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Profile updated successfully!",
-            "Success",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            "Name and Email are required fields",
+            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    facultyProfile.getPerson().setFullname(fieldName.getText().trim());
+    facultyProfile.setEmail(fieldEmail.getText().trim());
+    facultyProfile.setPhone(fieldPhone.getText().trim());
+    facultyProfile.setOfficeLocation(fieldOfficeHours.getText().trim());
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Profile updated successfully!",
+        "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_btnSaveChangesActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

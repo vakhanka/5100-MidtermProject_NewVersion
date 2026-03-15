@@ -199,10 +199,46 @@ public class UpdateCourseDetailsJPanel extends javax.swing.JPanel {
 
     private void btnSaveChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangesActionPerformed
         // TODO add your handling code here:
-      javax.swing.JOptionPane.showMessageDialog(this, 
-                "Course details updated successfully!", 
-                "Success", 
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    String selected = (String) cmbSelectCourses.getSelectedItem();
+    if (selected == null) return;
+    String courseNum = selected.split(" - ")[0].trim();
+
+    university.CourseSchedule.CourseSchedule cs =
+        business.getDepartment().getCourseSchedule("Fall 2025");
+    if (cs == null) return;
+
+    university.CourseSchedule.CourseOffer co = cs.getCourseOfferByNumber(courseNum);
+    if (co == null) return;
+
+    String capacityText = fieldCapacity.getText().trim();
+    if (capacityText.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Capacity cannot be empty", "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try {
+        int newCapacity = Integer.parseInt(capacityText);
+        if (newCapacity < co.getEnrolledCount()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Capacity cannot be less than current enrollment (" +
+                co.getEnrolledCount() + ")", "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int diff = newCapacity - co.getCapacity();
+        if (diff > 0) co.addSeats(diff);
+        co.setRoom(fieldSchedule.getText().trim());
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Course details updated successfully!",
+            "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Capacity must be a number", "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_btnSaveChangesActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

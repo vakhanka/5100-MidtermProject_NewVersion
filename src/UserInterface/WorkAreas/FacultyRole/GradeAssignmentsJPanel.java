@@ -207,11 +207,18 @@ public class GradeAssignmentsJPanel extends javax.swing.JPanel {
 
     private void btnAssignToSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignToSelectedActionPerformed
         // TODO add your handling code here:
-        String selectedStudent = (String) cmbSelectCourse.getSelectedItem();
+    int selectedRow = tblStudentsGrade.getSelectedRow();
+    if (selectedRow == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Please select a student from the table",
+            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
     String grade = (String) cmbAssignGrade.getSelectedItem();
-    if (selectedStudent == null || grade == null) return;
+    if (grade == null) return;
 
-    String studentId = selectedStudent.replaceAll(".*\\((.*)\\)", "$1").trim();
+    String studentId = (String) tblStudentsGrade.getValueAt(selectedRow, 0);
+    String studentName = (String) tblStudentsGrade.getValueAt(selectedRow, 1);
     String selectedCourse = (String) cmbSelectCourse.getSelectedItem();
     if (selectedCourse == null) return;
     String courseNum = selectedCourse.split(" - ")[0].trim();
@@ -224,12 +231,16 @@ public class GradeAssignmentsJPanel extends javax.swing.JPanel {
         if (sa.getCourseOffer().getCourseNumber().equals(courseNum)) {
             sa.setGrade(grade);
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Grade " + grade + " assigned to " + bsp.getPerson().getFullname(),
+                "Grade " + grade + " assigned to " + studentName,
                 "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            loadStudents(); // refresh table
+            loadStudents();
             return;
         }
     }
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Could not find student enrollment for this course",
+        "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+
 
     }//GEN-LAST:event_btnAssignToSelectedActionPerformed
 
